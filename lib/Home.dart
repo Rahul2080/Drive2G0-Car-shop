@@ -1,4 +1,5 @@
 import 'package:drive2go/IntroPage.dart';
+import 'package:drive2go/car_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -193,95 +194,97 @@ class _HomeState extends State<Home> {
                     scrollDirection: Axis.horizontal,
                     itemCount: 8,
                     itemBuilder: (context, position) {
-                      return Container(
-                        width: 185.w,
-                        height: 223.h,
-                        decoration: ShapeDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment(4, -0.54),
-                            end: Alignment(-0.84, 0.54),
-                            colors: [Colors.white, Colors.white.withOpacity(0)],
+                      return GestureDetector(onTap: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>CarDetails()));},
+                        child: Container(
+                          width: 185.w,
+                          height: 223.h,
+                          decoration: ShapeDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment(4, -0.54),
+                              end: Alignment(-0.84, 0.54),
+                              colors: [Colors.white, Colors.white.withOpacity(0)],
+                            ),
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
                           ),
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
-                            borderRadius: BorderRadius.circular(10.r),
-                          ),
-                        ),
-                        child: Column(crossAxisAlignment:CrossAxisAlignment.start ,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(1),
-                              child: Container(
-                                width: 187.w,
-                                height: 146.h,
-                                decoration: ShapeDecoration(
-                                  image: DecorationImage(
-                                    image: AssetImage(
-                                        "assets/car.png"),
-                                    fit: BoxFit.fill,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(8.r),
-                                      topRight: Radius.circular(8.r),
+                          child: Column(crossAxisAlignment:CrossAxisAlignment.start ,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(1),
+                                child: Container(
+                                  width: 187.w,
+                                  height: 146.h,
+                                  decoration: ShapeDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage(
+                                          "assets/car.png"),
+                                      fit: BoxFit.fill,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(8.r),
+                                        topRight: Radius.circular(8.r),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                            SizedBox(height: 15.h),
-          
-                            Padding(
-                              padding:  EdgeInsets.only(left: 10.w),
-                              child: Text(
-                                'Audi R8 Coupé',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Color(0xFFF7F5F2),
-                                  fontSize: 16.sp,
-                                  fontFamily: 'sf pro display',
-                                  fontWeight: FontWeight.w500,
+                              SizedBox(height: 15.h),
+
+                              Padding(
+                                padding:  EdgeInsets.only(left: 10.w),
+                                child: Text(
+                                  'Audi R8 Coupé',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Color(0xFFF7F5F2),
+                                    fontSize: 16.sp,
+                                    fontFamily: 'sf pro display',
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding:  EdgeInsets.only(left: 5.w),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.location_on_outlined,color: Color(0xFFF7F5F2),size: 20.sp,),
-          
-                                  Text(
-                                    'Kottakal',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Color(0xFFF7F5F2),
-                                      fontSize: 14.sp,
-                                      fontFamily: 'sf pro display',
-                                      fontWeight: FontWeight.w300,
-                                      letterSpacing: 0.50.w,
+                              Padding(
+                                padding:  EdgeInsets.only(left: 5.w),
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.location_on_outlined,color: Color(0xFFF7F5F2),size: 20.sp,),
+
+                                    Text(
+                                      'Kottakal',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Color(0xFFF7F5F2),
+                                        fontSize: 14.sp,
+                                        fontFamily: 'sf pro display',
+                                        fontWeight: FontWeight.w300,
+                                        letterSpacing: 0.50.w,
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(width: 20.w),
-          
-                                  Text(
-                                    '\$ 8000 / day',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Color(0xFFFFD66D),
-                                      fontSize: 13.sp,
-                                      fontFamily: 'SF Pro Display',
-                                      fontWeight: FontWeight.w500,
-                                      letterSpacing: 0.50.w,
-                                    ),
-                                  )
-          
-          
-          
-                                ],
-                              ),
-                            )
-          
-                          ],
+                                    SizedBox(width: 20.w),
+
+                                    Text(
+                                      '\$ 8000 / day',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Color(0xFFFFD66D),
+                                        fontSize: 13.sp,
+                                        fontFamily: 'SF Pro Display',
+                                        fontWeight: FontWeight.w500,
+                                        letterSpacing: 0.50.w,
+                                      ),
+                                    )
+
+
+
+                                  ],
+                                ),
+                              )
+
+                            ],
+                          ),
                         ),
                       );
                     },
@@ -340,96 +343,98 @@ class _HomeState extends State<Home> {
                             children: List.generate(10, (index) {
                               return Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                  width: 185.w,
-                  height: 223.h,
-                  decoration: ShapeDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment(4, -0.54),
-                      end: Alignment(-0.84, 0.54),
-                      colors: [Colors.white, Colors.white.withOpacity(0)],
-                    ),
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
-                      borderRadius: BorderRadius.circular(10.r),
-                    ),
-                  ),
-                  child: Column(crossAxisAlignment:CrossAxisAlignment.start ,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(1),
-                        child: Container(
-                          width: 197.w,
-                          height: 146.h,
-                          decoration: ShapeDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(
-                                  "assets/car.png"),
-                              fit: BoxFit.fill,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(8.r),
-                                topRight: Radius.circular(8.r),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10.h),
+                                child: GestureDetector(onTap: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>CarDetails()));},
+                                  child: Container(
+                                                    width: 185.w,
+                                                    height: 223.h,
+                                                    decoration: ShapeDecoration(
+                                                      gradient: LinearGradient(
+                                                        begin: Alignment(4, -0.54),
+                                                        end: Alignment(-0.84, 0.54),
+                                                        colors: [Colors.white, Colors.white.withOpacity(0)],
+                                                      ),
+                                                      shape: RoundedRectangleBorder(
+                                                        side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
+                                                        borderRadius: BorderRadius.circular(10.r),
+                                                      ),
+                                                    ),
+                                                    child: Column(crossAxisAlignment:CrossAxisAlignment.start ,
+                                                      children: [
+                                                        Padding(
+                                                          padding: const EdgeInsets.all(1),
+                                                          child: Container(
+                                                            width: 197.w,
+                                                            height: 146.h,
+                                                            decoration: ShapeDecoration(
+                                                              image: DecorationImage(
+                                                                image: AssetImage(
+                                    "assets/car.png"),
+                                                                fit: BoxFit.fill,
+                                                              ),
+                                                              shape: RoundedRectangleBorder(
+                                                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(8.r),
+                                  topRight: Radius.circular(8.r),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(height: 10.h),
 
-                      Padding(
-                        padding:  EdgeInsets.only(left: 10.w),
-                        child: Text(
-                          'Audi R8 Coupé',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Color(0xFFF7F5F2),
-                            fontSize: 16.sp,
-                            fontFamily: 'sf pro display',
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding:  EdgeInsets.only(left: 5.w),
-                        child: Row(
-                          children: [
-                            Icon(Icons.location_on_outlined,color: Color(0xFFF7F5F2),size: 20.sp,),
+                                                        Padding(
+                                                          padding:  EdgeInsets.only(left: 10.w),
+                                                          child: Text(
+                                                            'Audi R8 Coupé',
+                                                            textAlign: TextAlign.center,
+                                                            style: TextStyle(
+                                                              color: Color(0xFFF7F5F2),
+                                                              fontSize: 16.sp,
+                                                              fontFamily: 'sf pro display',
+                                                              fontWeight: FontWeight.w500,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Padding(
+                                                          padding:  EdgeInsets.only(left: 5.w),
+                                                          child: Row(
+                                                            children: [
+                                                              Icon(Icons.location_on_outlined,color: Color(0xFFF7F5F2),size: 20.sp,),
 
-                            Text(
-                              'Kottakal',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Color(0xFFF7F5F2),
-                                fontSize: 14.sp,
-                                fontFamily: 'sf pro display',
-                                fontWeight: FontWeight.w300,
-                                letterSpacing: 0.50.w,
-                              ),
-                            ),
-                            SizedBox(width: 20.w),
+                                                              Text(
+                                                                'Kottakal',
+                                                                textAlign: TextAlign.center,
+                                                                style: TextStyle(
+                                  color: Color(0xFFF7F5F2),
+                                  fontSize: 14.sp,
+                                  fontFamily: 'sf pro display',
+                                  fontWeight: FontWeight.w300,
+                                  letterSpacing: 0.50.w,
+                                                                ),
+                                                              ),
+                                                              SizedBox(width: 20.w),
 
-                            Text(
-                              '\$ 8000 / day',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Color(0xFFFFD66D),
-                                fontSize: 13.sp,
-                                fontFamily: 'SF Pro Display',
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: 0.50.w,
-                              ),
-                            )
+                                                              Text(
+                                                                '\$ 8000 / day',
+                                                                textAlign: TextAlign.center,
+                                                                style: TextStyle(
+                                  color: Color(0xFFFFD66D),
+                                  fontSize: 13.sp,
+                                  fontFamily: 'SF Pro Display',
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: 0.50.w,
+                                                                ),
+                                                              )
 
 
 
-                          ],
-                        ),
-                      )
+                                                            ],
+                                                          ),
+                                                        )
 
-                    ],
-                  ),
+                                                      ],
+                                                    ),
+                                  ),
                                 ),
                               );
                             },),),
