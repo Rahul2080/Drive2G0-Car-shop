@@ -1,3 +1,4 @@
+import 'package:drive2go/BottomNavigation.dart';
 import 'package:drive2go/Home.dart';
 import 'package:drive2go/IntroPage.dart';
 import 'package:drive2go/Signup.dart';
@@ -127,7 +128,7 @@ class _LoginState extends State<Login> {
               ),
               Padding(
                 padding: EdgeInsets.only(top: 73.h),
-                child: GestureDetector(onTap:  (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Home()));},
+                child: GestureDetector(onTap:  (){Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (_)=>Bottomnavigation()),(route)=>(false));},
                   child: Container(
                     width: 350.w,
                     height: 73.h,

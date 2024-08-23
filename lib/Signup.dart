@@ -3,6 +3,8 @@ import 'package:drive2go/Login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'BottomNavigation.dart';
+
 class Signup extends StatefulWidget {
   const Signup({super.key});
 
@@ -156,8 +158,8 @@ class _SignupState extends State<Signup> {
               ),
 
               GestureDetector(onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => Home()));
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (_) => Bottomnavigation()),(route)=>(false));
               },
                 child: Container(
                   width: 350.w,
