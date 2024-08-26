@@ -1,5 +1,5 @@
 import 'package:drive2go/IntroPage.dart';
-import 'package:drive2go/car_details.dart';
+import 'package:drive2go/car_Rent_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -194,7 +194,7 @@ class _HomeState extends State<Home> {
                     scrollDirection: Axis.horizontal,
                     itemCount: 8,
                     itemBuilder: (context, position) {
-                      return GestureDetector(onTap: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>CarDetails()));},
+                      return GestureDetector(onTap: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>CarRentDetails()));},
                         child: Container(
                           width: 185.w,
                           height: 223.h,
@@ -343,7 +343,7 @@ class _HomeState extends State<Home> {
                             children: List.generate(10, (index) {
                               return Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: GestureDetector(onTap: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>CarDetails()));},
+                                child: GestureDetector(onTap: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>CarRentDetails()));},
                                   child: Container(
                                                     width: 185.w,
                                                     height: 223.h,

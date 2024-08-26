@@ -1,4 +1,5 @@
-import 'package:drive2go/car_details.dart';
+import 'package:drive2go/CarBuy_Details.dart';
+import 'package:drive2go/car_Rent_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -160,7 +161,7 @@ class _BuycarState extends State<Buycar> {
                     return GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) => CarDetails()));
+                            MaterialPageRoute(builder: (_) => CarbuyDetails()));
                       },
                       child: Container(
                         width: 185.w,
@@ -311,7 +312,7 @@ class _BuycarState extends State<Buycar> {
                     (index) {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: GestureDetector(onTap: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>CarDetails()));},
+                        child: GestureDetector(onTap: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>CarbuyDetails()));},
                           child: Container(
                             width: 185.w,
                             height: 223.h,
