@@ -1,3 +1,4 @@
+import 'package:drive2go/Settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -18,9 +19,11 @@ class _ProfileState extends State<Profile> {
           color: Colors.white,
         ),
         actions: [
-          Icon(
-            Icons.settings_outlined,
-            color: Colors.white,
+          GestureDetector(onTap: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=> Settings()));},
+            child: Icon(
+              Icons.settings_outlined,
+              color: Colors.white,
+            ),
           ),
           SizedBox(width: 10.w),
           Icon(

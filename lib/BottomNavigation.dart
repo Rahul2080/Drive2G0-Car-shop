@@ -29,7 +29,7 @@ class _BottomnavigationState extends State<Bottomnavigation> {
               decoration: ShapeDecoration(
                 color: Colors.white.withOpacity(0.7344567788),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                  borderRadius: BorderRadius.all(Radius.circular(20.r),),
                 ),
               ),
               margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 18.h),
@@ -42,7 +42,6 @@ class _BottomnavigationState extends State<Bottomnavigation> {
                   });
                 },
                 items: [
-
               BottomNavigationBarItem(
               icon: currentIndex == 0
               ? Container(
@@ -74,7 +73,7 @@ class _BottomnavigationState extends State<Bottomnavigation> {
                   mainAxisAlignment:
                   MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.home),
+                    Icon(Icons.home,color:  Color(0xFF1F354D),),
                     SizedBox(
                       height: 3.h,
                     ),
@@ -85,14 +84,14 @@ class _BottomnavigationState extends State<Bottomnavigation> {
                           fontSize: 10.sp,
                           fontFamily: "sf pro display",
                           fontStyle: FontStyle.normal,
-                          color: Color(0xff20354E)),
+                          color: Color(0xff20354E),),
                     ),
                   ],
                 ),
               )
                     : Column(
             children: [
-            Icon(Icons.home),
+            Icon(Icons.home,color: Color(0xFF1F354D),),
           SizedBox(
             height: 3.h,
           ),

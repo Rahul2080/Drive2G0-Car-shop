@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class CarbuyDetails extends StatefulWidget {
   const CarbuyDetails({super.key});
@@ -11,6 +12,57 @@ class CarbuyDetails extends StatefulWidget {
 }
 
 class _CarbuyDetailsState extends State<CarbuyDetails> {
+  void handlePaymentErrorResponse(PaymentFailureResponse response) {
+
+
+    /*
+    * PaymentFailureResponse contains three values:
+    * 1. Error Code
+    * 2. Error Description
+    * 3. Metadata
+    * */
+    showAlertDialog(context, "Payment Failed",
+        "Code: ${response.code}\nDescription: ${response
+            .message}\nMetadata:${response.error.toString()}");
+  }
+
+  void handlePaymentSuccessResponse(PaymentSuccessResponse response) {
+    /*
+    * Payment Success Response contains three values:
+    * 1. Order ID
+    * 2. Payment ID
+    * 3. Signature
+    * */
+    showAlertDialog(
+        context, "Payment Successful", "Payment ID: ${response.paymentId}");
+  }
+
+  void handleExternalWalletSelected(ExternalWalletResponse response) {
+    showAlertDialog(
+        context, "External Wallet Selected", "${response.walletName}");
+  }
+
+  void showAlertDialog(BuildContext context, String title, String message) {
+    // set up the buttons
+    Widget continueButton = ElevatedButton(
+      child: const Text("Continue"),
+      onPressed: () {},
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(title),
+      content: Text(message),
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+
   @override
   int currrentindex = 0;
   bool isfavarites = false;
@@ -1337,28 +1389,55 @@ class _CarbuyDetailsState extends State<CarbuyDetails> {
                     ),
                     SizedBox(width: 70.w),
 
-                    Container(
-                      width: 213.w,
-                      height: 50.h,
-                      decoration: ShapeDecoration(
-                        gradient: RadialGradient(
-                          center: Alignment(.05, 1),
-                          colors: [Color(0xFFFFCE50), Color(0xFFFFF0C9), Color(0xFFFFDB81), Color(0xFFD39906), Color(0xFFFFCE50), Color(0xFFD39906)],
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.r),
-                        ),
-                      ),child: Center(
-                      child: Text(
-                        'Buy Now',
-                        style: TextStyle(
-                          color: Color(0xFFF7F5F2),
-                          fontSize: 20.sp,
-                          fontFamily: 'sf pro display',
-                          fontWeight: FontWeight.w600,
+                    GestureDetector(onTap: (){
+                      Razorpay razorpay = Razorpay();
+                      var options = {
+                        'key': 'rzp_test_gKANZdsNdLqaQs',
+                        'amount': 100,
+                        'name': 'Acme Corp.',
+                        'description': 'Fine T-Shirt',
+                        'retry': {'enabled': true, 'max_count': 1},
+                        'send_sms_hash': true,
+                        'prefill': {
+                          'contact': '8888888888',
+                          'email': 'test@razorpay.com'
+                        },
+                        'external': {
+                          'wallets': ['paytm']
+                        }
+                      };
+                      razorpay.on(Razorpay.EVENT_PAYMENT_ERROR,
+                          handlePaymentErrorResponse);
+                      razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
+                          handlePaymentSuccessResponse);
+                      razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET,
+                          handleExternalWalletSelected);
+                      razorpay.open(options);
+
+                    },
+                      child: Container(
+                        width: 213.w,
+                        height: 50.h,
+                        decoration: ShapeDecoration(
+                          gradient: RadialGradient(
+                            center: Alignment(.05, 1),
+                            colors: [Color(0xFFFFCE50), Color(0xFFFFF0C9), Color(0xFFFFDB81), Color(0xFFD39906), Color(0xFFFFCE50), Color(0xFFD39906)],
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                        ),child: Center(
+                        child: Text(
+                          'Buy Now',
+                          style: TextStyle(
+                            color: Color(0xFFF7F5F2),
+                            fontSize: 20.sp,
+                            fontFamily: 'sf pro display',
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
-                    ),
+                      ),
                     )
                   ],
                 ),
