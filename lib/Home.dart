@@ -1,7 +1,11 @@
-import 'package:drive2go/IntroPage.dart';
+
+import 'package:drive2go/Location.dart';
 import 'package:drive2go/car_Rent_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -9,8 +13,73 @@ class Home extends StatefulWidget {
   @override
   State<Home> createState() => _HomeState();
 }
-
 class _HomeState extends State<Home> {
+  GoogleMapController? _mapController;
+  Position? _currentPosition;
+  LatLng _initialPosition = LatLng(37.42796133580664, -122.085749655962);
+  String? _currentAddress;
+
+  @override
+  void initState() {
+    super.initState();
+    _requestPermission();
+    _getCurrentLocation();
+  }
+
+  Future<void> _requestPermission() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Handle permission denied
+        return;
+      }
+    } else if (permission == LocationPermission.deniedForever) {
+      // Handle permission denied forever
+      return;
+    }
+  }
+
+  Future<void> _getCurrentLocation() async {
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      setState(() {
+        _currentPosition = position;
+        _initialPosition = LatLng(
+          position.latitude,
+          position.longitude,
+        );
+        _mapController?.animateCamera(
+          CameraUpdate.newLatLng(_initialPosition),
+        );
+      });
+      await _getAddressFromLatLng(_currentPosition!);
+    } catch (e) {
+      // Handle error
+      print(e);
+    }
+  }
+
+  Future<void> _getAddressFromLatLng(Position position) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+
+      Placemark place = placemarks[0];
+
+      setState(() {
+        _currentAddress =
+        " ${place.locality}, ${place.administrativeArea}";
+      });
+
+      print("Address: $_currentAddress");
+    } catch (e) {
+      print(e);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,25 +95,28 @@ class _HomeState extends State<Home> {
                 padding: EdgeInsets.only(left: 10.w),
                 child: Row(
                   children: [
-                    Container(
+                    SizedBox(
                       width: 219.w,
                       height: 65.h,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'location ',
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              color: Color(0xFFF7F5F2),
-                              fontSize: 20.sp,
-                              fontFamily: 'sf pro display',
-                              fontWeight: FontWeight.w600,
+                          Padding(
+                            padding:  EdgeInsets.only(left: 10.w),
+                            child: Text(
+                              'location ',
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                color: Color(0xFFF7F5F2),
+                                fontSize: 20.sp,
+                                fontFamily: 'sf pro display',
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                           Text(
-                            'Malappuram , Kerala',
-                            textAlign: TextAlign.center,
+                            '$_currentAddress',
+                            textAlign: TextAlign.start,
                             style: TextStyle(
                               color: Color(0xFFF7F5F2),
                               fontSize: 20.sp,

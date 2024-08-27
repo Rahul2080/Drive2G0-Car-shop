@@ -310,8 +310,8 @@ class _CarbuyDetailsState extends State<CarbuyDetails> {
                             padding: EdgeInsets.only(left: 20.w),
                             child: Row(
                               children: [
-                                Icon(Icons.linear_scale_outlined,
-                                    color: Color(0xFFA7B0BB)),
+                                SizedBox(width: 25.w,height: 30.h,
+                                    child: Image.asset("assets/gear.png")),
                                 SizedBox(
                                   width: 10.w,
                                 ),
@@ -426,8 +426,8 @@ class _CarbuyDetailsState extends State<CarbuyDetails> {
                             padding: EdgeInsets.only(left: 20.w),
                             child: Row(
                               children: [
-                                Icon(Icons.sensor_door_outlined,
-                                    color: Color(0xFFA7B0BB)),
+                                SizedBox(width: 25.w,height: 30.h,
+                                  child: Image.asset("assets/door.png"),),
                                 SizedBox(
                                   width: 10.w,
                                 ),
@@ -1419,9 +1419,9 @@ class _CarbuyDetailsState extends State<CarbuyDetails> {
                         width: 213.w,
                         height: 50.h,
                         decoration: ShapeDecoration(
-                          gradient: RadialGradient(
-                            center: Alignment(.05, 1),
-                            colors: [Color(0xFFFFCE50), Color(0xFFFFF0C9), Color(0xFFFFDB81), Color(0xFFD39906), Color(0xFFFFCE50), Color(0xFFD39906)],
+                          gradient:  LinearGradient(
+                            begin: Alignment.topCenter,end: Alignment.bottomCenter,
+                            colors: [Color(0xFFFFF0C9),Color(0xFFFFCE50),  Color(0xFFD39906),  ],
                           ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.r),

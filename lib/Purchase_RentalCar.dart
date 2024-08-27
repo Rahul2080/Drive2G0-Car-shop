@@ -1,8 +1,13 @@
 import 'package:date_picker_plus/date_picker_plus.dart';
+import 'package:drive2go/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+//import 'package:location/location.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+
+import 'Location.dart';
 class PurchaseRentalcar extends StatefulWidget {
   const PurchaseRentalcar({super.key});
 
@@ -13,8 +18,8 @@ class PurchaseRentalcar extends StatefulWidget {
 class _PurchaseRentalcarState extends State<PurchaseRentalcar> {
   TextEditingController pickupdatecontroller = TextEditingController();
   TextEditingController returneddatecontroller = TextEditingController();
-  TextEditingController pickuplocationcontroller=TextEditingController();
 
+  TextEditingController returnlocationcontroller=TextEditingController();
   void handlePaymentErrorResponse(PaymentFailureResponse response) {
 
 
@@ -141,8 +146,17 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar> {
     }
   }
 
+
+@override
+  void initState() {
+
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -395,15 +409,21 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar> {
                         side: BorderSide(width: 1.w, color: Color(0xFF627487)),
                         borderRadius: BorderRadius.circular(4.r),
                       ),
-                    ),child: TextField(controller: pickuplocationcontroller,
+                    ),child: TextField(controller: pickuplocationcontroller,onChanged: (v){
+
+                  },
                     style: TextStyle(color: Color(0xFF627487),),
                     decoration: InputDecoration(
                       hintText: "Type your location or search in map",
                       hintStyle: TextStyle(color: Color(0xFF627487)),
-                      suffixIcon: Icon(Icons.map_outlined,color:Color(0xFF627487) ,),
+                      suffixIcon: GestureDetector(onTap: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Locationcurrent()));},
+                          child: Icon(Icons.map_outlined,color:Color(0xFF627487) ,)),
                       border: OutlineInputBorder(
                           borderSide: BorderSide.none),
-                    ),
+                    ),onTap: (){
+
+                      }
+                    ,
                   ),
                   ),
                 ),
@@ -426,15 +446,16 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar> {
                     height: 55.h,
                     decoration: ShapeDecoration(
                       shape: RoundedRectangleBorder(
-                        side: BorderSide(width: 1.w, color: Color(0xFF627487)),
+                        side: BorderSide(width: 1.w, color: Color(0xFF627487),),
                         borderRadius: BorderRadius.circular(4.r),
                       ),
-                    ),child: TextField(controller: pickuplocationcontroller,
+                    ),child: TextField(controller: returnlocationcontroller,
                     style: TextStyle(color: Color(0xFF627487),),
                     decoration: InputDecoration(
                       hintText: "Type your location or search in map",
                       hintStyle: TextStyle(color: Color(0xFF627487)),
-                      suffixIcon: Icon(Icons.map_outlined,color:Color(0xFF627487) ,),
+                      suffixIcon: GestureDetector(onTap: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Locationcurrent()));},
+                          child: Icon(Icons.map_outlined,color:Color(0xFF627487) ,)),
                       border: OutlineInputBorder(
                           borderSide: BorderSide.none),
                     ),
@@ -533,9 +554,9 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar> {
                       width: 190.w,
                       height: 50.h,
                       decoration: ShapeDecoration(
-                        gradient: RadialGradient(
-                          center: Alignment(.05, 1),
-                          colors: [Color(0xFFFFCE50), Color(0xFFFFF0C9), Color(0xFFFFDB81), Color(0xFFD39906), Color(0xFFFFCE50), Color(0xFFD39906)],
+                        gradient: LinearGradient(
+begin: Alignment.topCenter,end: Alignment.bottomCenter,
+                          colors: [Color(0xFFFFF0C9),Color(0xFFFFCE50),  Color(0xFFD39906),  ],
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.r),
@@ -561,5 +582,14 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar> {
         ],
       ),
     );
+  }
+  @override
+  void dispose() {
+    setState(() {
+      pickuplocationcontroller.clear();
+    });
+
+    // TODO: implement dispose
+    super.dispose();
   }
 }

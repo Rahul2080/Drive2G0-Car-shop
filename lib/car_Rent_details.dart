@@ -122,7 +122,7 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                                 ? Icon(
                                     Icons.favorite,
                                     size: 30.sp,
-                                    color: Color(0xFFF627487),
+                                    color: Colors.red,
                                   )
                                 : Icon(
                                     Icons.favorite_border,
@@ -174,1073 +174,244 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 20.w, top: 20.h),
+                  child: SizedBox(
+                    width: 180.w,
+                    height: 40.h,
+                    child: Text(
+                      'Car Details',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 22.sp,
+                        fontFamily: 'sf pro display',
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 16.w),
                   child: Row(
                     children: [
-                      SizedBox(
+                      Container(
                         width: 180.w,
-                        height: 40.h,
-                        child: Text(
-                          'Car Details',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 22.sp,
-                            fontFamily: 'sf pro display',
-                            fontWeight: FontWeight.w500,
+                        height: 58.h,
+                        decoration: ShapeDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment(6, -1.0),
+                            end: Alignment(0.1, 1),
+                            colors: [Colors.white, Color(0xFF000B17)],
+                          ),
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 20.w),
+                          child: Row(
+                            children: [
+                              Icon(Icons.local_gas_station,
+                                  color: Color(0xFFA7B0BB)),
+                              SizedBox(
+                                width: 10.w,
+                              ),
+                              Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: 6.h),
+                                  Text(
+                                    'Tank size',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Color(0xFFA7B0BB),
+                                      fontSize: 12.sp,
+                                      fontFamily: 'sf pro display',
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                  Text(
+                                    '74 liters',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16.sp,
+                                      fontFamily: 'sf pro display',
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  )
+                                ],
+                              )
+                            ],
                           ),
                         ),
                       ),
-                      SizedBox(width: 140.w),
-                      SizedBox(
-                        width: 80.w,
-                        height: 40.h,
-                        child: GestureDetector(onTap:_toggleVisibility ,
-                          child:_isVisible==false? Text(
-                            'more',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Color(0xFF627487),
-                              fontSize: 16.sp,
-                              fontFamily: 'SF Pro Display',
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ):Text(
-                            'Less',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Color(0xFF627487),
-                              fontSize: 16.sp,
-                              fontFamily: 'SF Pro Display',
-                              fontWeight: FontWeight.w400,
-                            ),
+                      SizedBox(width: 30.w),
+                      Container(
+                        width: 180.w,
+                        height: 58.h,
+                        decoration: ShapeDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment(6, -1.0),
+                            end: Alignment(0.1, 1),
+                            colors: [Colors.white, Color(0xFF000B17)],
+                          ),
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 20.w),
+                          child: Row(
+                            children: [
+                              SizedBox(width: 25.w,height: 30.h,
+                                  child: Image.asset("assets/gear.png")),
+                              SizedBox(
+                                width: 10.w,
+                              ),
+                              Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: 6.h),
+                                  Text(
+                                    'Gearbox',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Color(0xFFA7B0BB),
+                                      fontSize: 12.sp,
+                                      fontFamily: 'sf pro display',
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Automatic',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16.sp,
+                                      fontFamily: 'sf pro display',
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  )
+                                ],
+                              )
+                            ],
                           ),
                         ),
                       ),
                     ],
                   ),
                 ),
-
-                _isVisible==false? Column(
-                  children: [
-
-                    Padding(
-                      padding: EdgeInsets.only(left: 16.w),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 180.w,
-                            height: 58.h,
-                            decoration: ShapeDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment(6, -1.0),
-                                end: Alignment(0.1, 1),
-                                colors: [Colors.white, Color(0xFF000B17)],
+                Padding(
+                  padding: EdgeInsets.only(left: 16.w, top: 20.h),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 180.w,
+                        height: 58.h,
+                        decoration: ShapeDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment(6, -1.0),
+                            end: Alignment(0.1, 1),
+                            colors: [Colors.white, Color(0xFF000B17)],
+                          ),
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 20.w),
+                          child: Row(
+                            children: [
+                              Icon(Icons.supervisor_account_outlined,
+                                  color: Color(0xFFA7B0BB)),
+                              SizedBox(
+                                width: 10.w,
                               ),
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 20.w),
-                              child: Row(
+                              Column(crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Icon(Icons.local_gas_station,
-                                      color: Color(0xFFA7B0BB)),
-                                  SizedBox(
-                                    width: 10.w,
+                                  SizedBox(height: 6.h),
+                                  Text(
+                                    'Seats',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Color(0xFFA7B0BB),
+                                      fontSize: 12.sp,
+                                      fontFamily: 'sf pro display',
+                                      fontWeight: FontWeight.w400,
+                                    ),
                                   ),
-                                  Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(height: 6.h),
-                                      Text(
-                                        'Tank size',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Color(0xFFA7B0BB),
-                                          fontSize: 12.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      Text(
-                                        '74 liters',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      )
-                                    ],
+                                  Text(
+                                    '2',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16.sp,
+                                      fontFamily: 'sf pro display',
+                                      fontWeight: FontWeight.w400,
+                                    ),
                                   )
                                 ],
-                              ),
-                            ),
+                              )
+                            ],
                           ),
-                          SizedBox(width: 30.w),
-                          Container(
-                            width: 180.w,
-                            height: 58.h,
-                            decoration: ShapeDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment(6, -1.0),
-                                end: Alignment(0.1, 1),
-                                colors: [Colors.white, Color(0xFF000B17)],
-                              ),
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 20.w),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.linear_scale_outlined,
-                                      color: Color(0xFFA7B0BB)),
-                                  SizedBox(
-                                    width: 10.w,
-                                  ),
-                                  Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(height: 6.h),
-                                      Text(
-                                        'Gearbox',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Color(0xFFA7B0BB),
-                                          fontSize: 12.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      Text(
-                                        'Automatic',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 16.w, top: 20.h),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 180.w,
-                            height: 58.h,
-                            decoration: ShapeDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment(6, -1.0),
-                                end: Alignment(0.1, 1),
-                                colors: [Colors.white, Color(0xFF000B17)],
-                              ),
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 20.w),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.supervisor_account_outlined,
-                                      color: Color(0xFFA7B0BB)),
-                                  SizedBox(
-                                    width: 10.w,
-                                  ),
-                                  Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(height: 6.h),
-                                      Text(
-                                        'Seats',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Color(0xFFA7B0BB),
-                                          fontSize: 12.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      Text(
-                                        '2',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
+                      SizedBox(width: 30.w),
+                      Container(
+                        width: 180.w,
+                        height: 58.h,
+                        decoration: ShapeDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment(6, -1.0),
+                            end: Alignment(0.1, 1),
+                            colors: [Colors.white, Color(0xFF000B17)],
                           ),
-                          SizedBox(width: 30.w),
-                          Container(
-                            width: 180.w,
-                            height: 58.h,
-                            decoration: ShapeDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment(6, -1.0),
-                                end: Alignment(0.1, 1),
-                                colors: [Colors.white, Color(0xFF000B17)],
-                              ),
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 20.w),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.sensor_door_outlined,
-                                      color: Color(0xFFA7B0BB)),
-                                  SizedBox(
-                                    width: 10.w,
-                                  ),
-                                  Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(height: 6.h),
-                                      Text(
-                                        'Door',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Color(0xFFA7B0BB),
-                                          fontSize: 12.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      Text(
-                                        '4',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
+                            borderRadius: BorderRadius.circular(10.r),
                           ),
-                        ],
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 20.w),
+                          child: Row(
+                            children: [
+                              SizedBox(width: 25.w,height: 30.h,
+                              child: Image.asset("assets/door.png"),),
+                              SizedBox(
+                                width: 10.w,
+                              ),
+                              Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: 6.h),
+                                  Text(
+                                    'Door',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Color(0xFFA7B0BB),
+                                      fontSize: 12.sp,
+                                      fontFamily: 'sf pro display',
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                  Text(
+                                    '4',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16.sp,
+                                      fontFamily: 'sf pro display',
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
-                ):
-                Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 16.w),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 180.w,
-                            height: 58.h,
-                            decoration: ShapeDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment(6, -1.0),
-                                end: Alignment(0.1, 1),
-                                colors: [Colors.white, Color(0xFF000B17)],
-                              ),
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 20.w),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.local_gas_station,
-                                      color: Color(0xFFA7B0BB)),
-                                  SizedBox(
-                                    width: 10.w,
-                                  ),
-                                  Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(height: 6.h),
-                                      Text(
-                                        'Tank size',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Color(0xFFA7B0BB),
-                                          fontSize: 12.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      Text(
-                                        '74 liters',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 30.w),
-                          Container(
-                            width: 180.w,
-                            height: 58.h,
-                            decoration: ShapeDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment(6, -1.0),
-                                end: Alignment(0.1, 1),
-                                colors: [Colors.white, Color(0xFF000B17)],
-                              ),
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 20.w),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.linear_scale_outlined,
-                                      color: Color(0xFFA7B0BB)),
-                                  SizedBox(
-                                    width: 10.w,
-                                  ),
-                                  Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(height: 6.h),
-                                      Text(
-                                        'Gearbox',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Color(0xFFA7B0BB),
-                                          fontSize: 12.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      Text(
-                                        'Automatic',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 16.w, top: 20.h),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 180.w,
-                            height: 58.h,
-                            decoration: ShapeDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment(6, -1.0),
-                                end: Alignment(0.1, 1),
-                                colors: [Colors.white, Color(0xFF000B17)],
-                              ),
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 20.w),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.supervisor_account_outlined,
-                                      color: Color(0xFFA7B0BB)),
-                                  SizedBox(
-                                    width: 10.w,
-                                  ),
-                                  Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(height: 6.h),
-                                      Text(
-                                        'Seats',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Color(0xFFA7B0BB),
-                                          fontSize: 12.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      Text(
-                                        '2',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 30.w),
-                          Container(
-                            width: 180.w,
-                            height: 58.h,
-                            decoration: ShapeDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment(6, -1.0),
-                                end: Alignment(0.1, 1),
-                                colors: [Colors.white, Color(0xFF000B17)],
-                              ),
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 20.w),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.sensor_door_outlined,
-                                      color: Color(0xFFA7B0BB)),
-                                  SizedBox(
-                                    width: 10.w,
-                                  ),
-                                  Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(height: 6.h),
-                                      Text(
-                                        'Door',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Color(0xFFA7B0BB),
-                                          fontSize: 12.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      Text(
-                                        '4',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 16.w, top: 20.h),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 180.w,
-                            height: 58.h,
-                            decoration: ShapeDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment(6, -1.0),
-                                end: Alignment(0.1, 1),
-                                colors: [Colors.white, Color(0xFF000B17)],
-                              ),
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 20.w),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.key_outlined,
-                                      color: Color(0xFFA7B0BB)),
-                                  SizedBox(
-                                    width: 10.w,
-                                  ),
-                                  Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(height: 6.h),
-                                      Text(
-                                        'Owners',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Color(0xFFA7B0BB),
-                                          fontSize: 12.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      Text(
-                                        '2',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 30.w),
-                          Container(
-                            width: 180.w,
-                            height: 58.h,
-                            decoration: ShapeDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment(6, -1.0),
-                                end: Alignment(0.1, 1),
-                                colors: [Colors.white, Color(0xFF000B17)],
-                              ),
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 20.w),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.speed,
-                                      color: Color(0xFFA7B0BB)),
-                                  SizedBox(
-                                    width: 10.w,
-                                  ),
-                                  Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(height: 6.h),
-                                      Text(
-                                        'Cylinder',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Color(0xFFA7B0BB),
-                                          fontSize: 12.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      Text(
-                                        '2',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 16.w, top: 20.h),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 180.w,
-                            height: 58.h,
-                            decoration: ShapeDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment(6, -1.0),
-                                end: Alignment(0.1, 1),
-                                colors: [Colors.white, Color(0xFF000B17)],
-                              ),
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 20.w),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.directions_car_outlined,
-                                      color: Color(0xFFA7B0BB)),
-                                  SizedBox(
-                                    width: 10.w,
-                                  ),
-                                  Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(height: 6.h),
-                                      Text(
-                                        'Specs',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Color(0xFFA7B0BB),
-                                          fontSize: 12.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      Text(
-                                        'GCC Purchased',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 30.w),
-                          Container(
-                            width: 180.w,
-                            height: 58.h,
-                            decoration: ShapeDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment(6, -1.0),
-                                end: Alignment(0.1, 1),
-                                colors: [Colors.white, Color(0xFF000B17)],
-                              ),
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 20.w),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.settings,
-                                      color: Color(0xFFA7B0BB)),
-                                  SizedBox(
-                                    width: 10.w,
-                                  ),
-                                  Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(height: 6.h),
-                                      Text(
-                                        'Service history',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Color(0xFFA7B0BB),
-                                          fontSize: 12.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      Text(
-                                        'UpToDate',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 16.w, top: 20.h),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 180.w,
-                            height: 58.h,
-                            decoration: ShapeDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment(6, -1.0),
-                                end: Alignment(0.1, 1),
-                                colors: [Colors.white, Color(0xFF000B17)],
-                              ),
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 20.w),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.person_2_outlined,
-                                      color: Color(0xFFA7B0BB)),
-                                  SizedBox(
-                                    width: 10.w,
-                                  ),
-                                  Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(height: 6.h),
-                                      Text(
-                                        'Maximum Power',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Color(0xFFA7B0BB),
-                                          fontSize: 12.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      Text(
-                                        '74',
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 30.w),
-                          Container(
-                            width: 180.w,
-                            height: 58.h,
-                            decoration: ShapeDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment(6, -1.0),
-                                end: Alignment(0.1, 1),
-                                colors: [Colors.white, Color(0xFF000B17)],
-                              ),
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 20.w),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.person_2,
-                                      color: Color(0xFFA7B0BB)),
-                                  SizedBox(
-                                    width: 10.w,
-                                  ),
-                                  Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(height: 6.h),
-                                      Text(
-                                        'Maximum Torque',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Color(0xFFA7B0BB),
-                                          fontSize: 12.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      Text(
-                                        'Automatic',
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 16.w, top: 20.h),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 180.w,
-                            height: 58.h,
-                            decoration: ShapeDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment(6, -1.0),
-                                end: Alignment(0.1, 1),
-                                colors: [Colors.white, Color(0xFF000B17)],
-                              ),
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 20.w),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.camera,
-                                      color: Color(0xFFA7B0BB)),
-                                  SizedBox(
-                                    width: 10.w,
-                                  ),
-                                  Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(height: 6.h),
-                                      Text(
-                                        'Wheel Type',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Color(0xFFA7B0BB),
-                                          fontSize: 12.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      Text(
-                                        'All Wheel drive',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 30.w),
-                          Container(
-                            width: 180.w,
-                            height: 58.h,
-                            decoration: ShapeDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment(6, -1.0),
-                                end: Alignment(0.1, 1),
-                                colors: [Colors.white, Color(0xFF000B17)],
-                              ),
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 20.w),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.cases_outlined,
-                                      color: Color(0xFFA7B0BB)),
-                                  SizedBox(
-                                    width: 10.w,
-                                  ),
-                                  Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(height: 6.h),
-                                      Text(
-                                        'Boot Capacity',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Color(0xFFA7B0BB),
-                                          fontSize: 12.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      Text(
-                                        '4',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 16.w, top: 20.h),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 180.w,
-                            height: 58.h,
-                            decoration: ShapeDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment(6, -1.0),
-                                end: Alignment(0.1, 1),
-                                colors: [Colors.white, Color(0xFF000B17)],
-                              ),
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 20.w),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.edit,
-                                      color: Color(0xFFA7B0BB)),
-                                  SizedBox(
-                                    width: 10.w,
-                                  ),
-                                  Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(height: 6.h),
-                                      Text(
-                                        'Engine Displacement',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Color(0xFFA7B0BB),
-                                          fontSize: 12.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      Text(
-                                        '0',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 30.w),
-                          Container(
-                            width: 180.w,
-                            height: 58.h,
-                            decoration: ShapeDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment(6, -1.0),
-                                end: Alignment(0.1, 1),
-                                colors: [Colors.white, Color(0xFF000B17)],
-                              ),
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 20.w),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.event_seat_outlined,
-                                      color: Color(0xFFA7B0BB)),
-                                  SizedBox(
-                                    width: 10.w,
-                                  ),
-                                  Column(
-                                    children: [
-                                      SizedBox(height: 6.h),
-                                      Text(
-                                        'Seat type',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Color(0xFFA7B0BB),
-                                          fontSize: 12.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      Text(
-                                        'Leather',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-
-
-
-
-
                 Padding(
                   padding: EdgeInsets.only(left: 20.w, top: 20.h),
                   child: Text(
@@ -1512,9 +683,9 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                       width: 213.w,
                       height: 50.h,
                       decoration: ShapeDecoration(
-                        gradient: RadialGradient(
-                          center: Alignment(.05, 1),
-                          colors: [Color(0xFFFFCE50), Color(0xFFFFF0C9), Color(0xFFFFDB81), Color(0xFFD39906), Color(0xFFFFCE50), Color(0xFFD39906)],
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,end: Alignment.bottomCenter,
+                          colors: [Color(0xFFFFF0C9),Color(0xFFFFCE50),  Color(0xFFD39906),  ],
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.r),
