@@ -1,6 +1,6 @@
 
-import 'package:drive2go/Location.dart';
-import 'package:drive2go/car_Rent_details.dart';
+import 'package:drive2go/Home_Pages/PickUp_Location.dart';
+import 'package:drive2go/Home_Pages/car_Rent_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';

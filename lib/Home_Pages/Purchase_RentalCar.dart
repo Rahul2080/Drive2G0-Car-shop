@@ -1,4 +1,5 @@
 import 'package:date_picker_plus/date_picker_plus.dart';
+import 'package:drive2go/Home_Pages/Return_Location.dart';
 import 'package:drive2go/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,7 +8,7 @@ import 'package:intl/intl.dart';
 //import 'package:location/location.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
-import 'Location.dart';
+import 'PickUp_Location.dart';
 class PurchaseRentalcar extends StatefulWidget {
   const PurchaseRentalcar({super.key});
 
@@ -19,7 +20,6 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar> {
   TextEditingController pickupdatecontroller = TextEditingController();
   TextEditingController returneddatecontroller = TextEditingController();
 
-  TextEditingController returnlocationcontroller=TextEditingController();
   void handlePaymentErrorResponse(PaymentFailureResponse response) {
 
 
@@ -409,21 +409,15 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar> {
                         side: BorderSide(width: 1.w, color: Color(0xFF627487)),
                         borderRadius: BorderRadius.circular(4.r),
                       ),
-                    ),child: TextField(controller: pickuplocationcontroller,onChanged: (v){
-
-                  },
-                    style: TextStyle(color: Color(0xFF627487),),
+                    ),child: TextField(controller: pickuplocationcontroller, style: TextStyle(color: Color(0xFF627487),),
                     decoration: InputDecoration(
                       hintText: "Type your location or search in map",
                       hintStyle: TextStyle(color: Color(0xFF627487)),
-                      suffixIcon: GestureDetector(onTap: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Locationcurrent()));},
+                      suffixIcon: GestureDetector(onTap: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>PickUp_Location()));},
                           child: Icon(Icons.map_outlined,color:Color(0xFF627487) ,)),
                       border: OutlineInputBorder(
                           borderSide: BorderSide.none),
-                    ),onTap: (){
-
-                      }
-                    ,
+                    ),
                   ),
                   ),
                 ),
@@ -454,7 +448,7 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar> {
                     decoration: InputDecoration(
                       hintText: "Type your location or search in map",
                       hintStyle: TextStyle(color: Color(0xFF627487)),
-                      suffixIcon: GestureDetector(onTap: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Locationcurrent()));},
+                      suffixIcon: GestureDetector(onTap: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>ReturnLocation()));},
                           child: Icon(Icons.map_outlined,color:Color(0xFF627487) ,)),
                       border: OutlineInputBorder(
                           borderSide: BorderSide.none),

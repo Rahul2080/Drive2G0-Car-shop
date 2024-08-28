@@ -1,113 +1,24 @@
-import 'package:drive2go/Settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class Profile extends StatefulWidget {
-  const Profile({super.key});
+class MyCars extends StatefulWidget {
+  const MyCars({super.key});
 
   @override
-  State<Profile> createState() => _ProfileState();
+  State<MyCars> createState() => _MyCarsState();
 }
 
-class _ProfileState extends State<Profile> {
+class _MyCarsState extends State<MyCars> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: Icon(
-          Icons.menu,
-          color: Colors.white,
-        ),
-        actions: [
-          GestureDetector(onTap: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=> Settings()));},
-            child: Icon(
-              Icons.settings_outlined,
-              color: Colors.white,
-            ),
-          ),
-          SizedBox(width: 10.w),
-          Icon(
-            Icons.notifications_none_outlined,
-            color: Colors.white,
-          ),
-          SizedBox(width: 10.w),
-          Icon(
-            Icons.more_vert,
-            color: Colors.white,
-          ),
-          SizedBox(width: 10.w),
-        ],
-        backgroundColor: Colors.black,
-      ),
-      backgroundColor: Colors.black,
-      body: Column(crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(
-            children: [
-              Padding(
-                padding:  EdgeInsets.only(left: 20.w,top: 20.h),
-                child: SizedBox(width: 300.w,height: 110.h,
-                child: Row(mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 94.w,
-                      height: 94.h,
-                      decoration: ShapeDecoration(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.r)),
-                      ),child: ClipRRect(borderRadius: BorderRadius.circular(7.r),child: Image.asset('assets/car.png',fit:BoxFit.cover,)),
-                    ),
-                    SizedBox(width: 20.w),
-                    Column(crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 20.h),
-                        Text(
-                          'James Robert',
-                          style: TextStyle(
-                            color: Color(0xFFF7F5F2),
-                            fontSize: 22.sp,
-                            fontFamily: 'sf pro display',
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        SizedBox(height: 5.h),
+    return Scaffold(backgroundColor: Colors.black,
+      appBar: AppBar(backgroundColor: Colors.black,leading: GestureDetector(onTap: (){Navigator.of(context).pop();},
+          child: Icon(Icons.arrow_back,color: Colors.white,)),),
+      body: ListView.separated(
+        itemCount: 5,
 
-                        Text(
-                          'Individual profile',
-                          style: TextStyle(
-                            color: Color(0xFFA7B0BB),
-                            fontSize: 14.sp,
-                            fontFamily: 'SF Pro Display',
-                            fontWeight: FontWeight.w400,
-                            letterSpacing: 0.35,
-                          ),
-                        )
-
-
-                      ],
-                    )
-                  ],
-                ),
-
-                ),
-              ),
-              Positioned(
-                left: 92.w,
-                top: 93.h,
-                child: Container(
-                  width: 30.w,
-                  height: 30.h,
-                  decoration: ShapeDecoration(
-                    color: Color(0xFFFFCE50),
-                    shape: OvalBorder(),
-                  ),child: Icon(Icons.edit_outlined,color: Colors.white,),
-                ),
-              ) ,
-            ],
-          ),
-          SizedBox(height: 50.h),
-
-
-          Padding(
+        itemBuilder: (context, position) {
+          return    Padding(
             padding: EdgeInsets.only(left: 20.w),
             child: Container(
               width: 391.w,
@@ -200,8 +111,11 @@ class _ProfileState extends State<Profile> {
                 ],
               ),
             ),
-          ),
-        ],
+          );
+        },
+        separatorBuilder: (context, position) {
+          return SizedBox(height: 10.h,);
+        },
       ),
     );
   }

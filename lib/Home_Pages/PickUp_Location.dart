@@ -4,14 +4,14 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class Locationcurrent extends StatefulWidget {
-  const Locationcurrent({super.key});
+class PickUp_Location extends StatefulWidget {
+  const PickUp_Location({super.key});
 
   @override
-  State<Locationcurrent> createState() => _LocationcurrentState();
+  State<PickUp_Location> createState() => _PickUp_LocationState();
 }
 
-class _LocationcurrentState extends State<Locationcurrent> {
+class _PickUp_LocationState extends State<PickUp_Location> {
   LatLng myCurrentLocation = const LatLng(27.7172, 85.3240);
   GoogleMapController? googleMapController;
   Set<Marker> markers = {};

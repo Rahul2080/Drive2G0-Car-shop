@@ -1,5 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:drive2go/Purchase_RentalCar.dart';
+import 'package:drive2go/Home_Pages/Purchase_RentalCar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

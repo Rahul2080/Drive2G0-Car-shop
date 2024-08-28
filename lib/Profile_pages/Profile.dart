@@ -1,80 +1,95 @@
-import 'package:drive2go/Login.dart';
+import 'package:drive2go/Profile_pages/My_Cars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Settings extends StatefulWidget {
-  const Settings({super.key});
+import '../Authentication/Login.dart';
+
+class Profile extends StatefulWidget {
+  const Profile({super.key});
 
   @override
-  State<Settings> createState() => _SettingsState();
+  State<Profile> createState() => _ProfileState();
 }
 
-class _SettingsState extends State<Settings> {
+class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Icon(
+          Icons.menu,
+          color: Colors.white,
+        ),
         actions: [
-          GestureDetector(onTap:(){
-            showModalBottomSheet<void>(
-              context: context,
-              builder: (BuildContext context) {
-                return SizedBox(
-                  height: 180.h,
-                  child: Center(
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                      children:[
-                        SizedBox(height: 10.h),
-                        SizedBox(width: double.infinity.w,height: 60.h,
-                          child: Padding(
-                            padding:  EdgeInsets.only(left: 20.w,top: 30.h),
-                            child: Text(
-                              'Share profile',
-                              style: TextStyle(
-                                color: Color(0xFF000B17),
-                                fontSize: 15.sp,
-                                fontFamily: 'sf pro display',
-                                fontWeight: FontWeight.w400,
+          GestureDetector(
+            onTap: () {
+              showModalBottomSheet<void>(
+                context: context,
+                builder: (BuildContext context) {
+                  return SizedBox(
+                    height: 180.h,
+                    child: Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 10.h),
+                          SizedBox(
+                            width: double.infinity.w,
+                            height: 60.h,
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 20.w, top: 30.h),
+                              child: Text(
+                                'Share profile',
+                                style: TextStyle(
+                                  color: Color(0xFF000B17),
+                                  fontSize: 15.sp,
+                                  fontFamily: 'sf pro display',
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 10.h),
-                          child: Divider(),
-                        ),
-                        SizedBox(width: double.infinity.w,height: 60.h,
-                          child: Padding(
-                            padding:  EdgeInsets.only(left: 20.w,top: 15.h),
-                            child: Text(
-                              'Copy Link',
-                              style: TextStyle(
-                                color: Color(0xFF000B17),
-                                fontSize: 15.sp,
-                                fontFamily: 'sf pro display',
-                                fontWeight: FontWeight.w400,
+                          Padding(
+                            padding: EdgeInsets.only(
+                                left: 20.w, right: 20.w, top: 10.h),
+                            child: Divider(),
+                          ),
+                          SizedBox(
+                            width: double.infinity.w,
+                            height: 60.h,
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 20.w, top: 15.h),
+                              child: Text(
+                                'Copy Link',
+                                style: TextStyle(
+                                  color: Color(0xFF000B17),
+                                  fontSize: 15.sp,
+                                  fontFamily: 'sf pro display',
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-
-
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
-            );
-
-
-          },
-              child: Icon(Icons.more_vert)),
+                  );
+                },
+              );
+            },
+            child: Icon(
+              Icons.more_vert,
+              color: Colors.white,
+            ),
+          ),
           SizedBox(
             width: 15.w,
           )
         ],
+        backgroundColor: Colors.black,
       ),
+      backgroundColor: Colors.black,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,7 +126,7 @@ class _SettingsState extends State<Settings> {
                             Text(
                               'James Robert',
                               style: TextStyle(
-                                color: Colors.black,
+                                color: Colors.white,
                                 fontSize: 22.sp,
                                 fontFamily: 'sf pro display',
                                 fontWeight: FontWeight.w600,
@@ -168,116 +183,50 @@ class _SettingsState extends State<Settings> {
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(left: 20.w, top: 20.h),
-              child: Row(
-                children: [
-                  Icon(Icons.settings_outlined),
-                  SizedBox(width: 20.w),
-                  Text(
-                    'Account Settings',
-                    style: TextStyle(
-                      color: Color(0xFF000B17),
-                      fontSize: 15.sp,
-                      fontFamily: 'sf pro display',
-                      fontWeight: FontWeight.w400,
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (_) => MyCars()));
+              },
+              child: Padding(
+                padding: EdgeInsets.only(left: 20.w, top: 20.h),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.directions_car_filled_sharp,
+                      color: Colors.white,
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 10.h),
-              child: Divider(),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 20.w, top: 20.h),
-              child: Row(
-                children: [
-                  Icon(Icons.check_box_outlined),
-                  SizedBox(width: 20.w),
-                  Text(
-                    'Request Verification',
-                    style: TextStyle(
-                      color: Color(0xFF000B17),
-                      fontSize: 15.sp,
-                      fontFamily: 'sf pro display',
-                      fontWeight: FontWeight.w400,
+                    SizedBox(width: 20.w),
+                    Text(
+                      'My Cars',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15.sp,
+                        fontFamily: 'sf pro display',
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 10.h),
-              child: Divider(),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 20.w, top: 20.h),
-              child: Row(
-                children: [
-                  Icon(Icons.mode_edit_outline),
-                  SizedBox(width: 20.w),
-                  Text(
-                    'Edit Profile',
-                    style: TextStyle(
-                      color: Color(0xFF000B17),
-                      fontSize: 15.sp,
-                      fontFamily: 'sf pro display',
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 10.h),
-              child: Divider(),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 20.w, top: 20.h),
-              child: Row(
-                children: [
-                  Icon(Icons.north_east),
-                  SizedBox(width: 20.w),
-                  Text(
-                    'Manage Outgoing Request',
-                    style: TextStyle(
-                      color: Color(0xFF000B17),
-                      fontSize: 15.sp,
-                      fontFamily: 'sf pro display',
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 10.h),
-              child: Divider(),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 20.w, top: 20.h),
-              child: Text(
-                'General',
-                style: TextStyle(
-                  color: Color(0xFF929191),
-                  fontSize: 12.sp,
-                  fontFamily: 'sf pro display',
-                  fontWeight: FontWeight.w400,
+                  ],
                 ),
               ),
             ),
             Padding(
+              padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 10.h),
+              child: Divider(),
+            ),
+            Padding(
               padding: EdgeInsets.only(left: 20.w, top: 20.h),
               child: Row(
                 children: [
-                  Icon(Icons.language_outlined),
+                  Icon(
+                    Icons.mode_edit_outline,
+                    color: Colors.white,
+                  ),
                   SizedBox(width: 20.w),
                   Text(
-                    'Language',
+                    'Edit Profile',
                     style: TextStyle(
-                      color: Color(0xFF000B17),
+                      color: Colors.white,
                       fontSize: 15.sp,
                       fontFamily: 'sf pro display',
                       fontWeight: FontWeight.w400,
@@ -306,12 +255,15 @@ class _SettingsState extends State<Settings> {
               padding: EdgeInsets.only(left: 20.w, top: 20.h),
               child: Row(
                 children: [
-                  Icon(Icons.help_outline),
+                  Icon(
+                    Icons.help_outline,
+                    color: Colors.white,
+                  ),
                   SizedBox(width: 20.w),
                   Text(
                     'Help',
                     style: TextStyle(
-                      color: Color(0xFF000B17),
+                      color: Colors.white,
                       fontSize: 15.sp,
                       fontFamily: 'sf pro display',
                       fontWeight: FontWeight.w400,
@@ -328,12 +280,15 @@ class _SettingsState extends State<Settings> {
               padding: EdgeInsets.only(left: 20.w, top: 20.h),
               child: Row(
                 children: [
-                  Icon(Icons.thumb_up_alt_outlined),
+                  Icon(
+                    Icons.thumb_up_alt_outlined,
+                    color: Colors.white,
+                  ),
                   SizedBox(width: 20.w),
                   Text(
                     'Feedback',
                     style: TextStyle(
-                      color: Color(0xFF000B17),
+                      color: Colors.white,
                       fontSize: 15.sp,
                       fontFamily: 'sf pro display',
                       fontWeight: FontWeight.w400,
@@ -350,34 +305,15 @@ class _SettingsState extends State<Settings> {
               padding: EdgeInsets.only(left: 20.w, top: 20.h),
               child: Row(
                 children: [
-                  Icon(Icons.error_outline),
-                  SizedBox(width: 20.w),
-                  Text(
-                    'Request a feature',
-                    style: TextStyle(
-                      color: Color(0xFF000B17),
-                      fontSize: 15.sp,
-                      fontFamily: 'sf pro display',
-                      fontWeight: FontWeight.w400,
-                    ),
+                  Icon(
+                    Icons.share_outlined,
+                    color: Colors.white,
                   ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 10.h),
-              child: Divider(),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 20.w, top: 20.h),
-              child: Row(
-                children: [
-                  Icon(Icons.share_outlined),
                   SizedBox(width: 20.w),
                   Text(
                     'Share this App',
                     style: TextStyle(
-                      color: Color(0xFF000B17),
+                      color: Colors.white,
                       fontSize: 15.sp,
                       fontFamily: 'sf pro display',
                       fontWeight: FontWeight.w400,
@@ -394,12 +330,15 @@ class _SettingsState extends State<Settings> {
               padding: EdgeInsets.only(left: 20.w, top: 20.h),
               child: Row(
                 children: [
-                  Icon(Icons.play_arrow_outlined),
+                  Icon(
+                    Icons.play_arrow_outlined,
+                    color: Colors.white,
+                  ),
                   SizedBox(width: 20.w),
                   Text(
                     'Rate on Google Play',
                     style: TextStyle(
-                      color: Color(0xFF000B17),
+                      color: Colors.white,
                       fontSize: 15.sp,
                       fontFamily: 'sf pro display',
                       fontWeight: FontWeight.w400,
@@ -428,12 +367,15 @@ class _SettingsState extends State<Settings> {
               padding: EdgeInsets.only(left: 20.w, top: 20.h),
               child: Row(
                 children: [
-                  Icon(Icons.lock_outline),
+                  Icon(
+                    Icons.lock_outline,
+                    color: Colors.white,
+                  ),
                   SizedBox(width: 20.w),
                   Text(
                     'Privacy Policy',
                     style: TextStyle(
-                      color: Color(0xFF000B17),
+                      color: Colors.white,
                       fontSize: 15.sp,
                       fontFamily: 'sf pro display',
                       fontWeight: FontWeight.w400,
@@ -450,12 +392,15 @@ class _SettingsState extends State<Settings> {
               padding: EdgeInsets.only(left: 20.w, top: 20.h),
               child: Row(
                 children: [
-                  Icon(Icons.shield_outlined),
+                  Icon(
+                    Icons.shield_outlined,
+                    color: Colors.white,
+                  ),
                   SizedBox(width: 20.w),
                   Text(
                     'Terms and Conditions',
                     style: TextStyle(
-                      color: Color(0xFF000B17),
+                      color: Colors.white,
                       fontSize: 15.sp,
                       fontFamily: 'sf pro display',
                       fontWeight: FontWeight.w400,
@@ -469,13 +414,18 @@ class _SettingsState extends State<Settings> {
               child: Divider(),
             ),
             SizedBox(height: 30.h),
-            GestureDetector(onTap: (){Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (_)=>Login()), (route)=>(false));},
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (_) => Login()),
+                    (route) => (false));
+              },
               child: Center(
                 child: Container(
                   width: 339.w,
                   height: 56.h,
                   decoration: ShapeDecoration(
-                    color: Color(0xFF000B17),
+                    color: Colors.white,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5.r)),
                   ),
@@ -484,7 +434,7 @@ class _SettingsState extends State<Settings> {
                       'Log Out',
                       style: GoogleFonts.inter(
                         textStyle: TextStyle(
-                          color: Color(0xFFF7F5F2),
+                          color: Colors.black,
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w600,
                         ),
@@ -494,7 +444,7 @@ class _SettingsState extends State<Settings> {
                 ),
               ),
             ),
-            SizedBox(height: 30.h),
+            SizedBox(height: 90.h),
           ],
         ),
       ),

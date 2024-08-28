@@ -1,9 +1,9 @@
-import 'package:drive2go/Home.dart';
-import 'package:drive2go/Login.dart';
+import 'package:drive2go/Home_Pages/Home.dart';
+import 'package:drive2go/Authentication/Login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'BottomNavigation.dart';
+import '../BottomNavigation.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -17,9 +17,7 @@ class _SignupState extends State<Signup> {
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController phonenumbercontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
-
-
-  bool passwordvisible = false;
+  bool passwordvisible = true;
 
   @override
   Widget build(BuildContext context) {

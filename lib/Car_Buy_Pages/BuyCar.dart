@@ -1,5 +1,5 @@
-import 'package:drive2go/CarBuy_Details.dart';
-import 'package:drive2go/car_Rent_details.dart';
+import 'package:drive2go/Car_Buy_Pages/CarBuy_Details.dart';
+import 'package:drive2go/Home_Pages/car_Rent_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

@@ -1,10 +1,10 @@
-import 'package:drive2go/BuyCar.dart';
-import 'package:drive2go/Profile.dart';
+import 'package:drive2go/Car_Buy_Pages/BuyCar.dart';
+import 'package:drive2go/Profile_pages/Profile.dart';
 import 'package:drive2go/Search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'Home.dart';
+import 'Home_Pages/Home.dart';
 
 class Bottomnavigation extends StatefulWidget {
   const Bottomnavigation({super.key});
