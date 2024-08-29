@@ -1,4 +1,3 @@
-import 'package:drive2go/Profile_pages/My_Cars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -182,37 +181,6 @@ class _ProfileState extends State<Profile> {
                   fontWeight: FontWeight.w400,
                 ),
               ),
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (_) => MyCars()));
-              },
-              child: Padding(
-                padding: EdgeInsets.only(left: 20.w, top: 20.h),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.directions_car_filled_sharp,
-                      color: Colors.white,
-                    ),
-                    SizedBox(width: 20.w),
-                    Text(
-                      'My Cars',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15.sp,
-                        fontFamily: 'sf pro display',
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 10.h),
-              child: Divider(),
             ),
             Padding(
               padding: EdgeInsets.only(left: 20.w, top: 20.h),

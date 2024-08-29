@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class Search extends StatefulWidget {
-  const Search({super.key});
+class RentCarSearch extends StatefulWidget {
+  const RentCarSearch({super.key});
 
   @override
-  State<Search> createState() => _SearchState();
+  State<RentCarSearch> createState() => _RentCarSearchState();
 }
 
-class _SearchState extends State<Search> {
+class _RentCarSearchState extends State<RentCarSearch> {
+  TextEditingController rentCarSearchcontroller=TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: GestureDetector(onTap: (){Navigator.of(context).pop();},
+            child: Icon(Icons.arrow_back,color: Colors.white,)),
         backgroundColor: Colors.black,
       ),
       backgroundColor: Colors.black,
@@ -36,7 +40,7 @@ class _SearchState extends State<Search> {
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                 ),
-                child: TextField(
+                child: TextField(controller: rentCarSearchcontroller,
                   style: TextStyle(color: Colors.white),
                   cursorColor: Colors.white,
                   decoration: InputDecoration(

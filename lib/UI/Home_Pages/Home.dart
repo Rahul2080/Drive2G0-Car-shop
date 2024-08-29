@@ -1,11 +1,12 @@
 
-import 'package:drive2go/Home_Pages/PickUp_Location.dart';
-import 'package:drive2go/Home_Pages/car_Rent_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import 'Rent_Car_Search.dart';
+import 'car_Rent_details.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -140,84 +141,63 @@ class _HomeState extends State<Home> {
                   ],
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(left: 10.w),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 292.w,
-                      height: 48.h,
-                      decoration: ShapeDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment(5, -0.54),
-                          end: Alignment(-0.34, 0.54),
-                          colors: [Colors.white, Colors.white.withOpacity(0)],
+              GestureDetector(onTap: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>RentCarSearch()));},
+                child: Padding(
+                  padding: EdgeInsets.only(left: 10.w),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 292.w,
+                        height: 48.h,
+                        decoration: ShapeDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment(5, -0.54),
+                            end: Alignment(-0.34, 0.54),
+                            colors: [Colors.white, Colors.white.withOpacity(0)],
+                          ),
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
                         ),
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
-                          borderRadius: BorderRadius.circular(10.r),
-                        ),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 10.w),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.search,
-                              color: Colors.white,
-                            ),
-                            SizedBox(width: 10.w),
-                            Text(
-                              'Search your dream car..',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Color(0xFF627387),
-                                fontSize: 15.sp,
-                                fontFamily: 'sf pro display',
-                                fontWeight: FontWeight.w300,
-                                letterSpacing: 1.50.w,
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 10.w),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.search,
+                                color: Colors.white,
                               ),
-                            )
-                          ],
+                              SizedBox(width: 10.w),
+                              Text(
+                                'Search your dream car..',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Color(0xFF627387),
+                                  fontSize: 15.sp,
+                                  fontFamily: 'sf pro display',
+                                  fontWeight: FontWeight.w300,
+                                  letterSpacing: 1.50.w,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(width: 60.w),
-                    Container(
-                      width: 48.w,
-                      height: 48.h,
-                      decoration: ShapeDecoration(
-                        color: Color(0xFFFFCE50),
-                        shape: OvalBorder(),
+                      SizedBox(width: 60.w),
+                      Container(
+                        width: 48.w,
+                        height: 48.h,
+                        decoration: ShapeDecoration(
+                          color: Color(0xFFFFCE50),
+                          shape: OvalBorder(),
+                        ),
+                        child: Icon(
+                          Icons.tune,
+                          color: Colors.white,
+                        ),
                       ),
-                      child: Icon(
-                        Icons.tune,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 15.h,left: 10.w,right: 10.w),
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 90.h,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 8,
-                    itemBuilder: (context, position) {
-                      return CircleAvatar(
-                        radius: 45.r,
-                        backgroundColor: Colors.white,
-                        backgroundImage: AssetImage("assets/google.png"),
-                      );
-                    },
-                    separatorBuilder: (context, position) {
-                      return SizedBox(
-                        width: 10.w,
-                      );
-                    },
+                    ],
                   ),
                 ),
               ),

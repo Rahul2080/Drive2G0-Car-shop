@@ -1,7 +1,9 @@
-import 'package:drive2go/Car_Buy_Pages/CarBuy_Details.dart';
-import 'package:drive2go/Home_Pages/car_Rent_details.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'Buy_Car_Search.dart';
+import 'CarBuy_Details.dart';
 
 class Buycar extends StatefulWidget {
   const Buycar({super.key});
@@ -26,41 +28,43 @@ class _BuycarState extends State<Buycar> {
               padding: EdgeInsets.only(left: 10.w),
               child: Row(
                 children: [
-                  Container(
-                    width: 292.w,
-                    height: 48.h,
-                    decoration: ShapeDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment(5, -0.54),
-                        end: Alignment(-0.34, 0.54),
-                        colors: [Colors.white, Colors.white.withOpacity(0)],
+                  GestureDetector(onTap: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>BuyCarSearch()));},
+                    child: Container(
+                      width: 292.w,
+                      height: 48.h,
+                      decoration: ShapeDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment(5, -0.54),
+                          end: Alignment(-0.34, 0.54),
+                          colors: [Colors.white, Colors.white.withOpacity(0)],
+                        ),
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
+                          borderRadius: BorderRadius.circular(10.r),
+                        ),
                       ),
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
-                        borderRadius: BorderRadius.circular(10.r),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 10.w),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.search,
-                            color: Colors.white,
-                          ),
-                          SizedBox(width: 10.w),
-                          Text(
-                            'Search your dream car..',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Color(0xFF627387),
-                              fontSize: 15.sp,
-                              fontFamily: 'sf pro display',
-                              fontWeight: FontWeight.w300,
-                              letterSpacing: 1.50.w,
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10.w),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.search,
+                              color: Colors.white,
                             ),
-                          )
-                        ],
+                            SizedBox(width: 10.w),
+                            Text(
+                              'Search your dream car..',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Color(0xFF627387),
+                                fontSize: 15.sp,
+                                fontFamily: 'sf pro display',
+                                fontWeight: FontWeight.w300,
+                                letterSpacing: 1.50.w,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -88,29 +92,6 @@ class _BuycarState extends State<Buycar> {
                     child: Icon(Icons.notifications_none_outlined),
                   ),
                 ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 15.h, left: 10.w, right: 10.w),
-              child: SizedBox(
-                width: double.infinity,
-                height: 90.h,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 8,
-                  itemBuilder: (context, position) {
-                    return CircleAvatar(
-                      radius: 45.r,
-                      backgroundColor: Colors.white,
-                      backgroundImage: AssetImage("assets/google.png"),
-                    );
-                  },
-                  separatorBuilder: (context, position) {
-                    return SizedBox(
-                      width: 10.w,
-                    );
-                  },
-                ),
               ),
             ),
             Padding(

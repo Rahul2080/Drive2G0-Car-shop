@@ -1,10 +1,11 @@
-import 'package:drive2go/Car_Buy_Pages/BuyCar.dart';
-import 'package:drive2go/Profile_pages/Profile.dart';
-import 'package:drive2go/Search.dart';
+import 'package:drive2go/UI/My_Cars.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'Car_Buy_Pages/BuyCar.dart';
 import 'Home_Pages/Home.dart';
+import 'Profile_pages/Profile.dart';
 
 class Bottomnavigation extends StatefulWidget {
   const Bottomnavigation({super.key});
@@ -14,7 +15,7 @@ class Bottomnavigation extends StatefulWidget {
 }
 
 class _BottomnavigationState extends State<Bottomnavigation> {
-  final screens = [Home(), Search(), Buycar(), Profile()];
+  final screens = [Home(), MyCars(), Buycar(), Profile()];
   int currentIndex = 0;
 
   @override
@@ -138,12 +139,12 @@ class _BottomnavigationState extends State<Bottomnavigation> {
                           mainAxisAlignment:
                           MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.search),
+                            Icon(Icons.directions_car_sharp),
                             SizedBox(
                               height: 3.h,
                             ),
                             Text(
-                              "search",
+                              "My Cars",
                               style: TextStyle(
                                   fontWeight: FontWeight.w300,
                                   fontSize: 10.sp,
@@ -156,12 +157,12 @@ class _BottomnavigationState extends State<Bottomnavigation> {
                       )
                           : Column(
                         children: [
-                         Icon(Icons.search),
+                         Icon(Icons.directions_car_filled_sharp),
                           SizedBox(
                             height: 3.h,
                           ),
                           Text(
-                            "search",
+                            "My Cars",
                             style: TextStyle(
                                 fontWeight: FontWeight.w300,
                                 fontSize: 10.sp,

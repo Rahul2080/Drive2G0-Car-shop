@@ -554,7 +554,7 @@ class _CarbuyDetailsState extends State<CarbuyDetails> {
                               letterSpacing: 1.50.w,
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
