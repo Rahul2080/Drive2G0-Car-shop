@@ -1,5 +1,8 @@
+import 'package:drive2go/Bloc/AllRentVehicles_Bloc/all_rent_vehicles_bloc.dart';
 import 'package:drive2go/Bloc/Login_Bloc/login_bloc.dart';
+import 'package:drive2go/Bloc/NearByRentVehicles_Bloc/near_by_rent_vehicles_bloc.dart';
 import 'package:drive2go/Bloc/Siginup_Bloc/signup_bloc.dart';
+import 'package:drive2go/UI/Authentication/Splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -33,6 +36,11 @@ class MyApp extends StatelessWidget {
               BlocProvider(
                 create: (context) => LoginBloc(),
               ),
+              BlocProvider(
+                create: (context) => NearByRentVehiclesBloc(),
+              ),BlocProvider(
+                create: (context) => AllRentVehiclesBloc(),
+              ),
             ],
             child: MaterialApp(
               title: 'Flutter Demo',
@@ -41,7 +49,7 @@ class MyApp extends StatelessWidget {
                 colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
                 useMaterial3: true,
               ),
-              home: Intropage(),
+              home: Splash(),
             ),
           );
         });

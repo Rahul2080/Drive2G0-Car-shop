@@ -6,7 +6,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'Purchase_RentalCar.dart';
 
 class CarRentDetails extends StatefulWidget {
-  const CarRentDetails({super.key});
+  final List<dynamic> image;
+  final String carname;
+  final String rating;
+  const CarRentDetails({super.key, required this.image, required this.carname, required this.rating});
 
   @override
   State<CarRentDetails> createState() => _CarRentDetailsState();
@@ -66,7 +69,7 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                     ),
                   ),
                   child: CarouselSlider.builder(
-                    itemCount: 3,
+                    itemCount: widget.image.length,
                     itemBuilder:
                         (BuildContext context, int index, int pageViewIndex) =>
                             Container(
@@ -78,8 +81,8 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(4.r),
-                        child: Image.asset(
-                          'assets/car.png',
+                        child: Image.network(
+                        widget.image[index],
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -105,7 +108,7 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                         width: 200.w,
                         height: 40.h,
                         child: Text(
-                          'Audi R8 Coupé',
+                          widget.carname,
                           style: TextStyle(
                             color: Color(0xFFF7F5F2),
                             fontSize: 20.sp,
@@ -161,7 +164,7 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                       ),
                       SizedBox(width: 10.w),
                       Text(
-                        '4.8 Reviews',
+                      "  ${widget.rating} \Reviews",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Color(0xFFF7F5F2),

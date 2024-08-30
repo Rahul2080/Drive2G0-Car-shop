@@ -198,7 +198,7 @@ class _SignupState extends State<Signup> {
                     if (state is userBlocLoaded) {
                       Navigator.of(context).pop();
                       Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (_) => Bottomnavigation()),
+                          MaterialPageRoute(builder: (_) => Login()),
                           (route) => (false));
                     }
                     if (state is userBlocError) {

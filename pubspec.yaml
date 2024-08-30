@@ -38,7 +38,6 @@ dependencies:
   flutter_screenutil: ^5.9.3
   google_fonts: ^6.2.1
   flutter_rating_bar: ^4.0.1
-  flutter_glassmorpism: ^0.0.3
   carousel_slider: ^5.0.0
   date_picker_plus: ^4.1.0
   intl:
@@ -48,6 +47,7 @@ dependencies:
   geocoding: ^3.0.0
   http:
   flutter_bloc:
+  shared_preferences: ^2.3.2
 
 
 

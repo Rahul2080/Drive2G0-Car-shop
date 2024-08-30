@@ -77,13 +77,13 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar> {
   Future<void> pickupdatePicker(BuildContext context) async {
     final pickupdate = await showDatePickerDialog(
       context: context,
-      initialDate: DateTime(2022, 10, 10),
+      initialDate:DateTime.now(),
       minDate: DateTime(2020, 10, 10),
       maxDate: DateTime(2024, 10, 30),
       width: 300.w,
       height: 300.h,
-      currentDate: DateTime(2022, 10, 15),
-      selectedDate: DateTime(2022, 10, 16),
+      currentDate: DateTime.now(),
+      selectedDate: DateTime.now(),
       currentDateDecoration: const BoxDecoration(),
       currentDateTextStyle: const TextStyle(),
       daysOfTheWeekTextStyle: const TextStyle(),
@@ -147,12 +147,6 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar> {
   }
 
 
-@override
-  void initState() {
-
-    // TODO: implement initState
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -409,7 +403,7 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar> {
                         side: BorderSide(width: 1.w, color: Color(0xFF627487)),
                         borderRadius: BorderRadius.circular(4.r),
                       ),
-                    ),child: TextField(controller: pickuplocationcontroller, style: TextStyle(color: Color(0xFF627487),),
+                    ),child: TextField(controller: pickuplocationcontroller, style: TextStyle(color:Colors.white),
                     decoration: InputDecoration(
                       hintText: "Type your location or search in map",
                       hintStyle: TextStyle(color: Color(0xFF627487)),
@@ -581,6 +575,7 @@ begin: Alignment.topCenter,end: Alignment.bottomCenter,
   void dispose() {
     setState(() {
       pickuplocationcontroller.clear();
+      returneddatecontroller.clear();
     });
 
     // TODO: implement dispose

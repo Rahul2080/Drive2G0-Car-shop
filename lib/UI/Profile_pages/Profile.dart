@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Authentication/Login.dart';
 
@@ -383,10 +384,13 @@ class _ProfileState extends State<Profile> {
             ),
             SizedBox(height: 30.h),
             GestureDetector(
-              onTap: () {
+              onTap: () async{
+                final SharedPreferences prefs =
+                    await SharedPreferences.getInstance();
+                prefs.clear();
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (_) => Login()),
-                    (route) => (false));
+                        (route) => (false));
               },
               child: Center(
                 child: Container(

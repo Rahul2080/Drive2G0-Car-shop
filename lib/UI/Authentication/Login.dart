@@ -1,9 +1,11 @@
 import 'package:drive2go/Bloc/Login_Bloc/login_bloc.dart';
+import 'package:drive2go/Repository/ModelClass/LoginModel.dart';
 import 'package:drive2go/ToastMessage.dart';
 import 'package:drive2go/UI/BottomNavigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Bloc/Siginup_Bloc/signup_bloc.dart';
 import 'Signup.dart';
@@ -20,6 +22,9 @@ class _LoginState extends State<Login> {
   TextEditingController passwordcontroller = TextEditingController();
   bool passwordvisible = true;
   var formkey = GlobalKey<FormState>();
+late LoginModel data;
+@override
+
 
   @override
   Widget build(BuildContext context) {
@@ -173,6 +178,8 @@ class _LoginState extends State<Login> {
                         print('error');
                       }
                       if (state is LoginBlocLoaded) {
+                        data=BlocProvider.of<LoginBloc>(context).loginModel;
+                        checkLogin(data.id.toString());
                         Navigator.of(context).pop();
                         Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
@@ -283,5 +290,9 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+  void checkLogin(String userId) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('userId', userId);
   }
 }
