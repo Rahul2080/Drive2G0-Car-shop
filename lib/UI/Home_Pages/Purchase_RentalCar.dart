@@ -1,28 +1,53 @@
 import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:drive2go/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
-//import 'package:location/location.dart';
+import 'package:lottie/lottie.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
-
 import 'PickUp_Location.dart';
 import 'Return_Location.dart';
+
 class PurchaseRentalcar extends StatefulWidget {
-  const PurchaseRentalcar({super.key});
+  final String carname;
+  final String carcolor;
+  final dynamic price;
+  final String carimage;
+
+  const PurchaseRentalcar(
+      {super.key,
+      required this.carname,
+      required this.carcolor,
+      required this.price,
+      required this.carimage});
 
   @override
   State<PurchaseRentalcar> createState() => _PurchaseRentalcarState();
 }
 
-class _PurchaseRentalcarState extends State<PurchaseRentalcar> {
+class _PurchaseRentalcarState extends State<PurchaseRentalcar>
+    with SingleTickerProviderStateMixin {
   TextEditingController pickupdatecontroller = TextEditingController();
   TextEditingController returneddatecontroller = TextEditingController();
+  late AnimationController animationController;
 
+  DateTime? pickedDate;
+  DateTime? returnDate;
+  num? totalDays;
+
+  // num? totalprice;
+
+  @override
+  void initState() {
+    animationController =
+        AnimationController(vsync: this, duration: Duration(seconds: 3));
+
+    super.initState();
+  }
+
+// razopay
   void handlePaymentErrorResponse(PaymentFailureResponse response) {
-
-
     /*
     * PaymentFailureResponse contains three values:
     * 1. Error Code
@@ -30,8 +55,7 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar> {
     * 3. Metadata
     * */
     showAlertDialog(context, "Payment Failed",
-        "Code: ${response.code}\nDescription: ${response
-            .message}\nMetadata:${response.error.toString()}");
+        "Code: ${response.code}\nDescription: ${response.message}\nMetadata:${response.error.toString()}");
   }
 
   void handlePaymentSuccessResponse(PaymentSuccessResponse response) {
@@ -43,6 +67,8 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar> {
     * */
     showAlertDialog(
         context, "Payment Successful", "Payment ID: ${response.paymentId}");
+
+    Navigator.of(context).pop();
   }
 
   void handleExternalWalletSelected(ExternalWalletResponse response) {
@@ -70,14 +96,11 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar> {
     );
   }
 
-
-
-
   @override
-  Future<void> pickupdatePicker(BuildContext context) async {
+  Future<void> pickupdatePicker() async {
     final pickupdate = await showDatePickerDialog(
       context: context,
-      initialDate:DateTime.now(),
+      initialDate: DateTime.now(),
       minDate: DateTime(2020, 10, 10),
       maxDate: DateTime(2024, 10, 30),
       width: 300.w,
@@ -92,34 +115,37 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar> {
       enabledCellsDecoration: const BoxDecoration(),
       enabledCellsTextStyle: const TextStyle(),
       initialPickerType: PickerType.days,
-      selectedCellDecoration: const BoxDecoration(),
-      selectedCellTextStyle: const TextStyle(),
+      selectedCellTextStyle: const TextStyle(color: Colors.white),
       leadingDateTextStyle: const TextStyle(),
       slidersColor: Colors.lightBlue,
-      highlightColor: Colors.redAccent,
-      slidersSize: 20.sp,
+      slidersSize: 10.sp,
       splashColor: Colors.lightBlueAccent,
-      splashRadius: 40.r,
+      splashRadius: 20.r,
       centerLeadingDate: true,
     );
 
-    if (pickupdate != null) {
+    if (pickupdate != null && pickupdate != pickedDate) {
       setState(() {
         pickupdatecontroller.text = DateFormat('dd-MM-yyyy').format(pickupdate);
+        pickedDate = pickupdate;
+        if (returnDate != null) {
+          totalDays = returnDate!.difference(pickedDate!).inDays;
+          //   _calculatePrice();
+        }
       });
     }
   }
 
-  Future<void> returneddatepicker(BuildContext context) async {
+  Future<void> returneddatepicker() async {
     final returneddate = await showDatePickerDialog(
       context: context,
-      initialDate: DateTime(2022, 10, 10),
+      initialDate: DateTime.now(),
       minDate: DateTime(2020, 10, 10),
       maxDate: DateTime(2024, 10, 30),
       width: 300.w,
       height: 300.h,
-      currentDate: DateTime(2022, 10, 15),
-      selectedDate: DateTime(2022, 10, 16),
+      currentDate: DateTime.now(),
+      selectedDate: DateTime.now(),
       currentDateDecoration: const BoxDecoration(),
       currentDateTextStyle: const TextStyle(),
       daysOfTheWeekTextStyle: const TextStyle(),
@@ -128,29 +154,45 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar> {
       enabledCellsDecoration: const BoxDecoration(),
       enabledCellsTextStyle: const TextStyle(),
       initialPickerType: PickerType.days,
-      selectedCellDecoration: const BoxDecoration(),
-      selectedCellTextStyle: const TextStyle(),
+      selectedCellTextStyle: const TextStyle(color: Colors.white),
       leadingDateTextStyle: const TextStyle(),
       slidersColor: Colors.lightBlue,
-      highlightColor: Colors.redAccent,
-      slidersSize: 20.sp,
+      slidersSize: 10.sp,
       splashColor: Colors.lightBlueAccent,
-      splashRadius: 40.r,
+      splashRadius: 20.r,
       centerLeadingDate: true,
     );
-    if (returneddate != null) {
+    if (returneddate != null && returneddate != returnDate) {
       setState(() {
         returneddatecontroller.text =
             DateFormat("dd-MM-yyyy").format(returneddate);
+        returnDate = returneddate;
+        if (pickedDate != null) {
+          totalDays = returnDate!.difference(pickedDate!).inDays;
+          //  _calculatePrice();
+          print('days of error' + totalDays.toString());
+        }
       });
     }
   }
 
+  // void _calculatePrice() {
+  //   if (pickedDate != null && returnDate != null) {
+  //     int daysDifference = returnDate!.difference(pickedDate!).inDays ;
+  //     totalprice = daysDifference * widget.price;
+  //     print('total price error'+totalprice.toString());
+  //   }
+  // }
+  int _selectedIndex = -1;
 
+  void _onContainerTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -177,10 +219,11 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar> {
       body: Stack(
         children: [
           SingleChildScrollView(
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(top: 20.h,left: 20.w),
+                  padding: EdgeInsets.only(top: 20.h, left: 20.w),
                   child: Container(
                     width: 380.w,
                     height: 123.h,
@@ -203,7 +246,7 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar> {
                           height: 102.h,
                           decoration: ShapeDecoration(
                             image: DecorationImage(
-                              image: AssetImage("assets/car.png"),
+                              image: NetworkImage(widget.carimage),
                               fit: BoxFit.cover,
                             ),
                             shape: RoundedRectangleBorder(
@@ -211,11 +254,12 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar> {
                           ),
                         ),
                         SizedBox(width: 25.w),
-                        Column(crossAxisAlignment: CrossAxisAlignment.start,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(height: 20.h),
                             Text(
-                              'Audi R8 Coupé',
+                              widget.carname,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Color(0xFFF7F5F2),
@@ -224,9 +268,8 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar> {
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-
                             Text(
-                              'White',
+                              widget.carcolor,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Color(0xFF627487),
@@ -236,7 +279,7 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar> {
                               ),
                             ),
                             Text(
-                              '8000\$/Day',
+                              '${widget.price}\ / Day',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Colors.white,
@@ -296,15 +339,16 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar> {
                               child: TextField(
                                 controller: pickupdatecontroller,
                                 cursorColor: Colors.white,
-                                style: TextStyle(color: Color(0xFF627487)),
+                                style: TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
                                   hintText: "DD/MM/YYYY",
-                                  hintStyle: TextStyle(color: Color(0xFF627487)),
+                                  hintStyle:
+                                      TextStyle(color: Color(0xFF627487)),
                                   border: OutlineInputBorder(
                                       borderSide: BorderSide.none),
                                 ),
                                 onTap: () {
-                                  pickupdatePicker(context);
+                                  pickupdatePicker();
                                 },
                               ),
                             ),
@@ -346,15 +390,16 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar> {
                               ),
                               child: TextField(
                                 controller: returneddatecontroller,
-                                style: TextStyle(color: Color(0xFF627487)),
+                                style: TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
                                   hintText: "DD/MM/YYYY",
-                                  hintStyle: TextStyle(color: Color(0xFF627487)),
+                                  hintStyle:
+                                      TextStyle(color: Color(0xFF627487)),
                                   border: OutlineInputBorder(
                                       borderSide: BorderSide.none),
                                 ),
                                 onTap: () {
-                                  returneddatepicker(context);
+                                  returneddatepicker();
                                 },
                               ),
                             ),
@@ -375,12 +420,14 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar> {
                   ),
                 ),
                 Padding(
-                  padding:  EdgeInsets.only(left: 10.w,top: 20.h),
+                  padding: EdgeInsets.only(left: 10.w, top: 20.h),
                   child: Row(
                     children: [
-                      Icon(Icons.location_on_outlined,color: Color(0xFFF7F5F2) ,),
+                      Icon(
+                        Icons.location_on_outlined,
+                        color: Color(0xFFF7F5F2),
+                      ),
                       SizedBox(width: 5.w),
-
                       Text(
                         'Select Location',
                         style: TextStyle(
@@ -394,7 +441,7 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar> {
                   ),
                 ),
                 Padding(
-                  padding:  EdgeInsets.only(left: 20.w,top: 20.h),
+                  padding: EdgeInsets.only(left: 20.w, top: 20.h),
                   child: Container(
                     width: 372.w,
                     height: 55.h,
@@ -403,20 +450,29 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar> {
                         side: BorderSide(width: 1.w, color: Color(0xFF627487)),
                         borderRadius: BorderRadius.circular(4.r),
                       ),
-                    ),child: TextField(controller: pickuplocationcontroller, style: TextStyle(color:Colors.white),
-                    decoration: InputDecoration(
-                      hintText: "Type your location or search in map",
-                      hintStyle: TextStyle(color: Color(0xFF627487)),
-                      suffixIcon: GestureDetector(onTap: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>PickUp_Location()));},
-                          child: Icon(Icons.map_outlined,color:Color(0xFF627487) ,)),
-                      border: OutlineInputBorder(
-                          borderSide: BorderSide.none),
                     ),
-                  ),
+                    child: TextField(
+                      controller: pickuplocationcontroller,
+                      style: TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        hintText: "Type your location or search in map",
+                        hintStyle: TextStyle(color: Color(0xFF627487)),
+                        suffixIcon: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (_) => PickUp_Location()));
+                            },
+                            child: Icon(
+                              Icons.map_outlined,
+                              color: Color(0xFF627487),
+                            )),
+                        border: OutlineInputBorder(borderSide: BorderSide.none),
+                      ),
+                    ),
                   ),
                 ),
                 Padding(
-                  padding:  EdgeInsets.only(left: 20.w,top: 10.h),
+                  padding: EdgeInsets.only(left: 20.w, top: 10.h),
                   child: Text(
                     'Pickup location',
                     style: TextStyle(
@@ -428,30 +484,41 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar> {
                   ),
                 ),
                 Padding(
-                  padding:  EdgeInsets.only(left: 20.w,top: 20.h),
+                  padding: EdgeInsets.only(left: 20.w, top: 20.h),
                   child: Container(
                     width: 372.w,
                     height: 55.h,
                     decoration: ShapeDecoration(
                       shape: RoundedRectangleBorder(
-                        side: BorderSide(width: 1.w, color: Color(0xFF627487),),
+                        side: BorderSide(
+                          width: 1.w,
+                          color: Color(0xFF627487),
+                        ),
                         borderRadius: BorderRadius.circular(4.r),
                       ),
-                    ),child: TextField(controller: returnlocationcontroller,
-                    style: TextStyle(color: Color(0xFF627487),),
-                    decoration: InputDecoration(
-                      hintText: "Type your location or search in map",
-                      hintStyle: TextStyle(color: Color(0xFF627487)),
-                      suffixIcon: GestureDetector(onTap: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>ReturnLocation()));},
-                          child: Icon(Icons.map_outlined,color:Color(0xFF627487) ,)),
-                      border: OutlineInputBorder(
-                          borderSide: BorderSide.none),
                     ),
-                  ),
+                    child: TextField(
+                      controller: returnlocationcontroller,
+                      style: TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        hintText: "Type your location or search in map",
+                        hintStyle: TextStyle(color: Color(0xFF627487)),
+                        suffixIcon: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (_) => ReturnLocation()));
+                            },
+                            child: Icon(
+                              Icons.map_outlined,
+                              color: Color(0xFF627487),
+                            )),
+                        border: OutlineInputBorder(borderSide: BorderSide.none),
+                      ),
+                    ),
                   ),
                 ),
                 Padding(
-                  padding:  EdgeInsets.only(left: 20.w,top: 10.h),
+                  padding: EdgeInsets.only(left: 20.w, top: 10.h),
                   child: Text(
                     'Return location',
                     style: TextStyle(
@@ -462,120 +529,282 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar> {
                     ),
                   ),
                 ),
-
-
+                Padding(
+                  padding: EdgeInsets.only(left: 20.w, top: 20.h),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                          width: 20.w,
+                          height: 20.h,
+                          child: Image.asset("assets/paymentcardimg.png")),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Text(
+                        'Payment Method',
+                        style: TextStyle(
+                          color: Color(0xFFF7F5F2),
+                          fontSize: 16.sp,
+                          fontFamily: 'sf pro display',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 20.w, top: 20.h),
+                  child: GestureDetector(
+                    onTap: () => _onContainerTapped(0),
+                    child: Container(
+                      width: 372.w,
+                      height: 55.h,
+                      decoration: ShapeDecoration(
+                        color: _selectedIndex == 0 ? Colors.blue : Colors.black,
+                        shape: RoundedRectangleBorder(
+                          side:
+                              BorderSide(width: 1.w, color: Color(0xFF627487)),
+                          borderRadius: BorderRadius.circular(4.r),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          SizedBox(width: 20.w),
+                          Icon(Icons.payments_outlined,
+                              color: _selectedIndex == 0
+                                  ? Colors.white
+                                  : Color(0xFF627487)),
+                          SizedBox(
+                            width: 20.w,
+                          ),
+                          Text(
+                            'Cash ',
+                            style: TextStyle(
+                              color: _selectedIndex == 0
+                                  ? Colors.white
+                                  : Color(0xFF627487),
+                              fontSize: 16.sp,
+                              fontFamily: 'sf pro display',
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 20.w, top: 20.h),
+                  child: GestureDetector(
+                    onTap: () => _onContainerTapped(1),
+                    child: Container(
+                      width: 372.w,
+                      height: 55.h,
+                      decoration: ShapeDecoration(
+                        color: _selectedIndex == 1 ? Colors.blue : Colors.black,
+                        shape: RoundedRectangleBorder(
+                          side:
+                              BorderSide(width: 2.w, color: Color(0xFF627487)),
+                          borderRadius: BorderRadius.circular(4.r),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          SizedBox(width: 20.w),
+                          Icon(Icons.payment_outlined,
+                              color: _selectedIndex == 1
+                                  ? Colors.white
+                                  : Color(0xFF627487)),
+                          SizedBox(
+                            width: 20.w,
+                          ),
+                          Text(
+                            'Razorpay Payment Method',
+                            style: TextStyle(
+                              color: _selectedIndex == 1
+                                  ? Colors.white
+                                  : Color(0xFF627487),
+                              fontSize: 16.sp,
+                              fontFamily: 'sf pro display',
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 120.h,
+                ),
               ],
             ),
           ),
           Padding(
-            padding:  EdgeInsets.only(top: 740.h),
+            padding: EdgeInsets.only(top: 740.h),
             child: Container(
               width: 450.w,
               height: 99.h,
               decoration: ShapeDecoration(
-                color:Colors.white.withOpacity(0.7344567788),
+                color: Colors.white.withOpacity(0.7344567788),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(16.r),
                     topRight: Radius.circular(16.r),
                   ),
                 ),
-              ),child: Padding(
-              padding:  EdgeInsets.only(left: 20.w),
-              child: Row(
-                children: [
-                  Column(crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 15.h),
-
-                      Text(
-                        'RENTAL PRICE FOR ',
-                        style: TextStyle(
-                          color: Color(0xFF1F354D),
-                          fontSize: 15.sp,
-                          fontFamily: 'sf pro display',
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      SizedBox(height: 5.h),
-                      Text(
-                        '14 Days - 1,12,000\$',
-                        style: TextStyle(
-                          color: Color(0xFFF7F5F2),
-                          fontSize: 18.sp,
-                          fontFamily: 'sf pro display',
-                          fontWeight: FontWeight.w700,
-                        ),
-                      )
-
-                    ],
-                  ),
-                  SizedBox(width: 30.w),
-
-                  GestureDetector(onTap: (){
-                    Razorpay razorpay = Razorpay();
-                    var options = {
-                      'key': 'rzp_test_gKANZdsNdLqaQs',
-                      'amount': 100,
-                      'name': 'Acme Corp.',
-                      'description': 'Fine T-Shirt',
-                      'retry': {'enabled': true, 'max_count': 1},
-                      'send_sms_hash': true,
-                      'prefill': {
-                        'contact': '8888888888',
-                        'email': 'test@razorpay.com'
-                      },
-                      'external': {
-                        'wallets': ['paytm']
-                      }
-                    };
-                    razorpay.on(Razorpay.EVENT_PAYMENT_ERROR,
-                        handlePaymentErrorResponse);
-                    razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
-                        handlePaymentSuccessResponse);
-                    razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET,
-                        handleExternalWalletSelected);
-                    razorpay.open(options);
-
-                  },
-                    child: Container(
-                      width: 190.w,
-                      height: 50.h,
-                      decoration: ShapeDecoration(
-                        gradient: LinearGradient(
-begin: Alignment.topCenter,end: Alignment.bottomCenter,
-                          colors: [Color(0xFFFFF0C9),Color(0xFFFFCE50),  Color(0xFFD39906),  ],
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.r),
-                        ),
-                      ),child: Center(
-                      child: Text(
-                        'Rent Now',
-                        style: TextStyle(
-                          color: Color(0xFFF7F5F2),
-                          fontSize: 20.sp,
-                          fontFamily: 'sf pro display',
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                    ),
-                  )
-                ],
               ),
-            ),
+              child: Padding(
+                padding: EdgeInsets.only(left: 20.w),
+                child: Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 15.h),
+                        Text(
+                          'RENTAL PRICE FOR ',
+                          style: TextStyle(
+                            color: Color(0xFF1F354D),
+                            fontSize: 15.sp,
+                            fontFamily: 'sf pro display',
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        SizedBox(height: 5.h),
+                        Text(
+                          totalDays != null
+                              ? "${totalDays.toString()}\Days : "
+                              : 'Days',
+                          style: TextStyle(
+                            color: Color(0xFFF7F5F2),
+                            fontSize: 16.sp,
+                            fontFamily: 'sf pro display',
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(width: 30.w),
+                    GestureDetector(
+                      onTap: () {
+                        if (_selectedIndex == -1 ||
+                            pickupdatecontroller.text.isEmpty ||
+                            returneddatecontroller.text.isEmpty ||
+                            pickuplocationcontroller.text.isEmpty ||
+                            returnlocationcontroller.text.isEmpty) {
+                          showDialog(
+                            context: context,
+                            builder: (ctx) => AlertDialog(
+                              title: Text(
+                                "Fill completely",
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: Colors.black,
+                                  fontFamily: 'sf pro display',
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                          );
+                        } else if (_selectedIndex == 1 ||
+                            pickupdatecontroller.text.isEmpty ||
+                            returneddatecontroller.text.isEmpty ||
+                            pickuplocationcontroller.text.isEmpty ||
+                            returnlocationcontroller.text.isEmpty) {
+                          Razorpay razorpay = Razorpay();
+                          var options = {
+                            'key': 'rzp_test_gKANZdsNdLqaQs',
+                            'amount': 100,
+                            'name': 'Acme Corp.',
+                            'description': 'Fine T-Shirt',
+                            'retry': {'enabled': true, 'max_count': 1},
+                            'send_sms_hash': true,
+                            'prefill': {
+                              'contact': '8888888888',
+                              'email': 'test@razorpay.com'
+                            },
+                            'external': {
+                              'wallets': ['paytm']
+                            }
+                          };
+                          razorpay.on(Razorpay.EVENT_PAYMENT_ERROR,
+                              handlePaymentErrorResponse);
+                          razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
+                              handlePaymentSuccessResponse);
+                          razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET,
+                              handleExternalWalletSelected);
+                          razorpay.open(options);
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (ctx) => AlertDialog(
+                              content: Lottie.asset(
+                                'assets/done.json',
+                                repeat: false,
+                                reverse: false,
+                                onLoaded: (complete) {
+                                  animationController
+                                    ..duration = complete.duration
+                                    ..forward();
+
+                                  animationController.addStatusListener((status) {
+                                    if (status == AnimationStatus.completed) {
+                                      Navigator.of(context).pop();
+                                    }
+                                  });
+                                },
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                      child: Container(
+                        width: 190.w,
+                        height: 50.h,
+                        decoration: ShapeDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Color(0xFFFFF0C9),
+                              Color(0xFFFFCE50),
+                              Color(0xFFD39906),
+                            ],
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Rent Now',
+                            style: TextStyle(
+                              color: Color(0xFFF7F5F2),
+                              fontSize: 20.sp,
+                              fontFamily: 'sf pro display',
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ],
       ),
     );
   }
+
   @override
   void dispose() {
     setState(() {
       pickuplocationcontroller.clear();
-      returneddatecontroller.clear();
+      returnlocationcontroller.clear();
+      animationController.dispose();
     });
 
     // TODO: implement dispose

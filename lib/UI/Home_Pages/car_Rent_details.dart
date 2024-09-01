@@ -1,15 +1,42 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:drive2go/Bloc/NearByRentVehicles_Bloc/near_by_rent_vehicles_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../../Repository/ModelClass/NearByRentVehiclesModel.dart';
 import 'Purchase_RentalCar.dart';
 
 class CarRentDetails extends StatefulWidget {
-  final List<dynamic> image;
+  final List<String> carimage;
   final String carname;
   final String rating;
-  const CarRentDetails({super.key, required this.image, required this.carname, required this.rating});
+  final String greartype;
+  final String tanktype;
+  final String seats;
+  final String door;
+  final String carowner;
+  final String ownerplace;
+  final String carprice;
+  final String carcolor;
+
+  const CarRentDetails(
+      {super.key,
+      required this.carimage,
+      required this.carname,
+      required this.rating,
+      required this.greartype,
+      required this.tanktype,
+      required this.seats,
+      required this.door,
+      required this.carowner,
+      required this.ownerplace,
+      required this.carprice,
+      required this.carcolor});
 
   @override
   State<CarRentDetails> createState() => _CarRentDetailsState();
@@ -18,20 +45,75 @@ class CarRentDetails extends StatefulWidget {
 class _CarRentDetailsState extends State<CarRentDetails> {
   int currrentindex = 0;
   bool isfavarites = false;
-  bool _isVisible = false;
+  GoogleMapController? _mapController;
+  Position? _currentPosition;
+  LatLng _initialPosition = LatLng(37.42796133580664, -122.085749655962);
+  String? _currentAddress;
 
-  void _toggleVisibility() {
-    setState(() {
-      _isVisible = !_isVisible;
-    });
+
+
+  void initState() {
+    _getCurrentLocation();
+
+    super.initState();
   }
+  Future<void> _getCurrentLocation() async {
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      setState(() {
+        _currentPosition = position;
+        _initialPosition = LatLng(
+          position.latitude,
+          position.longitude,
+        );
+        _mapController?.animateCamera(
+          CameraUpdate.newLatLng(_initialPosition),
+        );
+      });
+
+      await _getAddressFromLatLng(_currentPosition!).then((onValue) {
+        BlocProvider.of<NearByRentVehiclesBloc>(context)
+            .add(FeatchNearByCarVehicles(
+          lat: position.latitude.toString(),
+          long: position.longitude.toString(),
+        ));
+      });
+    } catch (e) {
+      // Handle error
+      print(e);
+    }
+  }
+  Future<void> _getAddressFromLatLng(Position position) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+
+      Placemark place = placemarks[0];
+
+      setState(() {
+        _currentAddress = " ${place.locality}, ${place.administrativeArea}";
+      });
+
+      print("Address: $_currentAddress");
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  late List<NearByRentVehiclesModel> nearrentvehicles;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        leading: GestureDetector(onTap: (){Navigator.of(context).pop();},
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop();
+          },
           child: Icon(
             Icons.arrow_back,
             color: Colors.white,
@@ -69,7 +151,7 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                     ),
                   ),
                   child: CarouselSlider.builder(
-                    itemCount: widget.image.length,
+                    itemCount: widget.carimage.length,
                     itemBuilder:
                         (BuildContext context, int index, int pageViewIndex) =>
                             Container(
@@ -82,7 +164,7 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(4.r),
                         child: Image.network(
-                        widget.image[index],
+                          widget.carimage[index],
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -147,12 +229,12 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                     children: [
                       RatingBar.builder(
                         itemSize: 20.sp,
-                        initialRating: 1,
+                        initialRating: double.parse(widget.rating),
                         minRating: 1,
                         direction: Axis.horizontal,
                         allowHalfRating: true,
                         ignoreGestures: true,
-                        itemCount: 1,
+                        itemCount: 5,
                         itemPadding: EdgeInsets.symmetric(horizontal: 1.w),
                         itemBuilder: (context, _) => Icon(
                           Icons.star,
@@ -162,9 +244,8 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                           print(rating);
                         },
                       ),
-                      SizedBox(width: 10.w),
                       Text(
-                      "  ${widget.rating} \Reviews",
+                        " ${widget.rating} ",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Color(0xFFF7F5F2),
@@ -206,7 +287,8 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                             colors: [Colors.white, Color(0xFF000B17)],
                           ),
                           shape: RoundedRectangleBorder(
-                            side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
+                            side: BorderSide(
+                                width: 1.w, color: Color(0xFF58606A)),
                             borderRadius: BorderRadius.circular(10.r),
                           ),
                         ),
@@ -219,11 +301,12 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                               SizedBox(
                                 width: 10.w,
                               ),
-                              Column(crossAxisAlignment: CrossAxisAlignment.start,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SizedBox(height: 6.h),
                                   Text(
-                                    'Tank size',
+                                    'Tank Type',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       color: Color(0xFFA7B0BB),
@@ -233,7 +316,7 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                                     ),
                                   ),
                                   Text(
-                                    '74 liters',
+                                    widget.tanktype,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       color: Colors.white,
@@ -259,7 +342,8 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                             colors: [Colors.white, Color(0xFF000B17)],
                           ),
                           shape: RoundedRectangleBorder(
-                            side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
+                            side: BorderSide(
+                                width: 1.w, color: Color(0xFF58606A)),
                             borderRadius: BorderRadius.circular(10.r),
                           ),
                         ),
@@ -267,12 +351,15 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                           padding: EdgeInsets.only(left: 20.w),
                           child: Row(
                             children: [
-                              SizedBox(width: 25.w,height: 30.h,
+                              SizedBox(
+                                  width: 25.w,
+                                  height: 30.h,
                                   child: Image.asset("assets/gear.png")),
                               SizedBox(
                                 width: 10.w,
                               ),
-                              Column(crossAxisAlignment: CrossAxisAlignment.start,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SizedBox(height: 6.h),
                                   Text(
@@ -286,7 +373,7 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                                     ),
                                   ),
                                   Text(
-                                    'Automatic',
+                                    widget.greartype,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       color: Colors.white,
@@ -318,7 +405,8 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                             colors: [Colors.white, Color(0xFF000B17)],
                           ),
                           shape: RoundedRectangleBorder(
-                            side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
+                            side: BorderSide(
+                                width: 1.w, color: Color(0xFF58606A)),
                             borderRadius: BorderRadius.circular(10.r),
                           ),
                         ),
@@ -331,7 +419,8 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                               SizedBox(
                                 width: 10.w,
                               ),
-                              Column(crossAxisAlignment: CrossAxisAlignment.start,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SizedBox(height: 6.h),
                                   Text(
@@ -345,7 +434,7 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                                     ),
                                   ),
                                   Text(
-                                    '2',
+                                    widget.seats,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       color: Colors.white,
@@ -371,7 +460,8 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                             colors: [Colors.white, Color(0xFF000B17)],
                           ),
                           shape: RoundedRectangleBorder(
-                            side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
+                            side: BorderSide(
+                                width: 1.w, color: Color(0xFF58606A)),
                             borderRadius: BorderRadius.circular(10.r),
                           ),
                         ),
@@ -379,12 +469,16 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                           padding: EdgeInsets.only(left: 20.w),
                           child: Row(
                             children: [
-                              SizedBox(width: 25.w,height: 30.h,
-                              child: Image.asset("assets/door.png"),),
+                              SizedBox(
+                                width: 25.w,
+                                height: 30.h,
+                                child: Image.asset("assets/door.png"),
+                              ),
                               SizedBox(
                                 width: 10.w,
                               ),
-                              Column(crossAxisAlignment: CrossAxisAlignment.start,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SizedBox(height: 6.h),
                                   Text(
@@ -398,7 +492,7 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                                     ),
                                   ),
                                   Text(
-                                    '4',
+                                    widget.door,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       color: Colors.white,
@@ -429,7 +523,7 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                   ),
                 ),
                 Padding(
-                  padding:  EdgeInsets.only(left: 20.w,top: 20.h),
+                  padding: EdgeInsets.only(left: 20.w, top: 20.h),
                   child: Container(
                     width: 380.w,
                     height: 91.h,
@@ -447,24 +541,25 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                             width: 62.w,
                             height: 62.h,
                             decoration: ShapeDecoration(
-                              color: Colors.red,
+                              color: Colors.white,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(7.r)),
                             ),
                             child: ClipRRect(
-                                borderRadius: BorderRadius.all(Radius.circular(7.r)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(7.r)),
                                 child: Image.asset(
                                   'assets/car.png',
                                   fit: BoxFit.cover,
                                 )),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left: 30.w, top: 17.h),
+                            padding: EdgeInsets.only(left: 10.w, top: 17.h),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'James Robert',
+                                  widget.carowner,
                                   style: TextStyle(
                                     color: Color(0xFFF7F5F2),
                                     fontSize: 16.sp,
@@ -482,7 +577,7 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                                       size: 20.sp,
                                     ),
                                     Text(
-                                      'Kottakal',
+                                      widget.ownerplace,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         color: Color(0xFFF7F5F2),
@@ -497,7 +592,7 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                               ],
                             ),
                           ),
-                          SizedBox(width: 70.w),
+                          SizedBox(width: 90.w),
                           Icon(
                             Icons.messenger_outline,
                             color: Colors.white,
@@ -512,10 +607,8 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                     ),
                   ),
                 ),
-
-
                 Padding(
-                  padding:  EdgeInsets.only(left: 20.w,top: 10.h),
+                  padding: EdgeInsets.only(left: 20.w, top: 10.h),
                   child: Text(
                     'Recommended for you',
                     style: TextStyle(
@@ -527,189 +620,230 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                   ),
                 ),
                 Padding(
-                  padding:  EdgeInsets.only(left: 20.w,right: 20.w,top: 10.h),
+                  padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 10.h),
                   child: SizedBox(
                     width: double.infinity,
                     height: 223.h,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 8,
-                      itemBuilder: (context, position) {
-                        return Container(
-                          width: 185.w,
-                          height: 223.h,
-                          decoration: ShapeDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment(8, -0.54),
-                              end: Alignment(-0.84, 0.54),
-                              colors: [Colors.white, Colors.white.withOpacity(0)],
-                            ),
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
-                              borderRadius: BorderRadius.circular(10.r),
-                            ),
+                    child: BlocBuilder<NearByRentVehiclesBloc,
+                        NearByRentVehiclesState>(builder: (context, state) {
+                      if (state is NearByRentVehiclesBlocLoading) {
+                        print("loading");
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      if (state is NearByRentVehiclesBlocError) {
+                        print("error");
+                        return Center(
+                          child: Text(
+                            "Error",
+                            style: TextStyle(color: Colors.white),
                           ),
-                          child: Column(crossAxisAlignment:CrossAxisAlignment.start ,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(1),
-                                child: Container(
-                                  width: 187.w,
-                                  height: 146.h,
-                                  decoration: ShapeDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage(
-                                          "assets/car.png"),
-                                      fit: BoxFit.fill,
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(8.r),
-                                        topRight: Radius.circular(8.r),
+                        );
+                      }
+                      if (state is NearByRentVehiclesBlocLoaded) {
+
+                        nearrentvehicles =
+                            BlocProvider.of<NearByRentVehiclesBloc>(context)
+                                .nearbyrentvechicles;
+                        return ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: nearrentvehicles.length,
+                          itemBuilder: (context, position) {
+                            return Container(
+                              width: 185.w,
+                              height: 223.h,
+                              decoration: ShapeDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment(8, -0.54),
+                                  end: Alignment(-0.84, 0.54),
+                                  colors: [
+                                    Colors.white,
+                                    Colors.white.withOpacity(0)
+                                  ],
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                      width: 1.w, color: Color(0xFF58606A)),
+                                  borderRadius: BorderRadius.circular(10.r),
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(1),
+                                    child: Container(
+                                      width: 187.w,
+                                      height: 146.h,
+                                      decoration: ShapeDecoration(
+                                        image: DecorationImage(
+                                          image: NetworkImage(nearrentvehicles[position].photos![0]),
+                                          fit: BoxFit.fill,
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(8.r),
+                                            topRight: Radius.circular(8.r),
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ),
-                              SizedBox(height: 15.h),
-
-                              Padding(
-                                padding:  EdgeInsets.only(left: 10.w),
-                                child: Text(
-                                  'Audi R8 Coupé',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Color(0xFFF7F5F2),
-                                    fontSize: 16.sp,
-                                    fontFamily: 'sf pro display',
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding:  EdgeInsets.only(left: 5.w),
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.location_on_outlined,color: Color(0xFFF7F5F2),size: 20.sp,),
-
-                                    Text(
-                                      'Kottakal',
+                                  SizedBox(height: 15.h),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 10.w),
+                                    child: Text(
+                                      nearrentvehicles[position].brand.toString(),
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         color: Color(0xFFF7F5F2),
-                                        fontSize: 14.sp,
+                                        fontSize: 16.sp,
                                         fontFamily: 'sf pro display',
-                                        fontWeight: FontWeight.w300,
-                                        letterSpacing: 0.50.w,
-                                      ),
-                                    ),
-                                    SizedBox(width: 20.w),
-
-                                    Text(
-                                      '\$ 8000 / day',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: Color(0xFFFFD66D),
-                                        fontSize: 13.sp,
-                                        fontFamily: 'SF Pro Display',
                                         fontWeight: FontWeight.w500,
-                                        letterSpacing: 0.50.w,
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 5.w),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.location_on_outlined,
+                                          color: Color(0xFFF7F5F2),
+                                          size: 20.sp,
+                                        ),
+                                        Text(
+                                          nearrentvehicles[position].ownerPlace.toString(),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: Color(0xFFF7F5F2),
+                                            fontSize: 14.sp,
+                                            fontFamily: 'sf pro display',
+                                            fontWeight: FontWeight.w300,
+                                            letterSpacing: 0.50.w,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5.w),
+                                        Text(
+                                          "  \₹ ${nearrentvehicles[position].rentPrice.toString()}\/Day ",                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: Color(0xFFFFD66D),
+                                            fontSize: 13.sp,
+                                            fontFamily: 'SF Pro Display',
+                                            fontWeight: FontWeight.w500,
+                                            letterSpacing: 0.50.w,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-
-                            ],
-                          ),
+                            );
+                          },
+                          separatorBuilder: (context, position) {
+                            return SizedBox(
+                              width: 10.w,
+                            );
+                          },
                         );
-                      },
-                      separatorBuilder: (context, position) {
-                        return SizedBox(
-                          width: 10.w,
-                        );
-                      },
-                    ),
+                      } else {
+                        return SizedBox();
+                      }
+                    }),
                   ),
                 ),
                 SizedBox(height: 90.h),
-
-
-
               ],
             ),
           ),
           Padding(
-            padding:  EdgeInsets.only(top: 750.h),
+            padding: EdgeInsets.only(top: 750.h),
             child: Container(
               width: 430.w,
               height: 99.h,
               decoration: ShapeDecoration(
-                color:Colors.white.withOpacity(0.7344567788),
+                color: Colors.white.withOpacity(0.7344567788),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(16.r),
                     topRight: Radius.circular(16.r),
                   ),
                 ),
-              ),child: Padding(
-              padding:  EdgeInsets.only(left: 20.w),
-              child: Row(
-                children: [
-                  Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                          text: '8000\$',
-                          style: TextStyle(
-                            color: Color(0xFF000B17),
-                            fontSize: 20.sp,
-                            fontFamily: 'sf pro display',
-                            fontWeight: FontWeight.w600,
+              ),
+              child: Padding(
+                padding: EdgeInsets.only(left: 20.w),
+                child: Row(
+                  children: [
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: ' \₹ ${widget.carprice}',
+                            style: TextStyle(
+                              color: Color(0xFF000B17),
+                              fontSize: 20.sp,
+                              fontFamily: 'sf pro display',
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                        TextSpan(
-                          text: '/Day',
-                          style: TextStyle(
-                            color: Color(0xFF000B17),
-                            fontSize: 15.sp,
-                            fontFamily: 'sf pro display',
-                            fontWeight: FontWeight.w300,
+                          TextSpan(
+                            text: '/Day',
+                            style: TextStyle(
+                              color: Color(0xFF000B17),
+                              fontSize: 15.sp,
+                              fontFamily: 'sf pro display',
+                              fontWeight: FontWeight.w300,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: 70.w),
-
-                  GestureDetector(onTap: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>PurchaseRentalcar()));},
-                    child: Container(
-                      width: 213.w,
-                      height: 50.h,
-                      decoration: ShapeDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,end: Alignment.bottomCenter,
-                          colors: [Color(0xFFFFF0C9),Color(0xFFFFCE50),  Color(0xFFD39906),  ],
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.r),
-                        ),
-                      ),child: Center(
-                      child: Text(
-                        'Rent Now',
-                        style: TextStyle(
-                          color: Color(0xFFF7F5F2),
-                          fontSize: 20.sp,
-                          fontFamily: 'sf pro display',
-                          fontWeight: FontWeight.w600,
-                        ),
+                        ],
                       ),
                     ),
-                    ),
-                  )
-                ],
+                    SizedBox(width: 70.w),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => PurchaseRentalcar(
+                                  carname: widget.carname,
+                                  carcolor: widget.carcolor,
+                                  price: widget.carprice,
+                                  carimage: widget.carimage[0],
+                                )));
+                      },
+                      child: Container(
+                        width: 213.w,
+                        height: 50.h,
+                        decoration: ShapeDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Color(0xFFFFF0C9),
+                              Color(0xFFFFCE50),
+                              Color(0xFFD39906),
+                            ],
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Rent Now',
+                            style: TextStyle(
+                              color: Color(0xFFF7F5F2),
+                              fontSize: 20.sp,
+                              fontFamily: 'sf pro display',
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
             ),
           ),
         ],

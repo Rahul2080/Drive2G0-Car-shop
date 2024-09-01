@@ -3,6 +3,7 @@ import 'package:meta/meta.dart';
 
 import '../../Repository/Api/api.dart';
 import '../../Repository/ModelClass/NearByRentVehiclesModel.dart';
+import '../../ToastMessage.dart';
 
 part 'near_by_rent_vehicles_event.dart';
 
@@ -22,6 +23,8 @@ class NearByRentVehiclesBloc
         emit(NearByRentVehiclesBlocLoaded());
       } catch (e) {
         print(e.toString());
+        ToastMessage()
+            .toastmessage(message:e.toString());
         emit(NearByRentVehiclesBlocError());
       }
     });
