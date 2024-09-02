@@ -95,6 +95,20 @@ class _HomeState extends State<Home> {
     }
   }
 
+  Future<List<Placemark>> _getVechileAddress(String lat, String long) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        double.parse(lat),
+        double.parse(long),
+      );
+
+      return placemarks; // Return the list of placemarks instead of a single placemark
+    } catch (e) {
+      print(e);
+      return []; // Return an empty list in case of an error
+    }
+  }
+
   late List<NearByRentVehiclesModel> nearrentvehicles;
   late List<AllRentVehiclesModel> allrentvechicle;
 
@@ -263,7 +277,7 @@ class _HomeState extends State<Home> {
                 padding: EdgeInsets.only(left: 10.w, right: 10.w),
                 child: SizedBox(
                   width: double.infinity,
-                  height: 223.h,
+                  height: 233.h,
                   child: BlocBuilder<NearByRentVehiclesBloc,
                       NearByRentVehiclesState>(builder: (context, state) {
                     if (state is NearByRentVehiclesBlocLoading) {
@@ -290,117 +304,178 @@ class _HomeState extends State<Home> {
                         scrollDirection: Axis.horizontal,
                         itemCount: nearrentvehicles.length,
                         itemBuilder: (context, position) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) => CarRentDetails(
-                                        carimage: nearrentvehicles[position]
-                                            .photos!
-                                            .toList(),
-                                        carname: nearrentvehicles[position]
-                                            .brand
-                                            .toString(),
-                                        rating: nearrentvehicles[position]
-                                            .rating
-                                            .toString(),
-                                        greartype: nearrentvehicles[position]
-                                            .gearType
-                                            .toString(),
-                                        tanktype: nearrentvehicles[position]
-                                            .fuelType
-                                            .toString(),
-                                        seats: nearrentvehicles[position]
-                                            .noOfSeats
-                                            .toString(),
-                                        door: nearrentvehicles[position]
-                                            .noOfDoors
-                                            .toString(),
-                                        carowner: nearrentvehicles[position]
-                                            .ownerName
-                                            .toString(),
-                                        ownerplace: nearrentvehicles[position]
-                                            .ownerPlace
-                                            .toString(),
-                                        carprice: nearrentvehicles[position]
-                                            .rentPrice
-                                            .toString(),
-                                        carcolor: nearrentvehicles[position]
-                                            .vehicleColor
-                                            .toString(),
-                                      )));
-                            },
-                            child: Container(
-                              width: 185.w,
-                              height: 223.h,
-                              decoration: ShapeDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment(4, -0.54),
-                                  end: Alignment(-0.84, 0.54),
-                                  colors: [
-                                    Colors.white,
-                                    Colors.white.withOpacity(0)
-                                  ],
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  side: BorderSide(
-                                      width: 1.w, color: Color(0xFF58606A)),
-                                  borderRadius: BorderRadius.circular(10.r),
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(1),
-                                    child: Container(
-                                      width: 187.w,
-                                      height: 146.h,
-                                      decoration: ShapeDecoration(
-                                        image: DecorationImage(
-                                          image: NetworkImage(
-                                              nearrentvehicles[position]
-                                                  .photos![0]
-                                                  .toString()),
-                                          fit: BoxFit.fill,
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(8.r),
-                                            topRight: Radius.circular(8.r),
+                          return FutureBuilder<List<Placemark>>(
+                            future: _getVechileAddress(
+                                nearrentvehicles[position]
+                                    .location!
+                                    .coordinates!
+                                    .first
+                                    .toString(),
+                                nearrentvehicles[position]
+                                    .location!
+                                    .coordinates!
+                                    .last
+                                    .toString()),
+                            builder: (context, snapshot) {
+    if (snapshot.connectionState ==
+    ConnectionState.waiting) {
+    return Center(
+    child: CircularProgressIndicator());
+    } else if (snapshot.hasError) {
+    return Center(
+    child: Text("Error fetching location"));
+    } else if (snapshot.hasData) {
+    String? place = snapshot.data![0].locality;
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (_) => CarRentDetails(
+                                            carimage: nearrentvehicles[position]
+                                                .photos!
+                                                .toList(),
+                                            carname: nearrentvehicles[position]
+                                                .brand
+                                                .toString(),
+                                            rating: nearrentvehicles[position]
+                                                .rating
+                                                .toString(),
+                                            greartype:
+                                                nearrentvehicles[position]
+                                                    .gearType
+                                                    .toString(),
+                                            tanktype: nearrentvehicles[position]
+                                                .fuelType
+                                                .toString(),
+                                            seats: nearrentvehicles[position]
+                                                .noOfSeats
+                                                .toString(),
+                                            door: nearrentvehicles[position]
+                                                .noOfDoors
+                                                .toString(),
+                                            carowner: nearrentvehicles[position]
+                                                .ownerName
+                                                .toString(),
+                                            ownerplace:
+                                                nearrentvehicles[position]
+                                                    .ownerPlace
+                                                    .toString(),
+                                            carprice: nearrentvehicles[position]
+                                                .rentPrice
+                                                .toString(),
+                                            carcolor: nearrentvehicles[position]
+                                                .vehicleColor
+                                                .toString(),
+                                            availability:
+                                                nearrentvehicles[position]
+                                                    .available!,
+                                            id: nearrentvehicles[position]
+                                                .id
+                                                .toString(), vehicleid:nearrentvehicles[position].id.toString(),
+                                          )));
+                                },
+                                child: Container(
+                                  width: 185.w,
+                                  height: 223.h,
+                                  decoration: ShapeDecoration(
+                                    gradient: LinearGradient(
+                                      begin: Alignment(4, -0.54),
+                                      end: Alignment(-0.84, 0.54),
+                                      colors: [
+                                        Colors.white,
+                                        Colors.white.withOpacity(0)
+                                      ],
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      side: BorderSide(
+                                          width: 1.w, color: Color(0xFF58606A)),
+                                      borderRadius: BorderRadius.circular(10.r),
+                                    ),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(1),
+                                        child: Container(
+                                          width: 187.w,
+                                          height: 146.h,
+                                          decoration: ShapeDecoration(
+                                            image: DecorationImage(
+                                              image: NetworkImage(
+                                                  nearrentvehicles[position]
+                                                      .photos![0]
+                                                      .toString()),
+                                              fit: BoxFit.fill,
+                                            ),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(8.r),
+                                                topRight: Radius.circular(8.r),
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 15.h),
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 10.w),
-                                    child: Text(
-                                      nearrentvehicles[position]
-                                          .brand
-                                          .toString(),
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: Color(0xFFF7F5F2),
-                                        fontSize: 16.sp,
-                                        fontFamily: 'sf pro display',
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 5.w),
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.location_on_outlined,
-                                          color: Color(0xFFF7F5F2),
-                                          size: 20.sp,
-                                        ),
-                                        Text(
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 10.w, top: 10.h),
+                                        child: Text(
                                           nearrentvehicles[position]
-                                              .ownerPlace
+                                              .brand
                                               .toString(),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: Color(0xFFF7F5F2),
+                                            fontSize: 16.sp,
+                                            fontFamily: 'sf pro display',
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 5.w),
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.location_on_outlined,
+                                              color: Color(0xFFF7F5F2),
+                                              size: 20.sp,
+                                            ),
+                                            Text(
+                                             place!,
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: Color(0xFFF7F5F2),
+                                                fontSize: 14.sp,
+                                                fontFamily: 'sf pro display',
+                                                fontWeight: FontWeight.w300,
+                                                letterSpacing: 0.50.w,
+                                              ),
+                                            ),
+                                            SizedBox(width: 20.w),
+                                            Text(
+                                              "  \₹ ${nearrentvehicles[position].rentPrice.toString()}",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: Color(0xFFFFD66D),
+                                                fontSize: 13.sp,
+                                                fontFamily: 'SF Pro Display',
+                                                fontWeight: FontWeight.w500,
+                                                letterSpacing: 0.50.w,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 10.w),
+                                        child: Text(
+                                          nearrentvehicles[position]
+                                                      .available ==
+                                                  false
+                                              ? 'Notavialable'
+                                              : 'Available',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             color: Color(0xFFF7F5F2),
@@ -410,24 +485,12 @@ class _HomeState extends State<Home> {
                                             letterSpacing: 0.50.w,
                                           ),
                                         ),
-                                        SizedBox(width: 20.w),
-                                        Text(
-                                          "  \₹ ${nearrentvehicles[position].rentPrice.toString()}",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: Color(0xFFFFD66D),
-                                            fontSize: 13.sp,
-                                            fontFamily: 'SF Pro Display',
-                                            fontWeight: FontWeight.w500,
-                                            letterSpacing: 0.50.w,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }else{ return SizedBox();};}
                           );
                         },
                         separatorBuilder: (context, position) {
@@ -511,147 +574,191 @@ class _HomeState extends State<Home> {
                         children: List.generate(
                           allrentvechicle.length,
                           (index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (_) => CarRentDetails(
-                                            carimage:
-                                                allrentvechicle[index].photos!,
-                                            carname: allrentvechicle[index]
-                                                .brand
-                                                .toString(),
-                                            rating: allrentvechicle[index]
-                                                .rating
-                                                .toString(),
-                                            greartype: allrentvechicle[index]
-                                                .gearType
-                                                .toString(),
-                                            tanktype: allrentvechicle[index]
-                                                .fuelType
-                                                .toString(),
-                                            seats: allrentvechicle[index]
-                                                .noOfSeats
-                                                .toString(),
-                                            door: allrentvechicle[index]
-                                                .noOfDoors
-                                                .toString(),
-                                            carowner: allrentvechicle[index]
-                                                .ownerName
-                                                .toString(),
-                                            ownerplace: allrentvechicle[index]
-                                                .ownerPlace
-                                                .toString(),
-                                            carprice: allrentvechicle[index]
-                                                .rentPrice
-                                                .toString(),
-                                            carcolor: allrentvechicle[index]
-                                                .vehicleColor
-                                                .toString(),
-                                          )));
-                                },
-                                child: Container(
-                                  width: 185.w,
-                                  height: 223.h,
-                                  decoration: ShapeDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment(4, -0.54),
-                                      end: Alignment(-0.84, 0.54),
-                                      colors: [
-                                        Colors.white,
-                                        Colors.white.withOpacity(0)
-                                      ],
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      side: BorderSide(
-                                          width: 1.w, color: Color(0xFF58606A)),
-                                      borderRadius: BorderRadius.circular(10.r),
-                                    ),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(1),
-                                        child: Container(
-                                          width: 197.w,
-                                          height: 146.h,
-                                          decoration: ShapeDecoration(
-                                            image: DecorationImage(
-                                              image: NetworkImage(
-                                                  allrentvechicle[index]
-                                                      .photos![0]
-                                                      .toString()),
-                                              fit: BoxFit.fill,
-                                            ),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(8.r),
-                                                topRight: Radius.circular(8.r),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(height: 10.h),
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 10.w),
-                                        child: Text(
-                                          allrentvechicle[index]
-                                              .brand
-                                              .toString(),
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: Color(0xFFF7F5F2),
-                                            fontSize: 16.sp,
-                                            fontFamily: 'sf pro display',
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 5.w),
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              Icons.location_on_outlined,
-                                              color: Color(0xFFF7F5F2),
-                                              size: 20.sp,
-                                            ),
-                                            Text(
-                                              allrentvechicle[index]
+                            return FutureBuilder<List<Placemark>>(
+                            future: _getVechileAddress(
+    allrentvechicle[index]
+        .location!
+        .coordinates!
+        .first
+        .toString(),
+    allrentvechicle[index]
+        .location!
+        .coordinates!
+        .last
+        .toString()),
+    builder: (context, snapshot) {
+    if (snapshot.connectionState ==
+    ConnectionState.waiting) {
+    return Center(
+    child: CircularProgressIndicator());
+    } else if (snapshot.hasError) {
+    return Center(
+    child: Text("Error fetching location"));
+    } else if (snapshot.hasData) {
+    String? place = snapshot.data![0].locality;
+    return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (_) => CarRentDetails(
+                                              carimage:
+                                                  allrentvechicle[index].photos!,
+                                              carname: allrentvechicle[index]
+                                                  .brand
+                                                  .toString(),
+                                              rating: allrentvechicle[index]
+                                                  .rating
+                                                  .toString(),
+                                              greartype: allrentvechicle[index]
+                                                  .gearType
+                                                  .toString(),
+                                              tanktype: allrentvechicle[index]
+                                                  .fuelType
+                                                  .toString(),
+                                              seats: allrentvechicle[index]
+                                                  .noOfSeats
+                                                  .toString(),
+                                              door: allrentvechicle[index]
+                                                  .noOfDoors
+                                                  .toString(),
+                                              carowner: allrentvechicle[index]
+                                                  .ownerName
+                                                  .toString(),
+                                              ownerplace: allrentvechicle[index]
                                                   .ownerPlace
                                                   .toString(),
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                color: Color(0xFFF7F5F2),
-                                                fontSize: 14.sp,
-                                                fontFamily: 'sf pro display',
-                                                fontWeight: FontWeight.w300,
-                                                letterSpacing: 0.50.w,
+                                              carprice: allrentvechicle[index]
+                                                  .rentPrice
+                                                  .toString(),
+                                              carcolor: allrentvechicle[index]
+                                                  .vehicleColor
+                                                  .toString(),
+                                              availability: allrentvechicle[index]
+                                                  .available!,
+                                              id: allrentvechicle[index]
+                                                  .id
+                                                  .toString(), vehicleid:allrentvechicle[index].id.toString(),
+                                            )));
+                                  },
+                                  child: Container(
+                                    width: 185.w,
+                                    height: 223.h,
+                                    decoration: ShapeDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment(4, -0.54),
+                                        end: Alignment(-0.84, 0.54),
+                                        colors: [
+                                          Colors.white,
+                                          Colors.white.withOpacity(0)
+                                        ],
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        side: BorderSide(
+                                            width: 1.w, color: Color(0xFF58606A)),
+                                        borderRadius: BorderRadius.circular(10.r),
+                                      ),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(1),
+                                          child: Container(
+                                            width: 197.w,
+                                            height: 146.h,
+                                            decoration: ShapeDecoration(
+                                              image: DecorationImage(
+                                                image: NetworkImage(
+                                                    allrentvechicle[index]
+                                                        .photos![0]
+                                                        .toString()),
+                                                fit: BoxFit.fill,
+                                              ),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(8.r),
+                                                  topRight: Radius.circular(8.r),
+                                                ),
                                               ),
                                             ),
-                                            SizedBox(width: 20.w),
-                                            Text(
-                                              ' \₹ ${allrentvechicle[index].rentPrice.toString()}',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                color: Color(0xFFFFD66D),
-                                                fontSize: 13.sp,
-                                                fontFamily: 'SF Pro Display',
-                                                fontWeight: FontWeight.w500,
-                                                letterSpacing: 0.50.w,
-                                              ),
-                                            )
-                                          ],
+                                          ),
                                         ),
-                                      )
-                                    ],
+                                        SizedBox(height: 10.h),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 10.w),
+                                          child: Text(
+                                            allrentvechicle[index]
+                                                .brand
+                                                .toString(),
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: Color(0xFFF7F5F2),
+                                              fontSize: 16.sp,
+                                              fontFamily: 'sf pro display',
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 5.w),
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.location_on_outlined,
+                                                color: Color(0xFFF7F5F2),
+                                                size: 20.sp,
+                                              ),
+                                              Text(
+                                                place!,
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  color: Color(0xFFF7F5F2),
+                                                  fontSize: 14.sp,
+                                                  fontFamily: 'sf pro display',
+                                                  fontWeight: FontWeight.w300,
+                                                  letterSpacing: 0.50.w,
+                                                ),
+                                              ),
+                                              SizedBox(width: 20.w),
+                                              Text(
+                                                ' \₹ ${allrentvechicle[index].rentPrice.toString()}',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  color: Color(0xFFFFD66D),
+                                                  fontSize: 13.sp,
+                                                  fontFamily: 'SF Pro Display',
+                                                  fontWeight: FontWeight.w500,
+                                                  letterSpacing: 0.50.w,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 10.w, top: 2.h),
+                                          child: Text(
+                                            allrentvechicle[index].available ==
+                                                    false
+                                                ? 'Notavialable'
+                                                : 'Available',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: Color(0xFFF7F5F2),
+                                              fontSize: 14.sp,
+                                              fontFamily: 'sf pro display',
+                                              fontWeight: FontWeight.w300,
+                                              letterSpacing: 0.50.w,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
+                              );} else{ return SizedBox();}}
                             );
                           },
                         ),

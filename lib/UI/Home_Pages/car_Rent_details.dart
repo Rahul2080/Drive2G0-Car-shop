@@ -23,6 +23,9 @@ class CarRentDetails extends StatefulWidget {
   final String ownerplace;
   final String carprice;
   final String carcolor;
+  final bool availability;
+  final String id;
+  final String vehicleid;
 
   const CarRentDetails(
       {super.key,
@@ -36,7 +39,9 @@ class CarRentDetails extends StatefulWidget {
       required this.carowner,
       required this.ownerplace,
       required this.carprice,
-      required this.carcolor});
+      required this.carcolor,
+      required this.availability,
+      required this.id, required this.vehicleid});
 
   @override
   State<CarRentDetails> createState() => _CarRentDetailsState();
@@ -50,13 +55,12 @@ class _CarRentDetailsState extends State<CarRentDetails> {
   LatLng _initialPosition = LatLng(37.42796133580664, -122.085749655962);
   String? _currentAddress;
 
-
-
   void initState() {
     _getCurrentLocation();
 
     super.initState();
   }
+
   Future<void> _getCurrentLocation() async {
     try {
       Position position = await Geolocator.getCurrentPosition(
@@ -84,6 +88,7 @@ class _CarRentDetailsState extends State<CarRentDetails> {
       print(e);
     }
   }
+
   Future<void> _getAddressFromLatLng(Position position) async {
     try {
       List<Placemark> placemarks = await placemarkFromCoordinates(
@@ -100,6 +105,19 @@ class _CarRentDetailsState extends State<CarRentDetails> {
       print("Address: $_currentAddress");
     } catch (e) {
       print(e);
+    }
+  }
+  Future<List<Placemark>> _getVechileAddress(String lat, String long) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        double.parse(lat),
+        double.parse(long),
+      );
+
+      return placemarks; // Return the list of placemarks instead of a single placemark
+    } catch (e) {
+      print(e);
+      return []; // Return an empty list in case of an error
     }
   }
 
@@ -121,7 +139,7 @@ class _CarRentDetailsState extends State<CarRentDetails> {
         ),
         title: Center(
           child: Text(
-            'Audi R8 Coupe',
+            widget.carname.toString(),
             style: TextStyle(
               color: Color(0xFFF7F5F2),
               fontSize: 24.sp,
@@ -255,6 +273,18 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                         ),
                       ),
                     ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 20.w),
+                  child: Text(
+                    widget.availability == false ? 'Notavailable' : 'Available',
+                    style: TextStyle(
+                      color: Color(0xFFF7F5F2),
+                      fontSize: 20.sp,
+                      fontFamily: 'sf pro display',
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
                 Padding(
@@ -642,7 +672,6 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                         );
                       }
                       if (state is NearByRentVehiclesBlocLoaded) {
-
                         nearrentvehicles =
                             BlocProvider.of<NearByRentVehiclesBloc>(context)
                                 .nearbyrentvechicles;
@@ -650,97 +679,186 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                           scrollDirection: Axis.horizontal,
                           itemCount: nearrentvehicles.length,
                           itemBuilder: (context, position) {
-                            return Container(
-                              width: 185.w,
-                              height: 223.h,
-                              decoration: ShapeDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment(8, -0.54),
-                                  end: Alignment(-0.84, 0.54),
-                                  colors: [
-                                    Colors.white,
-                                    Colors.white.withOpacity(0)
-                                  ],
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  side: BorderSide(
-                                      width: 1.w, color: Color(0xFF58606A)),
-                                  borderRadius: BorderRadius.circular(10.r),
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(1),
-                                    child: Container(
-                                      width: 187.w,
-                                      height: 146.h,
-                                      decoration: ShapeDecoration(
-                                        image: DecorationImage(
-                                          image: NetworkImage(nearrentvehicles[position].photos![0]),
-                                          fit: BoxFit.fill,
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(8.r),
-                                            topRight: Radius.circular(8.r),
+                            return widget.id ==
+                                    nearrentvehicles[position].id.toString()
+                                ? SizedBox()
+                                :  FutureBuilder<List<Placemark>>(
+    future: _getVechileAddress(
+    nearrentvehicles[position]
+        .location!
+        .coordinates!
+        .first
+        .toString(),
+    nearrentvehicles[position]
+        .location!
+        .coordinates!
+        .last
+        .toString()),
+    builder: (context, snapshot) {
+    if (snapshot.connectionState ==
+    ConnectionState.waiting) {
+    return Center(
+    child: CircularProgressIndicator());
+    } else if (snapshot.hasError) {
+    return Center(
+    child: Text("Error fetching location"));
+    } else if (snapshot.hasData) {
+    String? place = snapshot.data![0].locality;
+    return GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (_) => CarRentDetails(
+                                                  carimage: nearrentvehicles[position]
+                                                      .photos!
+                                                      .toList(),
+                                                  carname: nearrentvehicles[position]
+                                                      .brand
+                                                      .toString(),
+                                                  rating: nearrentvehicles[position]
+                                                      .rating
+                                                      .toString(),
+                                                  greartype:
+                                                  nearrentvehicles[position]
+                                                      .gearType
+                                                      .toString(),
+                                                  tanktype: nearrentvehicles[position]
+                                                      .fuelType
+                                                      .toString(),
+                                                  seats: nearrentvehicles[position]
+                                                      .noOfSeats
+                                                      .toString(),
+                                                  door: nearrentvehicles[position]
+                                                      .noOfDoors
+                                                      .toString(),
+                                                  carowner: nearrentvehicles[position]
+                                                      .ownerName
+                                                      .toString(),
+                                                  ownerplace:
+                                                  nearrentvehicles[position]
+                                                      .ownerPlace
+                                                      .toString(),
+                                                  carprice: nearrentvehicles[position]
+                                                      .rentPrice
+                                                      .toString(),
+                                                  carcolor: nearrentvehicles[position]
+                                                      .vehicleColor
+                                                      .toString(),
+                                                  availability:
+                                                  nearrentvehicles[position]
+                                                      .available!,
+                                                  id: nearrentvehicles[position]
+                                                      .id
+                                                      .toString(), vehicleid: nearrentvehicles[position].id
+                                                  .toString(),)));
+                                      },
+                                      child: Container(
+                                        width: 185.w,
+                                        height: 223.h,
+                                        decoration: ShapeDecoration(
+                                          gradient: LinearGradient(
+                                            begin: Alignment(8, -0.54),
+                                            end: Alignment(-0.84, 0.54),
+                                            colors: [
+                                              Colors.white,
+                                              Colors.white.withOpacity(0)
+                                            ],
                                           ),
+                                          shape: RoundedRectangleBorder(
+                                            side: BorderSide(
+                                                width: 1.w,
+                                                color: Color(0xFF58606A)),
+                                            borderRadius:
+                                                BorderRadius.circular(10.r),
+                                          ),
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.all(1),
+                                              child: Container(
+                                                width: 187.w,
+                                                height: 146.h,
+                                                decoration: ShapeDecoration(
+                                                  image: DecorationImage(
+                                                    image: NetworkImage(
+                                                        nearrentvehicles[position]
+                                                            .photos![0]),
+                                                    fit: BoxFit.fill,
+                                                  ),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                      topLeft:
+                                                          Radius.circular(8.r),
+                                                      topRight:
+                                                          Radius.circular(8.r),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(height: 15.h),
+                                            Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 10.w),
+                                              child: Text(
+                                                nearrentvehicles[position]
+                                                    .brand
+                                                    .toString(),
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  color: Color(0xFFF7F5F2),
+                                                  fontSize: 16.sp,
+                                                  fontFamily: 'sf pro display',
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.only(left: 5.w),
+                                              child: Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.location_on_outlined,
+                                                    color: Color(0xFFF7F5F2),
+                                                    size: 20.sp,
+                                                  ),
+                                                  Text(
+                                                    place!,
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      color: Color(0xFFF7F5F2),
+                                                      fontSize: 14.sp,
+                                                      fontFamily:
+                                                          'sf pro display',
+                                                      fontWeight: FontWeight.w300,
+                                                      letterSpacing: 0.50.w,
+                                                    ),
+                                                  ),
+                                                  SizedBox(width: 5.w),
+                                                  Text(
+                                                    "  \₹ ${nearrentvehicles[position].rentPrice.toString()}\/Day ",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      color: Color(0xFFFFD66D),
+                                                      fontSize: 13.sp,
+                                                      fontFamily:
+                                                          'SF Pro Display',
+                                                      fontWeight: FontWeight.w500,
+                                                      letterSpacing: 0.50.w,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 15.h),
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 10.w),
-                                    child: Text(
-                                      nearrentvehicles[position].brand.toString(),
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: Color(0xFFF7F5F2),
-                                        fontSize: 16.sp,
-                                        fontFamily: 'sf pro display',
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 5.w),
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.location_on_outlined,
-                                          color: Color(0xFFF7F5F2),
-                                          size: 20.sp,
-                                        ),
-                                        Text(
-                                          nearrentvehicles[position].ownerPlace.toString(),
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: Color(0xFFF7F5F2),
-                                            fontSize: 14.sp,
-                                            fontFamily: 'sf pro display',
-                                            fontWeight: FontWeight.w300,
-                                            letterSpacing: 0.50.w,
-                                          ),
-                                        ),
-                                        SizedBox(width: 5.w),
-                                        Text(
-                                          "  \₹ ${nearrentvehicles[position].rentPrice.toString()}\/Day ",                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: Color(0xFFFFD66D),
-                                            fontSize: 13.sp,
-                                            fontFamily: 'SF Pro Display',
-                                            fontWeight: FontWeight.w500,
-                                            letterSpacing: 0.50.w,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
+                                    );} else { return SizedBox();}}
+                                );
                           },
                           separatorBuilder: (context, position) {
                             return SizedBox(
@@ -758,94 +876,96 @@ class _CarRentDetailsState extends State<CarRentDetails> {
               ],
             ),
           ),
-          Padding(
-            padding: EdgeInsets.only(top: 750.h),
-            child: Container(
-              width: 430.w,
-              height: 99.h,
-              decoration: ShapeDecoration(
-                color: Colors.white.withOpacity(0.7344567788),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(16.r),
-                    topRight: Radius.circular(16.r),
-                  ),
-                ),
-              ),
-              child: Padding(
-                padding: EdgeInsets.only(left: 20.w),
-                child: Row(
-                  children: [
-                    Text.rich(
-                      TextSpan(
+          widget.availability == true
+              ? Padding(
+                  padding: EdgeInsets.only(top: 750.h),
+                  child: Container(
+                    width: 430.w,
+                    height: 99.h,
+                    decoration: ShapeDecoration(
+                      color: Colors.white.withOpacity(0.7344567788),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(16.r),
+                          topRight: Radius.circular(16.r),
+                        ),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 20.w),
+                      child: Row(
                         children: [
-                          TextSpan(
-                            text: ' \₹ ${widget.carprice}',
-                            style: TextStyle(
-                              color: Color(0xFF000B17),
-                              fontSize: 20.sp,
-                              fontFamily: 'sf pro display',
-                              fontWeight: FontWeight.w600,
+                          Text.rich(
+                            TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: ' \₹ ${widget.carprice}',
+                                  style: TextStyle(
+                                    color: Color(0xFF000B17),
+                                    fontSize: 20.sp,
+                                    fontFamily: 'sf pro display',
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: '/Day',
+                                  style: TextStyle(
+                                    color: Color(0xFF000B17),
+                                    fontSize: 15.sp,
+                                    fontFamily: 'sf pro display',
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          TextSpan(
-                            text: '/Day',
-                            style: TextStyle(
-                              color: Color(0xFF000B17),
-                              fontSize: 15.sp,
-                              fontFamily: 'sf pro display',
-                              fontWeight: FontWeight.w300,
+                          SizedBox(width: 70.w),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (_) => PurchaseRentalcar(
+                                        carname: widget.carname,
+                                        carcolor: widget.carcolor,
+                                        price: widget.carprice,
+                                        carimage: widget.carimage[0], vehicleid:widget.vehicleid ,
+                                      )));
+                            },
+                            child: Container(
+                              width: 213.w,
+                              height: 50.h,
+                              decoration: ShapeDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Color(0xFFFFF0C9),
+                                    Color(0xFFFFCE50),
+                                    Color(0xFFD39906),
+                                  ],
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.r),
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'Rent Now',
+                                  style: TextStyle(
+                                    color: Color(0xFFF7F5F2),
+                                    fontSize: 20.sp,
+                                    fontFamily: 'sf pro display',
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
+                          )
                         ],
                       ),
                     ),
-                    SizedBox(width: 70.w),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => PurchaseRentalcar(
-                                  carname: widget.carname,
-                                  carcolor: widget.carcolor,
-                                  price: widget.carprice,
-                                  carimage: widget.carimage[0],
-                                )));
-                      },
-                      child: Container(
-                        width: 213.w,
-                        height: 50.h,
-                        decoration: ShapeDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Color(0xFFFFF0C9),
-                              Color(0xFFFFCE50),
-                              Color(0xFFD39906),
-                            ],
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.r),
-                          ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Rent Now',
-                            style: TextStyle(
-                              color: Color(0xFFF7F5F2),
-                              fontSize: 20.sp,
-                              fontFamily: 'sf pro display',
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ),
+                  ),
+                )
+              : SizedBox(),
         ],
       ),
     );

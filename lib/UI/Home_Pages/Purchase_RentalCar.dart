@@ -1,7 +1,9 @@
 import 'package:date_picker_plus/date_picker_plus.dart';
+import 'package:drive2go/Bloc/OrderRentVehicles_Bloc/order_rent_vehicles_bloc.dart';
 import 'package:drive2go/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
@@ -14,13 +16,15 @@ class PurchaseRentalcar extends StatefulWidget {
   final String carcolor;
   final dynamic price;
   final String carimage;
+  final String vehicleid;
 
   const PurchaseRentalcar(
       {super.key,
       required this.carname,
       required this.carcolor,
       required this.price,
-      required this.carimage});
+      required this.carimage,
+      required this.vehicleid});
 
   @override
   State<PurchaseRentalcar> createState() => _PurchaseRentalcarState();
@@ -35,8 +39,6 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar>
   DateTime? pickedDate;
   DateTime? returnDate;
   num? totalDays;
-
-  // num? totalprice;
 
   @override
   void initState() {
@@ -59,6 +61,17 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar>
   }
 
   void handlePaymentSuccessResponse(PaymentSuccessResponse response) {
+    BlocProvider.of<OrderRentVehiclesBloc>(context).add(
+        FeatchOrderRentVehicles(
+            vehicleid: widget.vehicleid,
+            pickeddate: pickupdatecontroller.text,
+            returneddate: returneddatecontroller.text,
+            pickuplocationcontroller:
+            pickuplocationcontroller.text,
+            returnlocationcontroller:
+            returnlocationcontroller.text,
+            amount: totalDays! *
+                double.parse(widget.price)));
     /*
     * Payment Success Response contains three values:
     * 1. Order ID
@@ -176,13 +189,6 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar>
     }
   }
 
-  // void _calculatePrice() {
-  //   if (pickedDate != null && returnDate != null) {
-  //     int daysDifference = returnDate!.difference(pickedDate!).inDays ;
-  //     totalprice = daysDifference * widget.price;
-  //     print('total price error'+totalprice.toString());
-  //   }
-  // }
   int _selectedIndex = -1;
 
   void _onContainerTapped(int index) {
@@ -674,7 +680,7 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar>
                         SizedBox(height: 5.h),
                         Text(
                           totalDays != null
-                              ? "${totalDays.toString()}\Days : "
+                              ? "${totalDays.toString()}\Days : ${totalDays! * double.parse(widget.price)}"
                               : 'Days',
                           style: TextStyle(
                             color: Color(0xFFF7F5F2),
@@ -686,56 +692,24 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar>
                       ],
                     ),
                     SizedBox(width: 30.w),
-                    GestureDetector(
-                      onTap: () {
-                        if (_selectedIndex == -1 ||
-                            pickupdatecontroller.text.isEmpty ||
-                            returneddatecontroller.text.isEmpty ||
-                            pickuplocationcontroller.text.isEmpty ||
-                            returnlocationcontroller.text.isEmpty) {
+                    BlocListener<OrderRentVehiclesBloc, OrderRentVehiclesState>(
+                      listener: (context, state) {
+                        if (state is OrderRentVehiclesBlocLoading) {
                           showDialog(
                             context: context,
-                            builder: (ctx) => AlertDialog(
-                              title: Text(
-                                "Fill completely",
-                                style: TextStyle(
-                                  fontSize: 16.sp,
-                                  color: Colors.black,
-                                  fontFamily: 'sf pro display',
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            ),
-                          );
-                        } else if (_selectedIndex == 1 ||
-                            pickupdatecontroller.text.isEmpty ||
-                            returneddatecontroller.text.isEmpty ||
-                            pickuplocationcontroller.text.isEmpty ||
-                            returnlocationcontroller.text.isEmpty) {
-                          Razorpay razorpay = Razorpay();
-                          var options = {
-                            'key': 'rzp_test_gKANZdsNdLqaQs',
-                            'amount': 100,
-                            'name': 'Acme Corp.',
-                            'description': 'Fine T-Shirt',
-                            'retry': {'enabled': true, 'max_count': 1},
-                            'send_sms_hash': true,
-                            'prefill': {
-                              'contact': '8888888888',
-                              'email': 'test@razorpay.com'
+                            builder: (BuildContext context) {
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
                             },
-                            'external': {
-                              'wallets': ['paytm']
-                            }
-                          };
-                          razorpay.on(Razorpay.EVENT_PAYMENT_ERROR,
-                              handlePaymentErrorResponse);
-                          razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
-                              handlePaymentSuccessResponse);
-                          razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET,
-                              handleExternalWalletSelected);
-                          razorpay.open(options);
-                        } else {
+                          );
+                        }
+                        if (state is OrderRentVehiclesBlocError) {
+                          Navigator.of(context).pop();
+                          print('error');
+                        }
+                        if (state is OrderRentVehiclesBlocLoaded) {
+                          Navigator.of(context).pop();
                           showDialog(
                             context: context,
                             builder: (ctx) => AlertDialog(
@@ -748,7 +722,8 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar>
                                     ..duration = complete.duration
                                     ..forward();
 
-                                  animationController.addStatusListener((status) {
+                                  animationController
+                                      .addStatusListener((status) {
                                     if (status == AnimationStatus.completed) {
                                       Navigator.of(context).pop();
                                     }
@@ -759,31 +734,99 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar>
                           );
                         }
                       },
-                      child: Container(
-                        width: 190.w,
-                        height: 50.h,
-                        decoration: ShapeDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Color(0xFFFFF0C9),
-                              Color(0xFFFFCE50),
-                              Color(0xFFD39906),
-                            ],
+                      child: GestureDetector(
+                        onTap: () {
+                          if (_selectedIndex == -1 ||
+                              pickupdatecontroller.text.isEmpty ||
+                              returneddatecontroller.text.isEmpty ||
+                              pickuplocationcontroller.text.isEmpty ||
+                              returnlocationcontroller.text.isEmpty) {
+                            showDialog(
+                              context: context,
+                              builder: (ctx) => AlertDialog(
+                                title: Text(
+                                  "Fill completely",
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    color: Colors.black,
+                                    fontFamily: 'sf pro display',
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                            );
+                          } else if (_selectedIndex == 1 ||
+                              pickupdatecontroller.text.isEmpty ||
+                              returneddatecontroller.text.isEmpty ||
+                              pickuplocationcontroller.text.isEmpty ||
+                              returnlocationcontroller.text.isEmpty) {
+                            Razorpay razorpay = Razorpay();
+                            var options = {
+                              'key': 'rzp_test_gKANZdsNdLqaQs',
+                              'amount': 100,
+                              'name': 'Acme Corp.',
+                              'description': 'Fine T-Shirt',
+                              'retry': {'enabled': true, 'max_count': 1},
+                              'send_sms_hash': true,
+                              'prefill': {
+                                'contact': '8888888888',
+                                'email': 'test@razorpay.com'
+                              },
+                              'external': {
+                                'wallets': ['paytm']
+                              }
+                            };
+                            razorpay.on(Razorpay.EVENT_PAYMENT_ERROR,
+                                handlePaymentErrorResponse);
+                            razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
+                                handlePaymentSuccessResponse);
+                            razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET,
+                                handleExternalWalletSelected);
+                            razorpay.open(options);
+                          } else {
+                            BlocProvider.of<OrderRentVehiclesBloc>(context).add(
+                                FeatchOrderRentVehicles(
+                                    vehicleid: widget.vehicleid,
+                                    pickeddate: pickupdatecontroller.text,
+                                    returneddate: returneddatecontroller.text,
+                                    pickuplocationcontroller:
+                                    pickuplocationcontroller.text,
+                                    returnlocationcontroller:
+                                    returnlocationcontroller.text,
+                                    amount: totalDays! *
+                                        double.parse(widget.price)));
+
+
+
+
+                          }
+                        },
+                        child: Container(
+                          width: 190.w,
+                          height: 50.h,
+                          decoration: ShapeDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Color(0xFFFFF0C9),
+                                Color(0xFFFFCE50),
+                                Color(0xFFD39906),
+                              ],
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
                           ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.r),
-                          ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Rent Now',
-                            style: TextStyle(
-                              color: Color(0xFFF7F5F2),
-                              fontSize: 20.sp,
-                              fontFamily: 'sf pro display',
-                              fontWeight: FontWeight.w600,
+                          child: Center(
+                            child: Text(
+                              'Rent Now',
+                              style: TextStyle(
+                                color: Color(0xFFF7F5F2),
+                                fontSize: 20.sp,
+                                fontFamily: 'sf pro display',
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                         ),
