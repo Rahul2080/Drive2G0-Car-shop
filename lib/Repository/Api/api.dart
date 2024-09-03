@@ -7,7 +7,9 @@ import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../ModelClass/AllRentVehiclesModel.dart';
+import '../ModelClass/MyRentVehiclesModel.dart';
 import '../ModelClass/OrderRentVehicleModel.dart';
+import '../ModelClass/SearchRentVehiclesModel.dart';
 import '../ModelClass/UserModel.dart';
 import 'Api_client.dart';
 
@@ -93,4 +95,32 @@ class UserApi {
 
     return OrderRentVehicleModel.fromJson(jsonDecode(response.body));
   }
+
+
+  Future<List<MyRentVehiclesModel>> getMyRentVehicles() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userId = prefs.getString('userId').toString();
+    String trendingpath = 'http://45.159.221.50:8868/api/get-rent-orders/$userId';
+
+
+    var body = {};
+    print("welcome" + body.toString());
+    Response response =
+    await apiClient.invokeAPI(trendingpath, 'GET', jsonEncode(body));
+
+    return MyRentVehiclesModel.listFromJson(jsonDecode(response.body));
+  }
+  Future<List<SearchRentVehiclesModel>> getSearchRentVehicles( String brandname) async {
+    String trendingpath = 'http://45.159.221.50:8868/api/search-vehicles?brand=$brandname';
+
+    var body = {
+
+    };
+    print("welcome" + body.toString());
+    Response response =
+    await apiClient.invokeAPI(trendingpath, 'GET', jsonEncode(body));
+
+    return SearchRentVehiclesModel.listFromJson(jsonDecode(response.body));
+  }
+
 }

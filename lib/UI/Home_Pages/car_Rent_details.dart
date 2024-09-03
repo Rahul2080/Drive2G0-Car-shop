@@ -26,6 +26,7 @@ class CarRentDetails extends StatefulWidget {
   final bool availability;
   final String id;
   final String vehicleid;
+  final String ownerprofileimg;
 
   const CarRentDetails(
       {super.key,
@@ -41,7 +42,7 @@ class CarRentDetails extends StatefulWidget {
       required this.carprice,
       required this.carcolor,
       required this.availability,
-      required this.id, required this.vehicleid});
+      required this.id, required this.vehicleid, required this.ownerprofileimg});
 
   @override
   State<CarRentDetails> createState() => _CarRentDetailsState();
@@ -137,7 +138,8 @@ class _CarRentDetailsState extends State<CarRentDetails> {
             color: Colors.white,
           ),
         ),
-        title: Center(
+        title: Padding(
+          padding:  EdgeInsets.only(left: 90.w),
           child: Text(
             widget.carname.toString(),
             style: TextStyle(
@@ -578,8 +580,8 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                             child: ClipRRect(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(7.r)),
-                                child: Image.asset(
-                                  'assets/car.png',
+                                child: Image.network(
+                                 widget.ownerprofileimg ,
                                   fit: BoxFit.cover,
                                 )),
                           ),
@@ -750,7 +752,7 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                                                   id: nearrentvehicles[position]
                                                       .id
                                                       .toString(), vehicleid: nearrentvehicles[position].id
-                                                  .toString(),)));
+                                                  .toString(), ownerprofileimg: nearrentvehicles[position].ownerProfilePhoto.toString(),)));
                                       },
                                       child: Container(
                                         width: 185.w,

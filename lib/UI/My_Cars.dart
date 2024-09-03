@@ -1,5 +1,10 @@
+import 'package:drive2go/Bloc/MyRentVehicles_Bloc/my_rent_vehicles_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
+
+import '../Repository/ModelClass/MyRentVehiclesModel.dart';
 
 class MyCars extends StatefulWidget {
   const MyCars({super.key});
@@ -9,6 +14,27 @@ class MyCars extends StatefulWidget {
 }
 
 class _MyCarsState extends State<MyCars> {
+  late List<MyRentVehiclesModel>  myrentvehicles;
+
+  @override
+  void initState() {
+BlocProvider.of< MyRentVehiclesBloc>(context).add(FeatchMyRentVehicles());
+
+    super.initState();
+  }
+  String dateConvert(String iso) {
+    String isoString = iso;
+
+    // Convert ISO string to DateTime
+    DateTime dateTime = DateTime.parse(isoString);
+
+    // Format DateTime to a specific format
+    String formattedDate = DateFormat('dd-MM-yyyy').format(dateTime);
+
+    print(formattedDate);
+    return formattedDate;// Output: 2024-09-03 – 14:30
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,10 +79,25 @@ class _MyCarsState extends State<MyCars> {
                   width: double.infinity,
                   height: double.infinity,
                   color: Colors.black,
-                  child: ListView.separated(
-                    itemCount: 5,
+                  child: BlocBuilder<MyRentVehiclesBloc, MyRentVehiclesState>(
+  builder: (context, state) {
 
+    if( state is MyRentVehiclesBlocLoading){
+      return Center(child: CircularProgressIndicator(),);
+
+    }
+    if(state is MyRentVehiclesBlocError){
+      return Center(child: Text("Error",style: TextStyle(color: Colors.white),),);
+    }
+    if( state is MyRentVehiclesBlocLoaded){
+
+  myrentvehicles=    BlocProvider.of<MyRentVehiclesBloc>(context).myrentvehicles;
+
+    return ListView.separated(
+                    itemCount: myrentvehicles.length,
                     itemBuilder: (context, position) {
+                      String pickeddate=dateConvert(myrentvehicles[position].pickupDate.toString(),);
+                      String Returndate=dateConvert(myrentvehicles[position].returnDate.toString());
                       return    Padding(
                         padding: EdgeInsets.only(left: 10.w,top: 10.h,right: 10.w),
                         child: Container(
@@ -85,8 +126,8 @@ class _MyCarsState extends State<MyCars> {
                                       borderRadius: BorderRadius.circular(6.r)),
                                 ),
                                 child: ClipRRect(borderRadius: BorderRadius.circular(6.r) ,
-                                  child: Image.asset(
-                                    "assets/car.png",
+                                  child: Image.network(
+                                  myrentvehicles[position].vehicle!.photos![0] ,
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -97,7 +138,7 @@ class _MyCarsState extends State<MyCars> {
                                 children: [
                                   SizedBox(height: 10.h),
                                   Text(
-                                    'Car name',
+                                   myrentvehicles[position].vehicle!.brand.toString(),
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       color: Color(0xFFF7F5F2),
@@ -106,9 +147,9 @@ class _MyCarsState extends State<MyCars> {
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                  SizedBox(height: 8.h),
+                                  SizedBox(height: 2.h),
                                   Text(
-                                    'James Robert',
+                                   myrentvehicles[position].vehicle!.ownerName.toString(),
                                     style: TextStyle(
                                       color: Color(0xFFF7F5F2),
                                       fontSize: 15.sp,
@@ -116,9 +157,18 @@ class _MyCarsState extends State<MyCars> {
                                       fontWeight: FontWeight.w400,
                                     ),
                                   ),
-                                  SizedBox(height: 8.h),
+                                  SizedBox(height: 2.h),
                                   Text(
-                                    '2022',
+                                  pickeddate,
+                                    style: TextStyle(
+                                      color: Color(0xFFF7F5F2),
+                                      fontSize: 12.sp,
+                                      fontFamily: 'sf pro display',
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                  Text(
+                                   Returndate,
                                     style: TextStyle(
                                       color: Color(0xFFF7F5F2),
                                       fontSize: 12.sp,
@@ -128,7 +178,7 @@ class _MyCarsState extends State<MyCars> {
                                   ),
                                   SizedBox(height: 8.h),
                                   Text(
-                                    '1000 km',
+                                    "${myrentvehicles[position].vehicle!.mileage.toString()} Milage",
                                     style: TextStyle(
                                       color: Color(0xFFF7F5F2),
                                       fontSize: 12.sp,
@@ -139,9 +189,9 @@ class _MyCarsState extends State<MyCars> {
                                 ],
                               ),
                               Padding(
-                                padding: EdgeInsets.only(left: 50.w, top: 90.h),
+                                padding: EdgeInsets.only( top: 90.h,left: 60.w),
                                 child: Text(
-                                  '\$5000 / day',
+                                  ' \₹ ${myrentvehicles[position].vehicle!.rentPrice.toString()}/Day',
                                   style: TextStyle(
                                     color: Color(0xFFFFD66D),
                                     fontSize: 16.sp,
@@ -158,7 +208,9 @@ class _MyCarsState extends State<MyCars> {
                     separatorBuilder: (context, position) {
                       return SizedBox(height: 5.h,);
                     },
-                  ),
+                  );
+  }else { return SizedBox();};}
+),
                 ),
                 Container(
                   width: double.infinity,

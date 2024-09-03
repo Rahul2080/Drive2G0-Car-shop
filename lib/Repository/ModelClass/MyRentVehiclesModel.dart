@@ -1,5 +1,117 @@
 
-class NearByRentVehiclesModel {
+class MyRentVehiclesModel {
+  String? id;
+  Vehicle? vehicle;
+  String? user;
+  String? pickupDate;
+  String? returnDate;
+  String? pickupLocation;
+  String? returnLocation;
+  int? amount;
+  String? status;
+  String? createdAt;
+  String? updatedAt;
+  int? v;
+
+  MyRentVehiclesModel({this.id, this.vehicle, this.user, this.pickupDate, this.returnDate, this.pickupLocation, this.returnLocation, this.amount, this.status, this.createdAt, this.updatedAt, this.v});
+
+  MyRentVehiclesModel.fromJson(Map<String, dynamic> json) {
+    if(json["_id"] is String) {
+      id = json["_id"];
+    }
+    if(json["vehicle"] is Map) {
+      vehicle = json["vehicle"] == null ? null : Vehicle.fromJson(json["vehicle"]);
+    }
+    if(json["user"] is String) {
+      user = json["user"];
+    }
+    if(json["pickupDate"] is String) {
+      pickupDate = json["pickupDate"];
+    }
+    if(json["returnDate"] is String) {
+      returnDate = json["returnDate"];
+    }
+    if(json["pickupLocation"] is String) {
+      pickupLocation = json["pickupLocation"];
+    }
+    if(json["returnLocation"] is String) {
+      returnLocation = json["returnLocation"];
+    }
+    if(json["amount"] is num) {
+      amount = (json["amount"] as num).toInt();
+    }
+    if(json["status"] is String) {
+      status = json["status"];
+    }
+    if(json["createdAt"] is String) {
+      createdAt = json["createdAt"];
+    }
+    if(json["updatedAt"] is String) {
+      updatedAt = json["updatedAt"];
+    }
+    if(json["__v"] is num) {
+      v = (json["__v"] as num).toInt();
+    }
+  }
+
+  static List<MyRentVehiclesModel> fromList(List<Map<String, dynamic>> list) {
+    return list.map((map) => MyRentVehiclesModel.fromJson(map)).toList();
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> _data = <String, dynamic>{};
+    _data["_id"] = id;
+    if(vehicle != null) {
+      _data["vehicle"] = vehicle?.toJson();
+    }
+    _data["user"] = user;
+    _data["pickupDate"] = pickupDate;
+    _data["returnDate"] = returnDate;
+    _data["pickupLocation"] = pickupLocation;
+    _data["returnLocation"] = returnLocation;
+    _data["amount"] = amount;
+    _data["status"] = status;
+    _data["createdAt"] = createdAt;
+    _data["updatedAt"] = updatedAt;
+    _data["__v"] = v;
+    return _data;
+  }
+  static List<MyRentVehiclesModel> listFromJson(List<dynamic> json) {
+    return json == null
+        ? []
+        : json.map((value) => MyRentVehiclesModel.fromJson(value)).toList();
+  }
+
+  MyRentVehiclesModel copyWith({
+    String? id,
+    Vehicle? vehicle,
+    String? user,
+    String? pickupDate,
+    String? returnDate,
+    String? pickupLocation,
+    String? returnLocation,
+    int? amount,
+    String? status,
+    String? createdAt,
+    String? updatedAt,
+    int? v,
+  }) => MyRentVehiclesModel(
+    id: id ?? this.id,
+    vehicle: vehicle ?? this.vehicle,
+    user: user ?? this.user,
+    pickupDate: pickupDate ?? this.pickupDate,
+    returnDate: returnDate ?? this.returnDate,
+    pickupLocation: pickupLocation ?? this.pickupLocation,
+    returnLocation: returnLocation ?? this.returnLocation,
+    amount: amount ?? this.amount,
+    status: status ?? this.status,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    v: v ?? this.v,
+  );
+}
+
+class Vehicle {
   Location? location;
   String? id;
   String? brand;
@@ -21,9 +133,9 @@ class NearByRentVehiclesModel {
   bool? available;
   int? v;
 
-  NearByRentVehiclesModel({this.location, this.id, this.brand, this.model, this.description, this.rentPrice, this.mileage, this.photos, this.vehicleColor, this.gearType, this.fuelType, this.noOfSeats, this.rating, this.noOfDoors, this.ownerName, this.ownerPhoneNumber, this.ownerPlace, this.ownerProfilePhoto, this.available, this.v});
+  Vehicle({this.location, this.id, this.brand, this.model, this.description, this.rentPrice, this.mileage, this.photos, this.vehicleColor, this.gearType, this.fuelType, this.noOfSeats, this.rating, this.noOfDoors, this.ownerName, this.ownerPhoneNumber, this.ownerPlace, this.ownerProfilePhoto, this.available, this.v});
 
-  NearByRentVehiclesModel.fromJson(Map<String, dynamic> json) {
+  Vehicle.fromJson(Map<String, dynamic> json) {
     if(json["location"] is Map) {
       location = json["location"] == null ? null : Location.fromJson(json["location"]);
     }
@@ -86,8 +198,8 @@ class NearByRentVehiclesModel {
     }
   }
 
-  static List<NearByRentVehiclesModel> fromList(List<Map<String, dynamic>> list) {
-    return list.map((map) => NearByRentVehiclesModel.fromJson(map)).toList();
+  static List<Vehicle> fromList(List<Map<String, dynamic>> list) {
+    return list.map((map) => Vehicle.fromJson(map)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -119,12 +231,8 @@ class NearByRentVehiclesModel {
     return _data;
   }
 
-  static List<NearByRentVehiclesModel> listFromJson(List<dynamic> json) {
-    return json == null
-        ? []
-        : json.map((value) => NearByRentVehiclesModel.fromJson(value)).toList();
-  }
-  NearByRentVehiclesModel copyWith({
+
+  Vehicle copyWith({
     Location? location,
     String? id,
     String? brand,
@@ -145,7 +253,7 @@ class NearByRentVehiclesModel {
     String? ownerProfilePhoto,
     bool? available,
     int? v,
-  }) => NearByRentVehiclesModel(
+  }) => Vehicle(
     location: location ?? this.location,
     id: id ?? this.id,
     brand: brand ?? this.brand,

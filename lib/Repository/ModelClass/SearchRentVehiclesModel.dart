@@ -1,5 +1,5 @@
 
-class NearByRentVehiclesModel {
+class SearchRentVehiclesModel {
   Location? location;
   String? id;
   String? brand;
@@ -21,9 +21,9 @@ class NearByRentVehiclesModel {
   bool? available;
   int? v;
 
-  NearByRentVehiclesModel({this.location, this.id, this.brand, this.model, this.description, this.rentPrice, this.mileage, this.photos, this.vehicleColor, this.gearType, this.fuelType, this.noOfSeats, this.rating, this.noOfDoors, this.ownerName, this.ownerPhoneNumber, this.ownerPlace, this.ownerProfilePhoto, this.available, this.v});
+  SearchRentVehiclesModel({this.location, this.id, this.brand, this.model, this.description, this.rentPrice, this.mileage, this.photos, this.vehicleColor, this.gearType, this.fuelType, this.noOfSeats, this.rating, this.noOfDoors, this.ownerName, this.ownerPhoneNumber, this.ownerPlace, this.ownerProfilePhoto, this.available, this.v});
 
-  NearByRentVehiclesModel.fromJson(Map<String, dynamic> json) {
+  SearchRentVehiclesModel.fromJson(Map<String, dynamic> json) {
     if(json["location"] is Map) {
       location = json["location"] == null ? null : Location.fromJson(json["location"]);
     }
@@ -86,8 +86,8 @@ class NearByRentVehiclesModel {
     }
   }
 
-  static List<NearByRentVehiclesModel> fromList(List<Map<String, dynamic>> list) {
-    return list.map((map) => NearByRentVehiclesModel.fromJson(map)).toList();
+  static List<SearchRentVehiclesModel> fromList(List<Map<String, dynamic>> list) {
+    return list.map((map) => SearchRentVehiclesModel.fromJson(map)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -118,13 +118,12 @@ class NearByRentVehiclesModel {
     _data["__v"] = v;
     return _data;
   }
-
-  static List<NearByRentVehiclesModel> listFromJson(List<dynamic> json) {
+  static List<SearchRentVehiclesModel> listFromJson(List<dynamic> json) {
     return json == null
         ? []
-        : json.map((value) => NearByRentVehiclesModel.fromJson(value)).toList();
+        : json.map((value) => SearchRentVehiclesModel.fromJson(value)).toList();
   }
-  NearByRentVehiclesModel copyWith({
+  SearchRentVehiclesModel copyWith({
     Location? location,
     String? id,
     String? brand,
@@ -145,7 +144,7 @@ class NearByRentVehiclesModel {
     String? ownerProfilePhoto,
     bool? available,
     int? v,
-  }) => NearByRentVehiclesModel(
+  }) => SearchRentVehiclesModel(
     location: location ?? this.location,
     id: id ?? this.id,
     brand: brand ?? this.brand,
