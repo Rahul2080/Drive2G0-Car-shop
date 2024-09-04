@@ -111,7 +111,7 @@ class _HomeState extends State<Home> {
 
   late List<NearByRentVehiclesModel> nearrentvehicles;
   late List<AllRentVehiclesModel> allrentvechicle;
-
+List<String>places=[];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -326,6 +326,8 @@ class _HomeState extends State<Home> {
                                       child: Text("Error fetching location"));
                                 } else if (snapshot.hasData) {
                                   String? place = snapshot.data![0].locality;
+                                  places.add(place??"");
+
                                   return GestureDetector(
                                     onTap: () {
                                       Navigator.of(context)
@@ -387,8 +389,14 @@ class _HomeState extends State<Home> {
                                                     vehicleid: nearrentvehicles[
                                                             position]
                                                         .id
-                                                        .toString(), ownerprofileimg: nearrentvehicles[position].ownerProfilePhoto.toString()
-                                                  )));
+                                                        .toString(),
+                                                    ownerprofileimg:
+                                                        nearrentvehicles[
+                                                                position]
+                                                            .ownerProfilePhoto
+                                                            .toString(),
+                                                    carplace:places ,
+                                                  ),),);
                                     },
                                     child: Container(
                                       width: 185.w,
@@ -476,6 +484,30 @@ class _HomeState extends State<Home> {
                                                     letterSpacing: 0.50.w,
                                                   ),
                                                 ),
+                                              ],
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                EdgeInsets.only(left: 10.w),
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  nearrentvehicles[position]
+                                                              .available ==
+                                                          false
+                                                      ? 'Notavialable'
+                                                      : 'Available',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    color: Color(0xFFF7F5F2),
+                                                    fontSize: 14.sp,
+                                                    fontFamily:
+                                                        'sf pro display',
+                                                    fontWeight: FontWeight.w300,
+                                                    letterSpacing: 0.50.w,
+                                                  ),
+                                                ),
                                                 SizedBox(width: 20.w),
                                                 Text(
                                                   "  \₹ ${nearrentvehicles[position].rentPrice.toString()}",
@@ -490,25 +522,6 @@ class _HomeState extends State<Home> {
                                                   ),
                                                 )
                                               ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsets.only(left: 10.w),
-                                            child: Text(
-                                              nearrentvehicles[position]
-                                                          .available ==
-                                                      false
-                                                  ? 'Notavialable'
-                                                  : 'Available',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                color: Color(0xFFF7F5F2),
-                                                fontSize: 14.sp,
-                                                fontFamily: 'sf pro display',
-                                                fontWeight: FontWeight.w300,
-                                                letterSpacing: 0.50.w,
-                                              ),
                                             ),
                                           ),
                                         ],
@@ -572,7 +585,7 @@ class _HomeState extends State<Home> {
                 padding: EdgeInsets.only(left: 10.w),
                 child: SizedBox(
                   width: 410.w,
-                  height: 580.h,
+                  height: 800.h,
                   child: BlocBuilder<AllRentVehiclesBloc, AllRentVehiclesState>(
                       builder: (context, state) {
                     if (state is AllRentVehiclesBlocLoading) {
@@ -696,7 +709,11 @@ class _HomeState extends State<Home> {
                                                                     index]
                                                                 .id
                                                                 .toString(),
-                                                        ownerprofileimg: allrentvechicle[index].ownerProfilePhoto.toString(),
+                                                        ownerprofileimg:
+                                                            allrentvechicle[
+                                                                    index]
+                                                                .ownerProfilePhoto
+                                                                .toString(), carplace:places ,
                                                       )));
                                         },
                                         child: Container(
@@ -796,6 +813,33 @@ class _HomeState extends State<Home> {
                                                         letterSpacing: 0.50.w,
                                                       ),
                                                     ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: 10.w, top: 2.h),
+                                                child: Row(
+                                                  children: [
+                                                    Text(
+                                                      allrentvechicle[index]
+                                                                  .available ==
+                                                              false
+                                                          ? 'Notavialable'
+                                                          : 'Available',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                        color:
+                                                            Color(0xFFF7F5F2),
+                                                        fontSize: 14.sp,
+                                                        fontFamily:
+                                                            'sf pro display',
+                                                        fontWeight:
+                                                            FontWeight.w300,
+                                                        letterSpacing: 0.50.w,
+                                                      ),
+                                                    ),
                                                     SizedBox(width: 20.w),
                                                     Text(
                                                       ' \₹ ${allrentvechicle[index].rentPrice.toString()}',
@@ -815,26 +859,6 @@ class _HomeState extends State<Home> {
                                                   ],
                                                 ),
                                               ),
-                                              Padding(
-                                                padding: EdgeInsets.only(
-                                                    left: 10.w, top: 2.h),
-                                                child: Text(
-                                                  allrentvechicle[index]
-                                                              .available ==
-                                                          false
-                                                      ? 'Notavialable'
-                                                      : 'Available',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    color: Color(0xFFF7F5F2),
-                                                    fontSize: 14.sp,
-                                                    fontFamily:
-                                                        'sf pro display',
-                                                    fontWeight: FontWeight.w300,
-                                                    letterSpacing: 0.50.w,
-                                                  ),
-                                                ),
-                                              ),
                                             ],
                                           ),
                                         ),
@@ -852,7 +876,8 @@ class _HomeState extends State<Home> {
                     }
                   }),
                 ),
-              )
+              ),
+              SizedBox(height: 60.h)
             ],
           ),
         ));

@@ -789,10 +789,8 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar>
                                     vehicleid: widget.vehicleid,
                                     pickeddate: pickupdatecontroller.text,
                                     returneddate: returneddatecontroller.text,
-                                    pickuplocationcontroller:
-                                    pickuplocationcontroller.text,
-                                    returnlocationcontroller:
-                                    returnlocationcontroller.text,
+                                    pickuplocationcontroller: pickuplocationcontroller.text,
+                                    returnlocationcontroller: returnlocationcontroller.text,
                                     amount: totalDays! *
                                         double.parse(widget.price)));
 
