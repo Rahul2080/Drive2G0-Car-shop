@@ -7,6 +7,8 @@ import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../ModelClass/AllRentVehiclesModel.dart';
+import '../ModelClass/BuyAllVehiclesModel.dart';
+import '../ModelClass/BuyNearVehiclesModel.dart';
 import '../ModelClass/MyRentVehiclesModel.dart';
 import '../ModelClass/OrderRentVehicleModel.dart';
 import '../ModelClass/SearchRentVehiclesModel.dart';
@@ -121,6 +123,31 @@ class UserApi {
     await apiClient.invokeAPI(trendingpath, 'GET', jsonEncode(body));
 
     return SearchRentVehiclesModel.listFromJson(jsonDecode(response.body));
+  }
+
+
+  Future<List<BuyNearVehiclesModel>> getBuyNearVehicles(
+      String lat, String long) async {
+    String trendingpath =
+        'http://45.159.221.50:8868/api/get-nearby-buyvehicles?latitude=$lat&longitude=$long';
+
+    var body = {};
+    print("welcome" + body.toString());
+    Response response =
+    await apiClient.invokeAPI(trendingpath, 'GET', jsonEncode(body));
+
+    return BuyNearVehiclesModel.listFromJson(jsonDecode(response.body));
+  }
+
+  Future<List<BuyAllVehiclesModel>> getBuyAllVehicles() async {
+    String trendingpath = 'http://45.159.221.50:8868/api/get-buyvehicles';
+
+    var body = {};
+    print("welcome" + body.toString());
+    Response response =
+    await apiClient.invokeAPI(trendingpath, 'GET', jsonEncode(body));
+
+    return BuyAllVehiclesModel.listFromJson(jsonDecode(response.body));
   }
 
 }

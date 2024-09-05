@@ -620,7 +620,7 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar>
                           Icon(Icons.payment_outlined,
                               color: _selectedIndex == 1
                                   ? Colors.white
-                                  : Color(0xFF627487)),
+                                  : Color(0xFF627487),),
                           SizedBox(
                             width: 20.w,
                           ),
