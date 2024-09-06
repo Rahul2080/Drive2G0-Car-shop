@@ -15,6 +15,7 @@ class CarbuyDetails extends StatefulWidget {
   final String Ownerimge;
   final String Ownername;
   final String Ownerplace;
+  final String carplace;
 
   const CarbuyDetails(
       {super.key,
@@ -27,7 +28,7 @@ class CarbuyDetails extends StatefulWidget {
       required this.door,
       required this.Ownerimge,
       required this.Ownername,
-      required this.Ownerplace});
+      required this.Ownerplace, required this.carplace});
 
   @override
   State<CarbuyDetails> createState() => _CarbuyDetailsState();
@@ -187,7 +188,7 @@ class _CarbuyDetailsState extends State<CarbuyDetails> {
                                 ? Icon(
                                     Icons.favorite,
                                     size: 30.sp,
-                                    color: Color(0xFFF627487),
+                                    color: Colors.red,
                                   )
                                 : Icon(
                                     Icons.favorite_border,
@@ -198,12 +199,28 @@ class _CarbuyDetailsState extends State<CarbuyDetails> {
                                 isfavarites = !isfavarites;
                               });
                             },
-                          )),
+                          ),
+                      ),
                     ],
                   ),
                 ),
+
                 Padding(
-                  padding: EdgeInsets.only(left: 20.w),
+                  padding:  EdgeInsets.only(left: 20.w),
+                  child: Text(
+                    widget.carplace,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Color(0xFFF7F5F2),
+                      fontSize: 16.sp,
+                      fontFamily: 'sf pro display',
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+
+                Padding(
+                  padding: EdgeInsets.only(left: 20.w,top: 10.h),
                   child: Row(
                     children: [
                       RatingBar.builder(
@@ -533,7 +550,7 @@ class _CarbuyDetailsState extends State<CarbuyDetails> {
                                 )),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left: 30.w, top: 17.h),
+                            padding: EdgeInsets.only(left: 20.w, top: 17.h),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

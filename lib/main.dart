@@ -43,18 +43,19 @@ class MyApp extends StatelessWidget {
               ),
               BlocProvider(
                 create: (context) => NearByRentVehiclesBloc(),
-              ),BlocProvider(
-                create: (context) => AllRentVehiclesBloc(),
-              ),BlocProvider(
-                create: (context) => OrderRentVehiclesBloc(),
-              ), BlocProvider(
-                create: (context) => MyRentVehiclesBloc(),
-              ), BlocProvider(
-              create: (context) => SearchRentVehiclesBloc()),
+              ),
               BlocProvider(
-                  create: (context) => BuyNearVehiclesBloc()),
-          BlocProvider(
-          create: (context) => BuyAllVehiclesBloc()),
+                create: (context) => AllRentVehiclesBloc(),
+              ),
+              BlocProvider(
+                create: (context) => OrderRentVehiclesBloc(),
+              ),
+              BlocProvider(
+                create: (context) => MyRentVehiclesBloc(),
+              ),
+              BlocProvider(create: (context) => SearchRentVehiclesBloc()),
+              BlocProvider(create: (context) => BuyNearVehiclesBloc()),
+              BlocProvider(create: (context) => BuyAllVehiclesBloc()),
 
             ],
             child: MaterialApp(

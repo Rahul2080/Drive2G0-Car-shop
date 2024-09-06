@@ -90,6 +90,7 @@ class _BuycarState extends State<Buycar> {
   void initState() {
     _getCurrentLocation();
     BlocProvider.of<BuyAllVehiclesBloc>(context).add(FeatchBuyAllVehicle());
+
     super.initState();
   }
 
@@ -101,156 +102,430 @@ class _BuycarState extends State<Buycar> {
       ),
       backgroundColor: Colors.black,
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(left: 10.w),
-              child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => BuyCarSearch()));
-                    },
-                    child: Container(
-                      width: 292.w,
-                      height: 48.h,
-                      decoration: ShapeDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment(5, -0.54),
-                          end: Alignment(-0.34, 0.54),
-                          colors: [Colors.white, Colors.white.withOpacity(0)],
-                        ),
-                        shape: RoundedRectangleBorder(
-                          side:
-                              BorderSide(width: 1.w, color: Color(0xFF58606A)),
-                          borderRadius: BorderRadius.circular(10.r),
-                        ),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 10.w),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.search,
-                              color: Colors.white,
+        child: BlocBuilder<BuyAllVehiclesBloc, BuyAllVehiclesState>(
+            builder: (context, state) {
+          if (state is BuyAllVehiclesBlocLoading) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (state is BuyAllVehiclesBlocError) {
+            return Center(
+              child: Text(
+                "Error",
+                style: TextStyle(color: Colors.white),
+              ),
+            );
+          }
+          if (state is BuyAllVehiclesBlocLoaded) {
+            buyallvehicle =
+                BlocProvider.of<BuyAllVehiclesBloc>(context).buyallvehicles;
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 10.w),
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => BuyCarSearch()));
+                        },
+                        child: Container(
+                          width: 292.w,
+                          height: 48.h,
+                          decoration: ShapeDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment(5, -0.54),
+                              end: Alignment(-0.34, 0.54),
+                              colors: [
+                                Colors.white,
+                                Colors.white.withOpacity(0)
+                              ],
                             ),
-                            SizedBox(width: 10.w),
-                            Text(
-                              'Search your dream car..',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Color(0xFF627387),
-                                fontSize: 15.sp,
-                                fontFamily: 'sf pro display',
-                                fontWeight: FontWeight.w300,
-                                letterSpacing: 1.50.w,
-                              ),
-                            )
-                          ],
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                  width: 1.w, color: Color(0xFF58606A)),
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 10.w),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.search,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(width: 10.w),
+                                Text(
+                                  'Search your dream car..',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Color(0xFF627387),
+                                    fontSize: 15.sp,
+                                    fontFamily: 'sf pro display',
+                                    fontWeight: FontWeight.w300,
+                                    letterSpacing: 1.50.w,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  SizedBox(width: 10.w),
-                  Container(
-                    width: 48.w,
-                    height: 48.h,
-                    decoration: ShapeDecoration(
-                      color: Color(0xFFFFCE50),
-                      shape: OvalBorder(),
-                    ),
-                    child: Icon(
-                      Icons.tune,
-                      color: Colors.white,
-                    ),
-                  ),
-                  SizedBox(width: 10.w),
-                  Container(
-                    width: 45.w,
-                    height: 45.h,
-                    decoration: ShapeDecoration(
-                      color: Color(0xFFF7F5F2),
-                      shape: OvalBorder(),
-                    ),
-                    child: Icon(Icons.notifications_none_outlined),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 20.h),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 150.w,
-                    height: 40.h,
-                    child: Text(
-                      'Nearby ',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Color(0xFFF7F5F2),
-                        fontSize: 22.sp,
-                        fontFamily: 'sf pro display',
-                        fontWeight: FontWeight.w600,
+                      SizedBox(width: 10.w),
+                      Container(
+                        width: 48.w,
+                        height: 48.h,
+                        decoration: ShapeDecoration(
+                          color: Color(0xFFFFCE50),
+                          shape: OvalBorder(),
+                        ),
+                        child: Icon(
+                          Icons.tune,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                  ),
-                  SizedBox(width: 180.w),
-                  SizedBox(
-                    width: 90.w,
-                    height: 40.h,
-                    child: Text(
-                      'View all',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Color(0xFFF7F5F2),
-                        fontSize: 15.sp,
-                        fontFamily: 'sf pro display',
-                        fontWeight: FontWeight.w300,
+                      SizedBox(width: 10.w),
+                      Container(
+                        width: 45.w,
+                        height: 45.h,
+                        decoration: ShapeDecoration(
+                          color: Color(0xFFF7F5F2),
+                          shape: OvalBorder(),
+                        ),
+                        child: Icon(Icons.notifications_none_outlined),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 10.w, right: 10.w),
-              child: SizedBox(
-                width: double.infinity,
-                height: 223.h,
-                child: BlocBuilder<BuyNearVehiclesBloc, BuyNearVehiclesState>(
-                    builder: (context, state) {
-                  if (state is BuyNearVehiclesBlocLoading) {
-                    return Center(child: CircularProgressIndicator());
-                  }
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 20.h),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 150.w,
+                        height: 40.h,
+                        child: Text(
+                          'Nearby ',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Color(0xFFF7F5F2),
+                            fontSize: 22.sp,
+                            fontFamily: 'sf pro display',
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 180.w),
+                      SizedBox(
+                        width: 90.w,
+                        height: 40.h,
+                        child: Text(
+                          'View all',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Color(0xFFF7F5F2),
+                            fontSize: 15.sp,
+                            fontFamily: 'sf pro display',
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 10.w, right: 10.w),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 223.h,
+                    child:
+                        BlocBuilder<BuyNearVehiclesBloc, BuyNearVehiclesState>(
+                            builder: (context, state) {
+                      if (state is BuyNearVehiclesBlocLoading) {
+                        return Center(child: CircularProgressIndicator());
+                      }
 
-                  if (state is BuyNearVehiclesBlocError) {
-                    return Center(
-                      child: Text(
-                        "Error",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    );
-                  }
-                  if (state is BuyNearVehiclesBlocLoaded) {
-                    buynearvehicle =
-                        BlocProvider.of<BuyNearVehiclesBloc>(context)
-                            .buynearvehicles;
+                      if (state is BuyNearVehiclesBlocError) {
+                        return Center(
+                          child: Text(
+                            "Error",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        );
+                      }
+                      if (state is BuyNearVehiclesBlocLoaded) {
+                        buynearvehicle =
+                            BlocProvider.of<BuyNearVehiclesBloc>(context)
+                                .buynearvehicles;
 
-                    return ListView.separated(
+                        return ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: buynearvehicle.length,
+                          itemBuilder: (context, position) {
+                            return FutureBuilder<List<Placemark>>(
+                                future: _getVechileAddress(
+                                    buynearvehicle[position]
+                                        .location!
+                                        .coordinates!
+                                        .first
+                                        .toString(),
+                                    buynearvehicle[position]
+                                        .location!
+                                        .coordinates!
+                                        .last
+                                        .toString()),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Center(
+                                        child: CircularProgressIndicator());
+                                  } else if (snapshot.hasError) {
+                                    return Center(
+                                        child: Text("Error fetching location"));
+                                  } else if (snapshot.hasData) {
+                                    String? place = snapshot.data![0].locality;
+
+                                    return GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                                builder: (_) => CarbuyDetails(
+                                                      carimage: buynearvehicle[
+                                                              position]
+                                                          .photos!
+                                                          .toList(),
+                                                      carname: buynearvehicle[
+                                                              position]
+                                                          .brand
+                                                          .toString(),
+                                                      ratting: buynearvehicle[
+                                                              position]
+                                                          .rating
+                                                          .toString(),
+                                                      tanktype: buynearvehicle[
+                                                              position]
+                                                          .fuelType
+                                                          .toString(),
+                                                      geartype: buynearvehicle[
+                                                              position]
+                                                          .gearType
+                                                          .toString(),
+                                                      seat: buynearvehicle[
+                                                              position]
+                                                          .noOfSeats
+                                                          .toString(),
+                                                      door: buynearvehicle[
+                                                              position]
+                                                          .noOfDoors
+                                                          .toString(),
+                                                      Ownerimge: buynearvehicle[
+                                                              position]
+                                                          .ownerProfilePhoto
+                                                          .toString(),
+                                                      Ownername: buynearvehicle[
+                                                              position]
+                                                          .ownerName
+                                                          .toString(),
+                                                      Ownerplace:
+                                                          buynearvehicle[
+                                                                  position]
+                                                              .ownerPlace
+                                                              .toString(), carplace: place,
+                                                    )));
+                                      },
+                                      child: Container(
+                                        width: 185.w,
+                                        height: 223.h,
+                                        decoration: ShapeDecoration(
+                                          gradient: LinearGradient(
+                                            begin: Alignment(4, -0.54),
+                                            end: Alignment(-0.84, 0.54),
+                                            colors: [
+                                              Colors.white,
+                                              Colors.white.withOpacity(0)
+                                            ],
+                                          ),
+                                          shape: RoundedRectangleBorder(
+                                            side: BorderSide(
+                                                width: 1.w,
+                                                color: Color(0xFF58606A)),
+                                            borderRadius:
+                                                BorderRadius.circular(10.r),
+                                          ),
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.all(1),
+                                              child: Container(
+                                                width: 187.w,
+                                                height: 146.h,
+                                                decoration: ShapeDecoration(
+                                                  image: DecorationImage(
+                                                    image: NetworkImage(
+                                                        buynearvehicle[position]
+                                                            .photos![0]),
+                                                    fit: BoxFit.fill,
+                                                  ),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                      topLeft:
+                                                          Radius.circular(8.r),
+                                                      topRight:
+                                                          Radius.circular(8.r),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(height: 15.h),
+                                            Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 10.w),
+                                              child: Text(
+                                                buynearvehicle[position]
+                                                    .brand
+                                                    .toString(),
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  color: Color(0xFFF7F5F2),
+                                                  fontSize: 16.sp,
+                                                  fontFamily: 'sf pro display',
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 5.w),
+                                              child: Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.location_on_outlined,
+                                                    color: Color(0xFFF7F5F2),
+                                                    size: 20.sp,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 80.w,
+                                                    child: Text(
+                                                      place!,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                        color:
+                                                            Color(0xFFF7F5F2),
+                                                        fontSize: 14.sp,
+                                                        fontFamily:
+                                                            'sf pro display',
+                                                        fontWeight:
+                                                            FontWeight.w300,
+                                                        letterSpacing: 0.50.w,
+                                                      ),
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                  ),
+                                                  SizedBox(width: 10.w),
+                                                  Text(
+                                                    "  \₹ ${buynearvehicle[position].rentPrice.toString()}",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      color: Color(0xFFFFD66D),
+                                                      fontSize: 13.sp,
+                                                      fontFamily:
+                                                          'SF Pro Display',
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      letterSpacing: 0.50.w,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    return SizedBox();
+                                  }
+                                });
+                          },
+                          separatorBuilder: (context, position) {
+                            return SizedBox(
+                              width: 10.w,
+                            );
+                          },
+                        );
+                      } else {
+                        return SizedBox();
+                      }
+                    }),
+                  ),
+                ),
+buyallvehicle.length==0 ?SizedBox():
+                Padding(
+                  padding: EdgeInsets.only(left: 10.w, top: 15.h),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 150.w,
+                        height: 40.h,
+                        child: Text(
+                          'latest Model',
+                          style: TextStyle(
+                            color: Color(0xFFF7F5F2),
+                            fontSize: 22.sp,
+                            fontFamily: 'sf pro display',
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 170.w),
+                      SizedBox(
+                        width: 100.w,
+                        height: 30.h,
+                        child: Text(
+                          'View all',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Color(0xFFF7F5F2),
+                            fontSize: 15.sp,
+                            fontFamily: 'sf pro display',
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                Padding(
+                  padding: EdgeInsets.only(left: 10.w, right: 10.w),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 223.h,
+                    child: ListView.separated(
+                      itemCount: buyallvehicle.length,
                       scrollDirection: Axis.horizontal,
-                      itemCount: buynearvehicle.length,
                       itemBuilder: (context, position) {
-                        return FutureBuilder<List<Placemark>>(
+
+                        return  buyallvehicle[position].latestModel==true?  FutureBuilder(
                             future: _getVechileAddress(
-                                buynearvehicle[position]
+                                buyallvehicle[position]
                                     .location!
                                     .coordinates!
                                     .first
                                     .toString(),
-                                buynearvehicle[position]
+                                buyallvehicle[position]
                                     .location!
                                     .coordinates!
                                     .last
@@ -265,43 +540,54 @@ class _BuycarState extends State<Buycar> {
                                     child: Text("Error fetching location"));
                               } else if (snapshot.hasData) {
                                 String? place = snapshot.data![0].locality;
-
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                            builder: (_) => CarbuyDetails(
-                                                  carimage:
-                                                      buynearvehicle[position]
-                                                          .photos!
-                                                          .toList(),
-                                                  carname:
-                                                      buynearvehicle[position]
-                                                          .brand
-                                                          .toString(),
-                                                  ratting:
-                                                      buynearvehicle[position]
-                                                          .rating
-                                                          .toString(),
-                                                  tanktype:
-                                                      buynearvehicle[position]
-                                                          .fuelType
-                                                          .toString(),
-                                                  geartype:
-                                                      buynearvehicle[position]
-                                                          .gearType
-                                                          .toString(),
-                                                  seat: buynearvehicle[position]
-                                                      .noOfSeats
-                                                      .toString(),
-                                                  door: buynearvehicle[position]
-                                                      .noOfDoors
-                                                      .toString(),
-                                              Ownerimge:buynearvehicle[position].ownerProfilePhoto.toString() ,
-                                              Ownername:buynearvehicle[position].ownerName.toString() ,
-                                              Ownerplace: buynearvehicle[position].ownerPlace.toString(),
-                                                )));
-                                  },
+                                return
+                                  GestureDetector(onTap: (){
+                                  Navigator.of(context)
+                                      .push(MaterialPageRoute(
+                                      builder: (_) => CarbuyDetails(
+                                        carimage:
+                                        buyallvehicle[position]
+                                            .photos!
+                                            .toList(),
+                                        carname:
+                                        buyallvehicle[position]
+                                            .brand
+                                            .toString(),
+                                        ratting:
+                                        buyallvehicle[position]
+                                            .rating
+                                            .toString(),
+                                        tanktype:
+                                        buyallvehicle[position]
+                                            .fuelType
+                                            .toString(),
+                                        geartype:
+                                        buyallvehicle[position]
+                                            .gearType
+                                            .toString(),
+                                        seat:
+                                        buyallvehicle[position]
+                                            .noOfSeats
+                                            .toString(),
+                                        door:
+                                        buyallvehicle[position]
+                                            .noOfDoors
+                                            .toString(),
+                                        Ownerimge: buyallvehicle[
+                                        position]
+                                            .ownerProfilePhoto
+                                            .toString(),
+                                        Ownername:
+                                        buyallvehicle[position]
+                                            .ownerName
+                                            .toString(),
+                                        Ownerplace:
+                                        buyallvehicle[position]
+                                            .ownerPlace
+                                            .toString(),
+                                        carplace: place,
+                                      )));
+                                },
                                   child: Container(
                                     width: 185.w,
                                     height: 223.h,
@@ -316,10 +602,8 @@ class _BuycarState extends State<Buycar> {
                                       ),
                                       shape: RoundedRectangleBorder(
                                         side: BorderSide(
-                                            width: 1.w,
-                                            color: Color(0xFF58606A)),
-                                        borderRadius:
-                                            BorderRadius.circular(10.r),
+                                            width: 1.w, color: Color(0xFF58606A)),
+                                        borderRadius: BorderRadius.circular(10.r),
                                       ),
                                     ),
                                     child: Column(
@@ -334,15 +618,14 @@ class _BuycarState extends State<Buycar> {
                                             decoration: ShapeDecoration(
                                               image: DecorationImage(
                                                 image: NetworkImage(
-                                                    buynearvehicle[position]
+                                                    buyallvehicle[position]
                                                         .photos![0]),
                                                 fit: BoxFit.fill,
                                               ),
                                               shape: RoundedRectangleBorder(
                                                 borderRadius: BorderRadius.only(
                                                   topLeft: Radius.circular(8.r),
-                                                  topRight:
-                                                      Radius.circular(8.r),
+                                                  topRight: Radius.circular(8.r),
                                                 ),
                                               ),
                                             ),
@@ -352,7 +635,7 @@ class _BuycarState extends State<Buycar> {
                                         Padding(
                                           padding: EdgeInsets.only(left: 10.w),
                                           child: Text(
-                                            buynearvehicle[position]
+                                            buyallvehicle[position]
                                                 .brand
                                                 .toString(),
                                             textAlign: TextAlign.center,
@@ -373,20 +656,256 @@ class _BuycarState extends State<Buycar> {
                                                 color: Color(0xFFF7F5F2),
                                                 size: 20.sp,
                                               ),
-                                              Text(
-                                                place!,
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  color: Color(0xFFF7F5F2),
-                                                  fontSize: 14.sp,
-                                                  fontFamily: 'sf pro display',
-                                                  fontWeight: FontWeight.w300,
-                                                  letterSpacing: 0.50.w,
+                                              SizedBox(
+                                                width: 80.w,
+                                                child: Text(
+                                                  place!,
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                    color: Color(0xFFF7F5F2),
+                                                    fontSize: 14.sp,
+                                                    fontFamily: 'sf pro display',
+                                                    fontWeight: FontWeight.w300,
+                                                    letterSpacing: 0.50.w,
+                                                  ),
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
                                                 ),
                                               ),
-                                              SizedBox(width: 20.w),
+                                              SizedBox(width: 5.w),
                                               Text(
-                                                "  \₹ ${buynearvehicle[position].rentPrice.toString()}",
+                                                "  \₹ ${buyallvehicle[position].rentPrice.toString()}",
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  color: Color(0xFFFFD66D),
+                                                  fontSize: 13.sp,
+                                                  fontFamily: 'SF Pro Display',
+                                                  fontWeight: FontWeight.w500,
+                                                  letterSpacing: 0.50.w,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                return SizedBox();
+                              }
+                            }):SizedBox();
+                      },
+
+                      separatorBuilder: (context, position) {
+                        return  buyallvehicle[position].latestModel==true? SizedBox(
+                          width: 10.w,
+                        ):SizedBox();
+                      },
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 10.w, top: 15.h),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 150.w,
+                        height: 40.h,
+                        child: Text(
+                          'High Milage',
+                          style: TextStyle(
+                            color: Color(0xFFF7F5F2),
+                            fontSize: 22.sp,
+                            fontFamily: 'sf pro display',
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 170.w),
+                      SizedBox(
+                        width: 100.w,
+                        height: 30.h,
+                        child: Text(
+                          'View all',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Color(0xFFF7F5F2),
+                            fontSize: 15.sp,
+                            fontFamily: 'sf pro display',
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 10.w, right: 10.w),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 223.h,
+                    child: ListView.separated(
+                      itemCount: buyallvehicle.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, position) {
+                        return FutureBuilder(
+                            future: _getVechileAddress(
+                                buyallvehicle[position]
+                                    .location!
+                                    .coordinates!
+                                    .first
+                                    .toString(),
+                                buyallvehicle[position]
+                                    .location!
+                                    .coordinates!
+                                    .last
+                                    .toString()),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              } else if (snapshot.hasError) {
+                                return Center(
+                                    child: Text("Error fetching location"));
+                              } else if (snapshot.hasData) {
+                                String? place = snapshot.data![0].locality;
+
+                                return GestureDetector(onTap: (){
+                                  Navigator.of(context)
+                                      .push(MaterialPageRoute(
+                                      builder: (_) => CarbuyDetails(
+                                        carimage:
+                                        buyallvehicle[position]
+                                            .photos!
+                                            .toList(),
+                                        carname:
+                                        buyallvehicle[position]
+                                            .brand
+                                            .toString(),
+                                        ratting:
+                                        buyallvehicle[position]
+                                            .rating
+                                            .toString(),
+                                        tanktype:
+                                        buyallvehicle[position]
+                                            .fuelType
+                                            .toString(),
+                                        geartype:
+                                        buyallvehicle[position]
+                                            .gearType
+                                            .toString(),
+                                        seat:
+                                        buyallvehicle[position]
+                                            .noOfSeats
+                                            .toString(),
+                                        door:
+                                        buyallvehicle[position]
+                                            .noOfDoors
+                                            .toString(),
+                                        Ownerimge: buyallvehicle[
+                                        position]
+                                            .ownerProfilePhoto
+                                            .toString(),
+                                        Ownername:
+                                        buyallvehicle[position]
+                                            .ownerName
+                                            .toString(),
+                                        Ownerplace:
+                                        buyallvehicle[position]
+                                            .ownerPlace
+                                            .toString(),
+                                        carplace: place,
+                                      )));
+                                },
+                                  child: Container(
+                                    width: 185.w,
+                                    height: 223.h,
+                                    decoration: ShapeDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment(4, -0.54),
+                                        end: Alignment(-0.84, 0.54),
+                                        colors: [
+                                          Colors.white,
+                                          Colors.white.withOpacity(0)
+                                        ],
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        side: BorderSide(
+                                            width: 1.w, color: Color(0xFF58606A)),
+                                        borderRadius: BorderRadius.circular(10.r),
+                                      ),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(1),
+                                          child: Container(
+                                            width: 187.w,
+                                            height: 146.h,
+                                            decoration: ShapeDecoration(
+                                              image: DecorationImage(
+                                                image: NetworkImage(
+                                                    buyallvehicle[position]
+                                                        .photos![0]),
+                                                fit: BoxFit.fill,
+                                              ),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(8.r),
+                                                  topRight: Radius.circular(8.r),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 15.h),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 10.w),
+                                          child: Text(
+                                            buyallvehicle[position]
+                                                .brand
+                                                .toString(),
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: Color(0xFFF7F5F2),
+                                              fontSize: 16.sp,
+                                              fontFamily: 'sf pro display',
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 5.w),
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.location_on_outlined,
+                                                color: Color(0xFFF7F5F2),
+                                                size: 20.sp,
+                                              ),
+                                              SizedBox(
+                                                width: 80.w,
+                                                child: Text(
+                                                  place!,
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                    color: Color(0xFFF7F5F2),
+                                                    fontSize: 14.sp,
+                                                    fontFamily: 'sf pro display',
+                                                    fontWeight: FontWeight.w300,
+                                                    letterSpacing: 0.50.w,
+                                                  ),
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                              ),
+                                              SizedBox(width: 5.w),
+                                              Text(
+                                                "  \₹ ${buyallvehicle[position].rentPrice.toString()}",
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                   color: Color(0xFFFFD66D),
@@ -413,218 +932,265 @@ class _BuycarState extends State<Buycar> {
                           width: 10.w,
                         );
                       },
-                    );
-                  } else {
-                    return SizedBox();
-                  }
-                }),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 10.w, top: 15.h),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 150.w,
-                    height: 40.h,
-                    child: Text(
-                      'High Milage',
-                      style: TextStyle(
-                        color: Color(0xFFF7F5F2),
-                        fontSize: 22.sp,
-                        fontFamily: 'sf pro display',
-                        fontWeight: FontWeight.w600,
-                      ),
                     ),
                   ),
-                  SizedBox(width: 170.w),
-                  SizedBox(
-                    width: 100.w,
-                    height: 30.h,
-                    child: Text(
-                      'View all',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Color(0xFFF7F5F2),
-                        fontSize: 15.sp,
-                        fontFamily: 'sf pro display',
-                        fontWeight: FontWeight.w300,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 10.w, top: 15.h),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 150.w,
+                        height: 40.h,
+                        child: Text(
+                          'All Cars',
+                          style: TextStyle(
+                            color: Color(0xFFF7F5F2),
+                            fontSize: 22.sp,
+                            fontFamily: 'sf pro display',
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
-                    ),
+                      SizedBox(width: 170.w),
+                      SizedBox(
+                        width: 100.w,
+                        height: 30.h,
+                        child: Text(
+                          'View all',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Color(0xFFF7F5F2),
+                            fontSize: 15.sp,
+                            fontFamily: 'sf pro display',
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 10.w),
-              child: SizedBox(
-                width: 410.w,
-                height: 760.h,
-                child: BlocBuilder<BuyAllVehiclesBloc, BuyAllVehiclesState>(
-                    builder: (context, state) {
-                  if (state is BuyAllVehiclesBlocLoading) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  if (state is BuyAllVehiclesBlocError) {
-                    return Center(
-                      child: Text(
-                        "Error",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    );
-                  }
-                  if (state is BuyAllVehiclesBlocLoaded) {
-                    buyallvehicle = BlocProvider.of<BuyAllVehiclesBloc>(context)
-                        .buyallvehicles;
-                    return GridView.count(
-                      crossAxisCount: 2,
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      childAspectRatio: 185 / 223,
-                      children: List.generate(
-                        buyallvehicle.length,
-                        (index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (_) => CarbuyDetails(
-                                          carimage: buyallvehicle[index]
-                                              .photos!
-                                              .toList(),
-                                          carname: buyallvehicle[index]
-                                              .brand
-                                              .toString(),
-                                          ratting: buyallvehicle[index]
-                                              .rating
-                                              .toString(),
-                                          tanktype: buyallvehicle[index]
-                                              .fuelType
-                                              .toString(),
-                                          geartype: buyallvehicle[index]
-                                              .gearType
-                                              .toString(),
-                                          seat: buyallvehicle[index]
-                                              .noOfSeats
-                                              .toString(),
-                                          door: buyallvehicle[index]
-                                              .noOfDoors
-                                              .toString(),
-                                          Ownerimge:buyallvehicle[index].ownerProfilePhoto.toString() ,
-                                          Ownername:buyallvehicle[index].ownerName.toString() ,
-                                          Ownerplace: buyallvehicle[index].ownerPlace.toString(),
-                                        )));
-                              },
-                              child: Container(
-                                width: 185.w,
-                                height: 223.h,
-                                decoration: ShapeDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment(4, -0.54),
-                                    end: Alignment(-0.84, 0.54),
-                                    colors: [
-                                      Colors.white,
-                                      Colors.white.withOpacity(0)
-                                    ],
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    side: BorderSide(
-                                        width: 1.w, color: Color(0xFF58606A)),
-                                    borderRadius: BorderRadius.circular(10.r),
-                                  ),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(1),
-                                      child: Container(
-                                        width: 197.w,
-                                        height: 146.h,
-                                        decoration: ShapeDecoration(
-                                          image: DecorationImage(
-                                            image: NetworkImage(
-                                                buyallvehicle[index]
-                                                    .photos![index]),
-                                            fit: BoxFit.fill,
-                                          ),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(8.r),
-                                              topRight: Radius.circular(8.r),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 10.w),
+                  child: SizedBox(
+                      width: 410.w,
+                      height: 760.h,
+                      child: GridView.count(
+                        crossAxisCount: 2,
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        childAspectRatio: 185 / 223,
+                        children: List.generate(
+                          buyallvehicle.length,
+                          (index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: FutureBuilder(
+                                  future: _getVechileAddress(
+                                      buyallvehicle[index]
+                                          .location!
+                                          .coordinates!
+                                          .first
+                                          .toString(),
+                                      buyallvehicle[index]
+                                          .location!
+                                          .coordinates!
+                                          .last
+                                          .toString()),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return Center(
+                                          child: CircularProgressIndicator());
+                                    } else if (snapshot.hasError) {
+                                      return Center(
+                                          child:
+                                              Text("Error fetching location"));
+                                    } else if (snapshot.hasData) {
+                                      String? place =
+                                          snapshot.data![0].locality;
+                                      return GestureDetector(
+                                        onTap: () {
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                                  builder: (_) => CarbuyDetails(
+                                                        carimage:
+                                                            buyallvehicle[index]
+                                                                .photos!
+                                                                .toList(),
+                                                        carname:
+                                                            buyallvehicle[index]
+                                                                .brand
+                                                                .toString(),
+                                                        ratting:
+                                                            buyallvehicle[index]
+                                                                .rating
+                                                                .toString(),
+                                                        tanktype:
+                                                            buyallvehicle[index]
+                                                                .fuelType
+                                                                .toString(),
+                                                        geartype:
+                                                            buyallvehicle[index]
+                                                                .gearType
+                                                                .toString(),
+                                                        seat:
+                                                            buyallvehicle[index]
+                                                                .noOfSeats
+                                                                .toString(),
+                                                        door:
+                                                            buyallvehicle[index]
+                                                                .noOfDoors
+                                                                .toString(),
+                                                        Ownerimge: buyallvehicle[
+                                                                index]
+                                                            .ownerProfilePhoto
+                                                            .toString(),
+                                                        Ownername:
+                                                            buyallvehicle[index]
+                                                                .ownerName
+                                                                .toString(),
+                                                        Ownerplace:
+                                                            buyallvehicle[index]
+                                                                .ownerPlace
+                                                                .toString(),
+                                                      carplace: place,
+                                                      )));
+                                        },
+                                        child: Container(
+                                          width: 185.w,
+                                          height: 223.h,
+                                          decoration: ShapeDecoration(
+                                            gradient: LinearGradient(
+                                              begin: Alignment(4, -0.54),
+                                              end: Alignment(-0.84, 0.54),
+                                              colors: [
+                                                Colors.white,
+                                                Colors.white.withOpacity(0)
+                                              ],
                                             ),
+                                            shape: RoundedRectangleBorder(
+                                              side: BorderSide(
+                                                  width: 1.w,
+                                                  color: Color(0xFF58606A)),
+                                              borderRadius:
+                                                  BorderRadius.circular(10.r),
+                                            ),
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(1),
+                                                child: Container(
+                                                  width: 197.w,
+                                                  height: 146.h,
+                                                  decoration: ShapeDecoration(
+                                                    image: DecorationImage(
+                                                      image: NetworkImage(
+                                                          buyallvehicle[index]
+                                                              .photos![index]),
+                                                      fit: BoxFit.fill,
+                                                    ),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                        topLeft:
+                                                            Radius.circular(
+                                                                8.r),
+                                                        topRight:
+                                                            Radius.circular(
+                                                                8.r),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(height: 10.h),
+                                              Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 10.w),
+                                                child: Text(
+                                                  buyallvehicle[index]
+                                                      .brand
+                                                      .toString(),
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    color: Color(0xFFF7F5F2),
+                                                    fontSize: 16.sp,
+                                                    fontFamily:
+                                                        'sf pro display',
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 5.w),
+                                                child: Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons
+                                                          .location_on_outlined,
+                                                      color: Color(0xFFF7F5F2),
+                                                      size: 20.sp,
+                                                    ),
+                                                    Text(
+                                                      place!,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                        color:
+                                                            Color(0xFFF7F5F2),
+                                                        fontSize: 14.sp,
+                                                        fontFamily:
+                                                            'sf pro display',
+                                                        fontWeight:
+                                                            FontWeight.w300,
+                                                        letterSpacing: 0.50.w,
+                                                      ),
+                                                    ),
+                                                    SizedBox(width: 20.w),
+                                                    Text(
+                                                      "  \₹ ${buyallvehicle[index].rentPrice.toString()}",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                        color:
+                                                            Color(0xFFFFD66D),
+                                                        fontSize: 13.sp,
+                                                        fontFamily:
+                                                            'SF Pro Display',
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        letterSpacing: 0.50.w,
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              )
+                                            ],
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                    SizedBox(height: 10.h),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 10.w),
-                                      child: Text(
-                                        buyallvehicle[index].brand.toString(),
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Color(0xFFF7F5F2),
-                                          fontSize: 16.sp,
-                                          fontFamily: 'sf pro display',
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 5.w),
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.location_on_outlined,
-                                            color: Color(0xFFF7F5F2),
-                                            size: 20.sp,
-                                          ),
-                                          Text(
-                                            'Kottakal',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              color: Color(0xFFF7F5F2),
-                                              fontSize: 14.sp,
-                                              fontFamily: 'sf pro display',
-                                              fontWeight: FontWeight.w300,
-                                              letterSpacing: 0.50.w,
-                                            ),
-                                          ),
-                                          SizedBox(width: 20.w),
-                                          Text(
-                                            "  \₹ ${buyallvehicle[index].rentPrice.toString()}",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              color: Color(0xFFFFD66D),
-                                              fontSize: 13.sp,
-                                              fontFamily: 'SF Pro Display',
-                                              fontWeight: FontWeight.w500,
-                                              letterSpacing: 0.50.w,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  } else {
-                    return SizedBox();
-                  }
-                }),
-              ),
-            )
-          ],
-        ),
+                                      );
+                                    } else {
+                                      return SizedBox();
+                                    }
+                                  }),
+                            );
+                          },
+                        ),
+                      )),
+                )
+              ],
+            );
+          } else {
+            return SizedBox();
+          }
+        }),
       ),
     );
   }

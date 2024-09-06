@@ -1,5 +1,6 @@
 import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:drive2go/Bloc/OrderRentVehicles_Bloc/order_rent_vehicles_bloc.dart';
+import 'package:drive2go/UI/Home_Pages/Home.dart';
 import 'package:drive2go/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -725,7 +726,7 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar>
                                   animationController
                                       .addStatusListener((status) {
                                     if (status == AnimationStatus.completed) {
-                                      Navigator.of(context).pop();
+                                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (_)=> Home()),(route) =>(false));
                                     }
                                   });
                                 },

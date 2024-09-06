@@ -395,7 +395,7 @@ List<String>places=[];
                                                                 position]
                                                             .ownerProfilePhoto
                                                             .toString(),
-                                                    carplace:places ,
+                                                    carplace:places, place:place ,
                                                   ),),);
                                     },
                                     child: Container(
@@ -546,6 +546,7 @@ List<String>places=[];
                   }),
                 ),
               ),
+
               Padding(
                 padding: EdgeInsets.only(left: 10.w, top: 15.h),
                 child: Row(
@@ -713,7 +714,7 @@ List<String>places=[];
                                                             allrentvechicle[
                                                                     index]
                                                                 .ownerProfilePhoto
-                                                                .toString(), carplace:places ,
+                                                                .toString(), carplace:places, place: place ,
                                                       )));
                                         },
                                         child: Container(

@@ -28,6 +28,8 @@ class CarRentDetails extends StatefulWidget {
   final String id;
   final String vehicleid;
   final String ownerprofileimg;
+  final String place;
+
 
   const CarRentDetails(
       {super.key,
@@ -45,7 +47,7 @@ class CarRentDetails extends StatefulWidget {
       required this.availability,
       required this.id,
       required this.vehicleid,
-      required this.ownerprofileimg, required this.carplace,
+      required this.ownerprofileimg, required this.carplace, required this.place,
 
       });
 
@@ -235,6 +237,19 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                             },
                           )),
                     ],
+                  ),
+                ),
+                Padding(
+                  padding:  EdgeInsets.only(left: 20.w),
+                  child: Text(
+                   widget.place ,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Color(0xFFF7F5F2),
+                      fontSize: 16.sp,
+                      fontFamily: 'sf pro display',
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
                 ),
                 Padding(
@@ -752,7 +767,7 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                                                                   nearrentvehicles[
                                                                           position]
                                                                       .ownerProfilePhoto
-                                                                      .toString(), carplace: [],
+                                                                      .toString(), carplace: [], place: widget.place,
                                                             )));
                                           },
                                           child: Container(
