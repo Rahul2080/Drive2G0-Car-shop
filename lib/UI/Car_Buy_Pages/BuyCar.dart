@@ -26,7 +26,7 @@ class _BuycarState extends State<Buycar> {
   String? _currentAddress;
   Position? _currentPosition;
   LatLng _initialPosition = LatLng(37.42796133580664, -122.085749655962);
-
+List<String>places=[];
   Future<void> _getCurrentLocation() async {
     try {
       Position position = await Geolocator.getCurrentPosition(
@@ -288,7 +288,7 @@ class _BuycarState extends State<Buycar> {
                                         child: Text("Error fetching location"));
                                   } else if (snapshot.hasData) {
                                     String? place = snapshot.data![0].locality;
-
+places.add(place??"");
                                     return GestureDetector(
                                       onTap: () {
                                         Navigator.of(context)
@@ -322,6 +322,7 @@ class _BuycarState extends State<Buycar> {
                                                               position]
                                                           .noOfDoors
                                                           .toString(),
+                                                  price: buynearvehicle[position].rentPrice.toString(),
                                                       Ownerimge: buynearvehicle[
                                                               position]
                                                           .ownerProfilePhoto
@@ -334,7 +335,9 @@ class _BuycarState extends State<Buycar> {
                                                           buynearvehicle[
                                                                   position]
                                                               .ownerPlace
-                                                              .toString(), carplace: place,
+                                                              .toString(),
+                                                  id: buynearvehicle[position].id.toString(),
+                                                  carplace: place, places: places,
                                                     )));
                                       },
                                       child: Container(
@@ -584,8 +587,8 @@ buyallvehicle.length==0 ?SizedBox():
                                         Ownerplace:
                                         buyallvehicle[position]
                                             .ownerPlace
-                                            .toString(),
-                                        carplace: place,
+                                            .toString(), price: buyallvehicle[position].rentPrice.toString(), id: buyallvehicle[position].id.toString(),
+                                        carplace: place,places: places,
                                       )));
                                 },
                                   child: Container(
@@ -704,7 +707,7 @@ buyallvehicle.length==0 ?SizedBox():
                       },
                     ),
                   ),
-                ),
+                ),buyallvehicle.length==0 ?SizedBox():
                 Padding(
                   padding: EdgeInsets.only(left: 10.w, top: 15.h),
                   child: Row(
@@ -749,7 +752,8 @@ buyallvehicle.length==0 ?SizedBox():
                       itemCount: buyallvehicle.length,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, position) {
-                        return FutureBuilder(
+                        return buyallvehicle[position].highMilage==true?
+                        FutureBuilder(
                             future: _getVechileAddress(
                                 buyallvehicle[position]
                                     .location!
@@ -816,7 +820,7 @@ buyallvehicle.length==0 ?SizedBox():
                                         buyallvehicle[position]
                                             .ownerPlace
                                             .toString(),
-                                        carplace: place,
+                                        carplace: place,places: places, price: buyallvehicle[position].rentPrice.toString(), id: buyallvehicle[position].id.toString(),
                                       )));
                                 },
                                   child: Container(
@@ -925,12 +929,12 @@ buyallvehicle.length==0 ?SizedBox():
                               } else {
                                 return SizedBox();
                               }
-                            });
+                            }):SizedBox();
                       },
                       separatorBuilder: (context, position) {
-                        return SizedBox(
+                        return buyallvehicle[position].highMilage==true? SizedBox(
                           width: 10.w,
-                        );
+                        ):SizedBox();
                       },
                     ),
                   ),
@@ -974,7 +978,6 @@ buyallvehicle.length==0 ?SizedBox():
                   padding: EdgeInsets.only(left: 10.w),
                   child: SizedBox(
                       width: 410.w,
-                      height: 760.h,
                       child: GridView.count(
                         crossAxisCount: 2,
                         physics: NeverScrollableScrollPhysics(),
@@ -1054,7 +1057,7 @@ buyallvehicle.length==0 ?SizedBox():
                                                             buyallvehicle[index]
                                                                 .ownerPlace
                                                                 .toString(),
-                                                      carplace: place,
+                                                      carplace: place,places: places, price:buyallvehicle[index].rentPrice.toString(), id:buyallvehicle[index].id.toString() ,
                                                       )));
                                         },
                                         child: Container(
@@ -1138,22 +1141,23 @@ buyallvehicle.length==0 ?SizedBox():
                                                       color: Color(0xFFF7F5F2),
                                                       size: 20.sp,
                                                     ),
-                                                    Text(
-                                                      place!,
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                        color:
-                                                            Color(0xFFF7F5F2),
-                                                        fontSize: 14.sp,
-                                                        fontFamily:
-                                                            'sf pro display',
-                                                        fontWeight:
-                                                            FontWeight.w300,
-                                                        letterSpacing: 0.50.w,
+                                                    SizedBox(width: 80.w,
+                                                      child: Text(
+                                                        place!,
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                          color:
+                                                              Color(0xFFF7F5F2),
+                                                          fontSize: 14.sp,
+                                                          fontFamily:
+                                                              'sf pro display',
+                                                          fontWeight:
+                                                              FontWeight.w300,
+                                                          letterSpacing: 0.50.w,
+                                                        ), overflow: TextOverflow.ellipsis,
                                                       ),
                                                     ),
-                                                    SizedBox(width: 20.w),
                                                     Text(
                                                       "  \₹ ${buyallvehicle[index].rentPrice.toString()}",
                                                       textAlign:
@@ -1184,7 +1188,7 @@ buyallvehicle.length==0 ?SizedBox():
                           },
                         ),
                       )),
-                )
+                ),
               ],
             );
           } else {

@@ -1,13 +1,23 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:drive2go/Bloc/BuyNearVehicles_Bloc/buy_near_vehicles_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+
+import '../../Repository/ModelClass/BuyNearVehiclesModel.dart';
 
 class CarbuyDetails extends StatefulWidget {
   final List<String> carimage;
+  final List<String> places;
   final String carname;
   final String ratting;
+  final String price;
+  final String id;
   final String tanktype;
   final String geartype;
   final String seat;
@@ -17,24 +27,31 @@ class CarbuyDetails extends StatefulWidget {
   final String Ownerplace;
   final String carplace;
 
-  const CarbuyDetails(
-      {super.key,
-      required this.carimage,
-      required this.carname,
-      required this.ratting,
-      required this.tanktype,
-      required this.geartype,
-      required this.seat,
-      required this.door,
-      required this.Ownerimge,
-      required this.Ownername,
-      required this.Ownerplace, required this.carplace});
+  const CarbuyDetails({super.key,
+    required this.carimage,
+    required this.carname,
+    required this.ratting,
+    required this.tanktype,
+    required this.geartype,
+    required this.seat,
+    required this.door,
+    required this.Ownerimge,
+    required this.Ownername,
+    required this.Ownerplace,
+    required this.carplace,
+    required this.places, required this.price, required this.id});
 
   @override
   State<CarbuyDetails> createState() => _CarbuyDetailsState();
 }
 
 class _CarbuyDetailsState extends State<CarbuyDetails> {
+  GoogleMapController? _mapController;
+  String? _currentAddress;
+  Position? _currentPosition;
+  LatLng _initialPosition = LatLng(37.42796133580664, -122.085749655962);
+  late List<BuyNearVehiclesModel> buynearvehicle;
+
   void handlePaymentErrorResponse(PaymentFailureResponse response) {
     /*
     * PaymentFailureResponse contains three values:
@@ -43,7 +60,8 @@ class _CarbuyDetailsState extends State<CarbuyDetails> {
     * 3. Metadata
     * */
     showAlertDialog(context, "Payment Failed",
-        "Code: ${response.code}\nDescription: ${response.message}\nMetadata:${response.error.toString()}");
+        "Code: ${response.code}\nDescription: ${response
+            .message}\nMetadata:${response.error.toString()}");
   }
 
   void handlePaymentSuccessResponse(PaymentSuccessResponse response) {
@@ -80,6 +98,52 @@ class _CarbuyDetailsState extends State<CarbuyDetails> {
         return alert;
       },
     );
+  }
+
+  Future<void> _getCurrentLocation() async {
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      setState(() {
+        _currentPosition = position;
+        _initialPosition = LatLng(
+          position.latitude,
+          position.longitude,
+        );
+        _mapController?.animateCamera(
+          CameraUpdate.newLatLng(_initialPosition),
+        );
+      });
+
+      await _getAddressFromLatLng(_currentPosition!).then((onValue) {
+        BlocProvider.of<BuyNearVehiclesBloc>(context).add(FeatchBuyNearVehicles(
+          lat: position.latitude.toString(),
+          long: position.longitude.toString(),
+        ));
+      });
+    } catch (e) {
+      // Handle error
+      print(e);
+    }
+  }
+
+  Future<void> _getAddressFromLatLng(Position position) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+
+      Placemark place = placemarks[0];
+
+      setState(() {
+        _currentAddress = " ${place.locality}, ${place.administrativeArea}";
+      });
+
+      print("Address: $_currentAddress");
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -134,21 +198,21 @@ class _CarbuyDetailsState extends State<CarbuyDetails> {
                     itemCount: widget.carimage.length,
                     itemBuilder:
                         (BuildContext context, int index, int pageViewIndex) =>
-                            Container(
-                      width: 315.w,
-                      decoration: ShapeDecoration(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4.r),
+                        Container(
+                          width: 315.w,
+                          decoration: ShapeDecoration(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4.r),
+                            ),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(4.r),
+                            child: Image.network(
+                              widget.carimage[index],
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(4.r),
-                        child: Image.network(
-                          widget.carimage[index],
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
                     options: CarouselOptions(
                         autoPlay: true,
                         enlargeCenterPage: true,
@@ -181,32 +245,31 @@ class _CarbuyDetailsState extends State<CarbuyDetails> {
                       ),
                       SizedBox(width: 140.w),
                       SizedBox(
-                          width: 50.w,
-                          height: 40.h,
-                          child: IconButton(
-                            icon: isfavarites == true
-                                ? Icon(
-                                    Icons.favorite,
-                                    size: 30.sp,
-                                    color: Colors.red,
-                                  )
-                                : Icon(
-                                    Icons.favorite_border,
-                                    size: 30.sp,
-                                  ),
-                            onPressed: () {
-                              setState(() {
-                                isfavarites = !isfavarites;
-                              });
-                            },
+                        width: 50.w,
+                        height: 40.h,
+                        child: IconButton(
+                          icon: isfavarites == true
+                              ? Icon(
+                            Icons.favorite,
+                            size: 30.sp,
+                            color: Colors.red,
+                          )
+                              : Icon(
+                            Icons.favorite_border,
+                            size: 30.sp,
                           ),
+                          onPressed: () {
+                            setState(() {
+                              isfavarites = !isfavarites;
+                            });
+                          },
+                        ),
                       ),
                     ],
                   ),
                 ),
-
                 Padding(
-                  padding:  EdgeInsets.only(left: 20.w),
+                  padding: EdgeInsets.only(left: 20.w),
                   child: Text(
                     widget.carplace,
                     textAlign: TextAlign.center,
@@ -218,9 +281,8 @@ class _CarbuyDetailsState extends State<CarbuyDetails> {
                     ),
                   ),
                 ),
-
                 Padding(
-                  padding: EdgeInsets.only(left: 20.w,top: 10.h),
+                  padding: EdgeInsets.only(left: 20.w, top: 10.h),
                   child: Row(
                     children: [
                       RatingBar.builder(
@@ -232,10 +294,11 @@ class _CarbuyDetailsState extends State<CarbuyDetails> {
                         ignoreGestures: true,
                         itemCount: 5,
                         itemPadding: EdgeInsets.symmetric(horizontal: 1.w),
-                        itemBuilder: (context, _) => Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        ),
+                        itemBuilder: (context, _) =>
+                            Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
                         onRatingUpdate: (rating) {
                           print(rating);
                         },
@@ -543,7 +606,7 @@ class _CarbuyDetailsState extends State<CarbuyDetails> {
                             ),
                             child: ClipRRect(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(7.r)),
+                                BorderRadius.all(Radius.circular(7.r)),
                                 child: Image.network(
                                   widget.Ownerimge,
                                   fit: BoxFit.cover,
@@ -621,109 +684,167 @@ class _CarbuyDetailsState extends State<CarbuyDetails> {
                   child: SizedBox(
                     width: double.infinity,
                     height: 223.h,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 8,
-                      itemBuilder: (context, position) {
-                        return Container(
-                          width: 185.w,
-                          height: 223.h,
-                          decoration: ShapeDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment(8, -0.54),
-                              end: Alignment(-0.84, 0.54),
-                              colors: [
-                                Colors.white,
-                                Colors.white.withOpacity(0)
-                              ],
-                            ),
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                  width: 1.w, color: Color(0xFF58606A)),
-                              borderRadius: BorderRadius.circular(10.r),
-                            ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(1),
-                                child: Container(
-                                  width: 187.w,
-                                  height: 146.h,
-                                  decoration: ShapeDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage("assets/car.png"),
-                                      fit: BoxFit.fill,
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(8.r),
-                                        topRight: Radius.circular(8.r),
+                    child:
+                    BlocBuilder<BuyNearVehiclesBloc, BuyNearVehiclesState>(
+                        builder: (context, state) {
+                          if (state is BuyNearVehiclesBlocLoading) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                          if (state is BuyNearVehiclesBlocError) {
+                            return Center(
+                              child: Text(
+                                "Error",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            );
+                          }
+                          if (state is BuyNearVehiclesBlocLoaded) {
+                            buynearvehicle =
+                                BlocProvider
+                                    .of<BuyNearVehiclesBloc>(context)
+                                    .buynearvehicles;
+                            return ListView.separated(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: buynearvehicle.length,
+                              itemBuilder: (context, position) {
+
+                                return
+                                  widget.id==buynearvehicle[position].id.toString()? SizedBox():
+                                  GestureDetector(onTap: () {
+                                  Navigator.of(context).push(
+                                      MaterialPageRoute(builder: (_) =>
+                                          CarbuyDetails(carimage: buynearvehicle[position].photos!,
+
+                                              carname: buynearvehicle[position].brand.toString(),
+                                              ratting: buynearvehicle[position].rating.toString(),
+                                              tanktype: buynearvehicle[position].fuelType.toString(),
+                                              geartype: buynearvehicle[position].gearType.toString(),
+                                              seat: buynearvehicle[position].noOfSeats.toString(),
+                                              door: buynearvehicle[position].noOfDoors.toString(),
+                                              Ownerimge: buynearvehicle[position].ownerProfilePhoto.toString(),
+                                              Ownername: buynearvehicle[position].ownerName.toString(),
+                                              Ownerplace: buynearvehicle[position].ownerPlace.toString(),
+                                              carplace: widget.carplace,
+                                              places: widget.places,
+                                              price: buynearvehicle[position].rentPrice.toString(),
+                                              id: widget.id)));
+                                },
+                                  child: Container(
+                                    width: 185.w,
+                                    height: 223.h,
+                                    decoration: ShapeDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment(8, -0.54),
+                                        end: Alignment(-0.84, 0.54),
+                                        colors: [
+                                          Colors.white,
+                                          Colors.white.withOpacity(0)
+                                        ],
                                       ),
+                                      shape: RoundedRectangleBorder(
+                                        side: BorderSide(
+                                            width: 1.w,
+                                            color: Color(0xFF58606A)),
+                                        borderRadius: BorderRadius.circular(
+                                            10.r),
+                                      ),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment
+                                          .start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(1),
+                                          child: Container(
+                                            width: 187.w,
+                                            height: 146.h,
+                                            decoration: ShapeDecoration(
+                                              image: DecorationImage(
+                                                image: NetworkImage(
+                                                    buynearvehicle[position]
+                                                        .photos![0]),
+                                                fit: BoxFit.fill,
+                                              ),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(8.r),
+                                                  topRight: Radius.circular(
+                                                      8.r),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 15.h),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 10.w),
+                                          child: Text(
+                                            buynearvehicle[position].brand
+                                                .toString(),
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: Color(0xFFF7F5F2),
+                                              fontSize: 16.sp,
+                                              fontFamily: 'sf pro display',
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 5.w),
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.location_on_outlined,
+                                                color: Color(0xFFF7F5F2),
+                                                size: 20.sp,
+                                              ),
+                                              SizedBox(
+                                                width: 80.w,
+                                                child: Text(
+                                                  widget.places[position],
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    color: Color(0xFFF7F5F2),
+                                                    fontSize: 14.sp,
+                                                    fontFamily: 'sf pro display',
+                                                    fontWeight: FontWeight.w300,
+                                                    letterSpacing: 0.50.w,
+                                                  ),
+                                                  overflow: TextOverflow
+                                                      .ellipsis,
+                                                ),
+                                              ),
+                                              Text(
+                                                "  \₹ ${buynearvehicle[position]
+                                                    .rentPrice.toString()}",
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  color: Color(0xFFFFD66D),
+                                                  fontSize: 13.sp,
+                                                  fontFamily: 'SF Pro Display',
+                                                  fontWeight: FontWeight.w500,
+                                                  letterSpacing: 0.50.w,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ),
-                              ),
-                              SizedBox(height: 15.h),
-                              Padding(
-                                padding: EdgeInsets.only(left: 10.w),
-                                child: Text(
-                                  'Audi R8 Coupé',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Color(0xFFF7F5F2),
-                                    fontSize: 16.sp,
-                                    fontFamily: 'sf pro display',
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(left: 5.w),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.location_on_outlined,
-                                      color: Color(0xFFF7F5F2),
-                                      size: 20.sp,
-                                    ),
-                                    Text(
-                                      'Kottakal',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: Color(0xFFF7F5F2),
-                                        fontSize: 14.sp,
-                                        fontFamily: 'sf pro display',
-                                        fontWeight: FontWeight.w300,
-                                        letterSpacing: 0.50.w,
-                                      ),
-                                    ),
-                                    SizedBox(width: 20.w),
-                                    Text(
-                                      '\$ 8000 / day',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: Color(0xFFFFD66D),
-                                        fontSize: 13.sp,
-                                        fontFamily: 'SF Pro Display',
-                                        fontWeight: FontWeight.w500,
-                                        letterSpacing: 0.50.w,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                      separatorBuilder: (context, position) {
-                        return SizedBox(
-                          width: 10.w,
-                        );
-                      },
-                    ),
+                                );
+                              },
+                              separatorBuilder: (context, position) {
+                                return SizedBox(
+                                  width: 10.w,
+                                );
+                              },
+                            );
+                          } else {
+                            return SizedBox();
+                          }
+                        }),
                   ),
                 ),
                 SizedBox(height: 90.h),
@@ -748,28 +869,13 @@ class _CarbuyDetailsState extends State<CarbuyDetails> {
                 padding: EdgeInsets.only(left: 20.w),
                 child: Row(
                   children: [
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                            text: '8000\$',
-                            style: TextStyle(
-                              color: Color(0xFF000B17),
-                              fontSize: 20.sp,
-                              fontFamily: 'sf pro display',
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          TextSpan(
-                            text: '/Day',
-                            style: TextStyle(
-                              color: Color(0xFF000B17),
-                              fontSize: 15.sp,
-                              fontFamily: 'sf pro display',
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                        ],
+                    Text(
+                      " \₹ ${widget.price}",
+                      style: TextStyle(
+                        color: Color(0xFF000B17),
+                        fontSize: 20.sp,
+                        fontFamily: 'sf pro display',
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                     SizedBox(width: 70.w),

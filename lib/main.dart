@@ -5,6 +5,7 @@ import 'package:drive2go/Bloc/Login_Bloc/login_bloc.dart';
 import 'package:drive2go/Bloc/MyRentVehicles_Bloc/my_rent_vehicles_bloc.dart';
 import 'package:drive2go/Bloc/NearByRentVehicles_Bloc/near_by_rent_vehicles_bloc.dart';
 import 'package:drive2go/Bloc/OrderRentVehicles_Bloc/order_rent_vehicles_bloc.dart';
+import 'package:drive2go/Bloc/SearchBuyVehicles_Bloc/search_buy_vehicles_bloc.dart';
 import 'package:drive2go/Bloc/SearchRentVehicles_Bloc/search_rent_vehicles_bloc.dart';
 import 'package:drive2go/Bloc/Siginup_Bloc/signup_bloc.dart';
 import 'package:drive2go/UI/Authentication/Splash.dart';
@@ -56,7 +57,9 @@ class MyApp extends StatelessWidget {
               BlocProvider(create: (context) => SearchRentVehiclesBloc()),
               BlocProvider(create: (context) => BuyNearVehiclesBloc()),
               BlocProvider(create: (context) => BuyAllVehiclesBloc()),
-
+              BlocProvider(
+                create: (context) => SearchBuyVehiclesBloc(),
+              ),
             ],
             child: MaterialApp(
               title: 'Flutter Demo',

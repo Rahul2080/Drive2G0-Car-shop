@@ -97,32 +97,30 @@ class _RentCarSearchState extends State<RentCarSearch> {
               ),
             ),
             SizedBox(height: 30.h),
-            SizedBox(
-              width: double.infinity.w,
-              height: 780.h,
-              child:
-              BlocBuilder<SearchRentVehiclesBloc, SearchRentVehiclesState>(
-                  builder: (context, state) {
-                    if (state is SearchRentVehiclesBlocLoading) {
-                      return Center(child: CircularProgressIndicator());
-                    }
-                    if (state is SearchRentVehiclesBlocError) {
-                      return Center(
-                        child: Text(
-                          'Error',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      );
-                    }
-                    if (state is SearchRentVehiclesBlocLoaded) {
-                      searchrentvehicles =
-                          BlocProvider
-                              .of<SearchRentVehiclesBloc>(context)
-                              .searchrentvehicles;
+            BlocBuilder<SearchRentVehiclesBloc, SearchRentVehiclesState>(
+                builder: (context, state) {
+                  if (state is SearchRentVehiclesBlocLoading) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  if (state is SearchRentVehiclesBlocError) {
+                    return Center(
+                      child: Text(
+                        'Error',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    );
+                  }
+                  if (state is SearchRentVehiclesBlocLoaded) {
+                    searchrentvehicles =
+                        BlocProvider
+                            .of<SearchRentVehiclesBloc>(context)
+                            .searchrentvehicles;
 
-                      return
-                        rentCarSearchcontroller.text.isNotEmpty?
-                        GridView.count(
+                    return
+                      rentCarSearchcontroller.text.isNotEmpty?
+                      SizedBox(
+                        width: double.infinity.w,
+                        child: GridView.count(
                         childAspectRatio: 400 / 400,
                         mainAxisSpacing: 10.h,
                         crossAxisCount: 2,
@@ -132,28 +130,28 @@ class _RentCarSearchState extends State<RentCarSearch> {
                           return Padding(
                             padding: EdgeInsets.only(left: 10.w, right: 10.h),
                             child: FutureBuilder(future:  _getVechileAddress(
-    searchrentvehicles[index]
-        .location!
-        .coordinates!
-        .first
-        .toString(),
-    searchrentvehicles[index]
-        .location!
-        .coordinates!
-        .last
-        .toString()) ,
+                                        searchrentvehicles[index]
+                                            .location!
+                                            .coordinates!
+                                            .first
+                                            .toString(),
+                                        searchrentvehicles[index]
+                                            .location!
+                                            .coordinates!
+                                            .last
+                                            .toString()) ,
                               builder:(context, snapshot) {
-    if (snapshot.connectionState ==
-    ConnectionState.waiting) {
-    return Center(
-    child: CircularProgressIndicator());
-    } else if (snapshot.hasError) {
-    return Center(
-    child: Text("Error fetching location"));
-    } else if (snapshot.hasData) {
-    String? place = snapshot.data![0].locality;
-    places.add(place??"");
-    return GestureDetector(onTap: () {
+                                        if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                        return Center(
+                                        child: CircularProgressIndicator());
+                                        } else if (snapshot.hasError) {
+                                        return Center(
+                                        child: Text("Error fetching location"));
+                                        } else if (snapshot.hasData) {
+                                        String? place = snapshot.data![0].locality;
+                                        places.add(place??"");
+                                        return GestureDetector(onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (_) => CarRentDetails(
                                         carimage:
@@ -318,12 +316,12 @@ class _RentCarSearchState extends State<RentCarSearch> {
                             ),
                           );
                         }),
+                                            ),
                       ): SizedBox();
-                    } else {
-                      return SizedBox();
-                    }
-                  }),
-            ),
+                  } else {
+                    return SizedBox();
+                  }
+                }),
           ],
         ),
       ),

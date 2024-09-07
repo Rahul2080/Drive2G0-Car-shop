@@ -586,7 +586,6 @@ List<String>places=[];
                 padding: EdgeInsets.only(left: 10.w),
                 child: SizedBox(
                   width: 410.w,
-                  height: 800.h,
                   child: BlocBuilder<AllRentVehiclesBloc, AllRentVehiclesState>(
                       builder: (context, state) {
                     if (state is AllRentVehiclesBlocLoading) {

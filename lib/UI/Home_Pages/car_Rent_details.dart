@@ -767,7 +767,7 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                                                                   nearrentvehicles[
                                                                           position]
                                                                       .ownerProfilePhoto
-                                                                      .toString(), carplace: [], place: widget.place,
+                                                                      .toString(), carplace: widget.carplace, place: widget.place,
                                                             )));
                                           },
                                           child: Container(
