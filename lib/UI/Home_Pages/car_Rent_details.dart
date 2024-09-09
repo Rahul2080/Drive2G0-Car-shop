@@ -25,7 +25,6 @@ class CarRentDetails extends StatefulWidget {
   final String carprice;
   final String carcolor;
   final bool availability;
-  final String id;
   final String vehicleid;
   final String ownerprofileimg;
   final String place;
@@ -45,7 +44,6 @@ class CarRentDetails extends StatefulWidget {
       required this.carprice,
       required this.carcolor,
       required this.availability,
-      required this.id,
       required this.vehicleid,
       required this.ownerprofileimg, required this.carplace, required this.place,
 
@@ -690,7 +688,7 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                           scrollDirection: Axis.horizontal,
                           itemCount: nearrentvehicles.length,
                           itemBuilder: (context, position) {
-                            return widget.id ==
+                            return widget.vehicleid ==
                                     nearrentvehicles[position].id.toString()
                                 ? SizedBox()
                                 :
@@ -754,10 +752,6 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                                                                   nearrentvehicles[
                                                                           position]
                                                                       .available!,
-                                                              id: nearrentvehicles[
-                                                                      position]
-                                                                  .id
-                                                                  .toString(),
                                                               vehicleid:
                                                                   nearrentvehicles[
                                                                           position]

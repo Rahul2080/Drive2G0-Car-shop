@@ -1,6 +1,7 @@
 import 'package:drive2go/Bloc/BuyAllVehicles_Bloc/buy_all_vehicles_bloc.dart';
 import 'package:drive2go/Bloc/BuyNearVehicles_Bloc/buy_near_vehicles_bloc.dart';
 import 'package:drive2go/Repository/ModelClass/BuyAllVehiclesModel.dart';
+import 'package:drive2go/UI/Filter_Buy_Vehicles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -176,16 +177,18 @@ List<String>places=[];
                         ),
                       ),
                       SizedBox(width: 10.w),
-                      Container(
-                        width: 48.w,
-                        height: 48.h,
-                        decoration: ShapeDecoration(
-                          color: Color(0xFFFFCE50),
-                          shape: OvalBorder(),
-                        ),
-                        child: Icon(
-                          Icons.tune,
-                          color: Colors.white,
+                      InkWell(onTap: (){ Navigator.of(context).push(MaterialPageRoute(builder: (_)=> FilterBuyVehicles()));},
+                        child: Container(
+                          width: 48.w,
+                          height: 48.h,
+                          decoration: ShapeDecoration(
+                            color: Color(0xFFFFCE50),
+                            shape: OvalBorder(),
+                          ),
+                          child: Icon(
+                            Icons.tune,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                       SizedBox(width: 10.w),
@@ -1094,7 +1097,7 @@ buyallvehicle.length==0 ?SizedBox():
                                                     image: DecorationImage(
                                                       image: NetworkImage(
                                                           buyallvehicle[index]
-                                                              .photos![index]),
+                                                              .photos![0]),
                                                       fit: BoxFit.fill,
                                                     ),
                                                     shape:

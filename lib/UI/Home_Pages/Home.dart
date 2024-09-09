@@ -382,10 +382,6 @@ List<String>places=[];
                                                         nearrentvehicles[
                                                                 position]
                                                             .available!,
-                                                    id: nearrentvehicles[
-                                                            position]
-                                                        .id
-                                                        .toString(),
                                                     vehicleid: nearrentvehicles[
                                                             position]
                                                         .id
@@ -700,10 +696,6 @@ List<String>places=[];
                                                             allrentvechicle[
                                                                     index]
                                                                 .available!,
-                                                        id: allrentvechicle[
-                                                                index]
-                                                            .id
-                                                            .toString(),
                                                         vehicleid:
                                                             allrentvechicle[
                                                                     index]

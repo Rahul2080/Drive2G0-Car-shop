@@ -1,5 +1,6 @@
 import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:drive2go/Bloc/OrderRentVehicles_Bloc/order_rent_vehicles_bloc.dart';
+import 'package:drive2go/UI/BottomNavigation.dart';
 import 'package:drive2go/UI/Home_Pages/Home.dart';
 import 'package:drive2go/main.dart';
 import 'package:flutter/material.dart';
@@ -140,7 +141,7 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar>
 
     if (pickupdate != null && pickupdate != pickedDate) {
       setState(() {
-        pickupdatecontroller.text = DateFormat('dd-MM-yyyy').format(pickupdate);
+        pickupdatecontroller.text = DateFormat('MM-dd-yyyy').format(pickupdate);
         pickedDate = pickupdate;
         if (returnDate != null) {
           totalDays = returnDate!.difference(pickedDate!).inDays;
@@ -179,7 +180,7 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar>
     if (returneddate != null && returneddate != returnDate) {
       setState(() {
         returneddatecontroller.text =
-            DateFormat("dd-MM-yyyy").format(returneddate);
+            DateFormat("MM-dd-yyyy").format(returneddate);
         returnDate = returneddate;
         if (pickedDate != null) {
           totalDays = returnDate!.difference(pickedDate!).inDays;
@@ -726,7 +727,7 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar>
                                   animationController
                                       .addStatusListener((status) {
                                     if (status == AnimationStatus.completed) {
-                                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (_)=> Home()),(route) =>(false));
+                                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (_)=> Bottomnavigation()),(route) =>(false));
                                     }
                                   });
                                 },

@@ -1,5 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:drive2go/Bloc/BuyNearVehicles_Bloc/buy_near_vehicles_bloc.dart';
+import 'package:drive2go/Bloc/OrderBuyVehicles_Bloc/order_buy_bloc.dart';
+import 'package:drive2go/Repository/ModelClass/OrderBuyVehiclesModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -39,7 +41,9 @@ class CarbuyDetails extends StatefulWidget {
     required this.Ownername,
     required this.Ownerplace,
     required this.carplace,
-    required this.places, required this.price, required this.id});
+    required this.places,
+    required this.price,
+    required this.id});
 
   @override
   State<CarbuyDetails> createState() => _CarbuyDetailsState();
@@ -51,6 +55,13 @@ class _CarbuyDetailsState extends State<CarbuyDetails> {
   Position? _currentPosition;
   LatLng _initialPosition = LatLng(37.42796133580664, -122.085749655962);
   late List<BuyNearVehiclesModel> buynearvehicle;
+  int currrentindex = 0;
+  bool isfavarites = false;
+  TextEditingController namecontroller = TextEditingController();
+  TextEditingController emailcontroller = TextEditingController();
+  TextEditingController addresscontroller = TextEditingController();
+  TextEditingController phonenumbercontroller = TextEditingController();
+  late OrderBuyVehiclesModel orderBuyVehiclesModel;
 
   void handlePaymentErrorResponse(PaymentFailureResponse response) {
     /*
@@ -65,6 +76,13 @@ class _CarbuyDetailsState extends State<CarbuyDetails> {
   }
 
   void handlePaymentSuccessResponse(PaymentSuccessResponse response) {
+     BlocProvider.of<OrderBuyBloc>(context).add(
+        FeatchOrderBuyVehicles(vehicleid: widget.id,
+            buyername: namecontroller.text,
+            buyerphonenumber: phonenumbercontroller.text,
+            buyeremail: emailcontroller.text,
+            buyeraddress: addresscontroller.text,
+            amount: double.parse(widget.price)));
     /*
     * Payment Success Response contains three values:
     * 1. Order ID
@@ -73,6 +91,7 @@ class _CarbuyDetailsState extends State<CarbuyDetails> {
     * */
     showAlertDialog(
         context, "Payment Successful", "Payment ID: ${response.paymentId}");
+    Navigator.of(context).pop();
   }
 
   void handleExternalWalletSelected(ExternalWalletResponse response) {
@@ -147,9 +166,6 @@ class _CarbuyDetailsState extends State<CarbuyDetails> {
   }
 
   @override
-  int currrentindex = 0;
-  bool isfavarites = false;
-
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -707,28 +723,52 @@ class _CarbuyDetailsState extends State<CarbuyDetails> {
                               scrollDirection: Axis.horizontal,
                               itemCount: buynearvehicle.length,
                               itemBuilder: (context, position) {
-
-                                return
-                                  widget.id==buynearvehicle[position].id.toString()? SizedBox():
-                                  GestureDetector(onTap: () {
-                                  Navigator.of(context).push(
-                                      MaterialPageRoute(builder: (_) =>
-                                          CarbuyDetails(carimage: buynearvehicle[position].photos!,
-
-                                              carname: buynearvehicle[position].brand.toString(),
-                                              ratting: buynearvehicle[position].rating.toString(),
-                                              tanktype: buynearvehicle[position].fuelType.toString(),
-                                              geartype: buynearvehicle[position].gearType.toString(),
-                                              seat: buynearvehicle[position].noOfSeats.toString(),
-                                              door: buynearvehicle[position].noOfDoors.toString(),
-                                              Ownerimge: buynearvehicle[position].ownerProfilePhoto.toString(),
-                                              Ownername: buynearvehicle[position].ownerName.toString(),
-                                              Ownerplace: buynearvehicle[position].ownerPlace.toString(),
-                                              carplace: widget.carplace,
-                                              places: widget.places,
-                                              price: buynearvehicle[position].rentPrice.toString(),
-                                              id: widget.id)));
-                                },
+                                return widget.id ==
+                                    buynearvehicle[position].id.toString()
+                                    ? SizedBox()
+                                    : GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (_) =>
+                                                CarbuyDetails(
+                                                    carimage: buynearvehicle[position]
+                                                        .photos!,
+                                                    carname: buynearvehicle[position]
+                                                        .brand
+                                                        .toString(),
+                                                    ratting: buynearvehicle[position]
+                                                        .rating
+                                                        .toString(),
+                                                    tanktype: buynearvehicle[position]
+                                                        .fuelType
+                                                        .toString(),
+                                                    geartype: buynearvehicle[position]
+                                                        .gearType
+                                                        .toString(),
+                                                    seat: buynearvehicle[position]
+                                                        .noOfSeats
+                                                        .toString(),
+                                                    door: buynearvehicle[position]
+                                                        .noOfDoors
+                                                        .toString(),
+                                                    Ownerimge: buynearvehicle[position]
+                                                        .ownerProfilePhoto
+                                                        .toString(),
+                                                    Ownername: buynearvehicle[position]
+                                                        .ownerName
+                                                        .toString(),
+                                                    Ownerplace:
+                                                    buynearvehicle[position]
+                                                        .ownerPlace
+                                                        .toString(),
+                                                    carplace: widget.carplace,
+                                                    places: widget.places,
+                                                    price: buynearvehicle[position]
+                                                        .rentPrice
+                                                        .toString(),
+                                                    id: widget.id)));
+                                  },
                                   child: Container(
                                     width: 185.w,
                                     height: 223.h,
@@ -745,13 +785,13 @@ class _CarbuyDetailsState extends State<CarbuyDetails> {
                                         side: BorderSide(
                                             width: 1.w,
                                             color: Color(0xFF58606A)),
-                                        borderRadius: BorderRadius.circular(
-                                            10.r),
+                                        borderRadius:
+                                        BorderRadius.circular(10.r),
                                       ),
                                     ),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment
-                                          .start,
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.all(1),
@@ -766,10 +806,12 @@ class _CarbuyDetailsState extends State<CarbuyDetails> {
                                                 fit: BoxFit.fill,
                                               ),
                                               shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(8.r),
-                                                  topRight: Radius.circular(
-                                                      8.r),
+                                                borderRadius:
+                                                BorderRadius.only(
+                                                  topLeft:
+                                                  Radius.circular(8.r),
+                                                  topRight:
+                                                  Radius.circular(8.r),
                                                 ),
                                               ),
                                             ),
@@ -777,9 +819,11 @@ class _CarbuyDetailsState extends State<CarbuyDetails> {
                                         ),
                                         SizedBox(height: 15.h),
                                         Padding(
-                                          padding: EdgeInsets.only(left: 10.w),
+                                          padding:
+                                          EdgeInsets.only(left: 10.w),
                                           child: Text(
-                                            buynearvehicle[position].brand
+                                            buynearvehicle[position]
+                                                .brand
                                                 .toString(),
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
@@ -807,12 +851,14 @@ class _CarbuyDetailsState extends State<CarbuyDetails> {
                                                   style: TextStyle(
                                                     color: Color(0xFFF7F5F2),
                                                     fontSize: 14.sp,
-                                                    fontFamily: 'sf pro display',
-                                                    fontWeight: FontWeight.w300,
+                                                    fontFamily:
+                                                    'sf pro display',
+                                                    fontWeight:
+                                                    FontWeight.w300,
                                                     letterSpacing: 0.50.w,
                                                   ),
-                                                  overflow: TextOverflow
-                                                      .ellipsis,
+                                                  overflow:
+                                                  TextOverflow.ellipsis,
                                                 ),
                                               ),
                                               Text(
@@ -822,7 +868,8 @@ class _CarbuyDetailsState extends State<CarbuyDetails> {
                                                 style: TextStyle(
                                                   color: Color(0xFFFFD66D),
                                                   fontSize: 13.sp,
-                                                  fontFamily: 'SF Pro Display',
+                                                  fontFamily:
+                                                  'SF Pro Display',
                                                   fontWeight: FontWeight.w500,
                                                   letterSpacing: 0.50.w,
                                                 ),
@@ -881,29 +928,279 @@ class _CarbuyDetailsState extends State<CarbuyDetails> {
                     SizedBox(width: 70.w),
                     GestureDetector(
                       onTap: () {
-                        Razorpay razorpay = Razorpay();
-                        var options = {
-                          'key': 'rzp_test_gKANZdsNdLqaQs',
-                          'amount': 100,
-                          'name': 'Acme Corp.',
-                          'description': 'Fine T-Shirt',
-                          'retry': {'enabled': true, 'max_count': 1},
-                          'send_sms_hash': true,
-                          'prefill': {
-                            'contact': '8888888888',
-                            'email': 'test@razorpay.com'
+                        showModalBottomSheet<void>(
+                          isScrollControlled: true,
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Padding(
+                              padding: EdgeInsets.only(
+                                  bottom:
+                                  MediaQuery
+                                      .of(context)
+                                      .viewInsets
+                                      .bottom),
+                              child: Container(
+                                width: double.infinity.w,
+                                height: 400.h,
+                                color: Colors.black,
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.vertical,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 20.w, top: 20.h),
+                                        child: Container(
+                                          width: 372.w,
+                                          height: 55.h,
+                                          decoration: ShapeDecoration(
+                                            shape: RoundedRectangleBorder(
+                                              side: BorderSide(
+                                                width: 1.w,
+                                                color: Color(0xFF627487),
+                                              ),
+                                              borderRadius:
+                                              BorderRadius.circular(4.r),
+                                            ),
+                                          ),
+                                          child: TextField(
+                                            style:
+                                            TextStyle(color: Colors.white),
+                                            controller: namecontroller,
+                                            cursorColor: Colors.white,
+                                            decoration: InputDecoration(
+                                              hintText: "Enter Your Name.. ",
+                                              hintStyle: TextStyle(
+                                                  color: Color(0xFF627487)),
+                                              border: OutlineInputBorder(
+                                                  borderSide: BorderSide.none),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 20.w, top: 20.h),
+                                        child: Container(
+                                          width: 372.w,
+                                          height: 55.h,
+                                          decoration: ShapeDecoration(
+                                            shape: RoundedRectangleBorder(
+                                              side: BorderSide(
+                                                width: 1.w,
+                                                color: Color(0xFF627487),
+                                              ),
+                                              borderRadius:
+                                              BorderRadius.circular(4.r),
+                                            ),
+                                          ),
+                                          child: TextField(
+                                            style:
+                                            TextStyle(color: Colors.white),
+                                            cursorColor: Colors.white,
+                                            controller: emailcontroller,
+                                            decoration: InputDecoration(
+                                              hintText: "Enter Your Email.. ",
+                                              hintStyle: TextStyle(
+                                                  color: Color(0xFF627487)),
+                                              border: OutlineInputBorder(
+                                                  borderSide: BorderSide.none),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 20.w, top: 20.h),
+                                        child: Container(
+                                          width: 372.w,
+                                          height: 55.h,
+                                          decoration: ShapeDecoration(
+                                            shape: RoundedRectangleBorder(
+                                              side: BorderSide(
+                                                width: 1.w,
+                                                color: Color(0xFF627487),
+                                              ),
+                                              borderRadius:
+                                              BorderRadius.circular(4.r),
+                                            ),
+                                          ),
+                                          child: TextField(
+                                            style:
+                                            TextStyle(color: Colors.white),
+                                            controller: addresscontroller,
+                                            cursorColor: Colors.white,
+                                            decoration: InputDecoration(
+                                              hintText: "Enter Your Address.. ",
+                                              hintStyle: TextStyle(
+                                                  color: Color(0xFF627487)),
+                                              border: OutlineInputBorder(
+                                                  borderSide: BorderSide.none),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 20.w, top: 20.h),
+                                        child: Container(
+                                          width: 372.w,
+                                          height: 55.h,
+                                          decoration: ShapeDecoration(
+                                            shape: RoundedRectangleBorder(
+                                              side: BorderSide(
+                                                width: 1.w,
+                                                color: Color(0xFF627487),
+                                              ),
+                                              borderRadius:
+                                              BorderRadius.circular(4.r),
+                                            ),
+                                          ),
+                                          child: TextField(
+                                            style:
+                                            TextStyle(color: Colors.white),
+                                            cursorColor: Colors.white,
+                                            controller: phonenumbercontroller,
+                                            decoration: InputDecoration(
+                                              hintText:
+                                              "Enter Your phone number.. ",
+                                              hintStyle: TextStyle(
+                                                  color: Color(0xFF627487)),
+                                              border: OutlineInputBorder(
+                                                  borderSide: BorderSide.none),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 30.h,
+                                      ),
+                                      BlocListener<OrderBuyBloc, OrderBuyState>(
+                                        listener: (context, state) {
+                                          if (state
+                                          is OrderBuyVehiclesBlocLoading) {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return Center(
+                                                  child:
+                                                  CircularProgressIndicator(),
+                                                );
+                                              },
+                                            );
+                                          }
+                                          if (state
+                                          is OrderBuyVehiclesBlocError) {
+                                            Navigator.of(context).pop();
+                                            print('error');
+                                          }
+                                          if (state
+                                          is OrderBuyVehiclesBlocLoaded) {
+                                            Navigator.of(context).pop();
+                                          }
+                                        },
+                                        child: InkWell(
+                                          onTap: () {
+                                            if (namecontroller
+                                                .text.isNotEmpty ||
+                                                emailcontroller
+                                                    .text.isNotEmpty ||
+                                                addresscontroller
+                                                    .text.isNotEmpty ||
+                                                phonenumbercontroller
+                                                    .text.isNotEmpty) {
+                                              Razorpay razorpay = Razorpay();
+                                              var options = {
+                                                'key':
+                                                'rzp_test_gKANZdsNdLqaQs',
+                                                'amount': 100,
+                                                'name': 'Acme Corp.',
+                                                'description': 'Fine T-Shirt',
+                                                'retry': {
+                                                  'enabled': true,
+                                                  'max_count': 1
+                                                },
+                                                'send_sms_hash': true,
+                                                'prefill': {
+                                                  'contact': '8888888888',
+                                                  'email': 'test@razorpay.com'
+                                                },
+                                                'external': {
+                                                  'wallets': ['paytm']
+                                                }
+                                              };
+                                              razorpay.on(
+                                                  Razorpay.EVENT_PAYMENT_ERROR,
+                                                  handlePaymentErrorResponse);
+                                              razorpay.on(
+                                                  Razorpay
+                                                      .EVENT_PAYMENT_SUCCESS,
+                                                  handlePaymentSuccessResponse);
+                                              razorpay.on(
+                                                  Razorpay
+                                                      .EVENT_EXTERNAL_WALLET,
+                                                  handleExternalWalletSelected);
+                                              razorpay.open(options);
+                                            } else {
+                                              showDialog(
+                                                context: context,
+                                                builder: (ctx) =>
+                                                    AlertDialog(
+                                                      title: Text(
+                                                        "Enter your Details Completely",
+                                                        style: TextStyle(
+                                                          fontSize: 16.sp,
+                                                          color: Colors.black,
+                                                          fontFamily:
+                                                          'sf pro display',
+                                                          fontWeight:
+                                                          FontWeight.w700,
+                                                        ),
+                                                      ),
+                                                    ),
+                                              );
+                                            }
+                                          },
+                                          child: Container(
+                                            width: 213.w,
+                                            height: 50.h,
+                                            decoration: ShapeDecoration(
+                                              gradient: LinearGradient(
+                                                begin: Alignment.topCenter,
+                                                end: Alignment.bottomCenter,
+                                                colors: [
+                                                  Color(0xFFFFF0C9),
+                                                  Color(0xFFFFCE50),
+                                                  Color(0xFFD39906),
+                                                ],
+                                              ),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                BorderRadius.circular(10.r),
+                                              ),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                'Buy Now',
+                                                style: TextStyle(
+                                                  color: Color(0xFFF7F5F2),
+                                                  fontSize: 20.sp,
+                                                  fontFamily: 'sf pro display',
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
                           },
-                          'external': {
-                            'wallets': ['paytm']
-                          }
-                        };
-                        razorpay.on(Razorpay.EVENT_PAYMENT_ERROR,
-                            handlePaymentErrorResponse);
-                        razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
-                            handlePaymentSuccessResponse);
-                        razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET,
-                            handleExternalWalletSelected);
-                        razorpay.open(options);
+                        );
                       },
                       child: Container(
                         width: 213.w,

@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../ModelClass/AllRentVehiclesModel.dart';
 import '../ModelClass/BuyAllVehiclesModel.dart';
 import '../ModelClass/BuyNearVehiclesModel.dart';
-import '../ModelClass/BuyVehiclesModel.dart';
+import '../ModelClass/OrderBuyVehiclesModel.dart';
 import '../ModelClass/MyRentVehiclesModel.dart';
 import '../ModelClass/OrderRentVehicleModel.dart';
 import '../ModelClass/SearchBuyVehiclesModel.dart';
@@ -155,7 +155,7 @@ class UserApi {
   }
 
 // Buy Vehicles
-  Future<BuyVehiclesModel> getOrderBuyVehicles(
+  Future<OrderBuyVehiclesModel> getOrderBuyVehicles(
       String vehicleid,
       String buyername,
       String buyerphonenumber,
@@ -168,19 +168,19 @@ class UserApi {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String userId = prefs.getString('userId').toString();
     var body = {
-      "vehicle": "66ced88a4ce0c154e57ca3cd",
+      "vehicle": vehicleid,
       "buyerId": userId,
       "buyerName": buyername,
       "buyerPhoneNumber": buyerphonenumber,
       "buyerEmail":buyeremail,
-      "buyerAddress": "123 Main St, Anytown, USA",
+      "buyerAddress": buyeraddress,
       "purchasePrice": amount
     };
     print("welcome" + body.toString());
     Response response =
     await apiClient.invokeAPI(trendingpath, 'POST', jsonEncode(body));
 
-    return BuyVehiclesModel.fromJson(jsonDecode(response.body));
+    return OrderBuyVehiclesModel.fromJson(jsonDecode(response.body));
   }
 
   // Search Buy Vehicles

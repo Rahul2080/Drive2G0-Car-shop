@@ -1,5 +1,5 @@
-class BuyVehiclesModel {
-  BuyVehiclesModel({
+class OrderBuyVehiclesModel {
+  OrderBuyVehiclesModel({
       this.buyer, 
       this.buyerName, 
       this.buyerPhoneNumber, 
@@ -13,7 +13,7 @@ class BuyVehiclesModel {
       this.purchaseDate, 
       this.v,});
 
-  BuyVehiclesModel.fromJson(dynamic json) {
+  OrderBuyVehiclesModel.fromJson(dynamic json) {
     buyer = json['buyer'];
     buyerName = json['buyerName'];
     buyerPhoneNumber = json['buyerPhoneNumber'];
