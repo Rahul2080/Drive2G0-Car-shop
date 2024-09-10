@@ -15,7 +15,10 @@ class Bottomnavigation extends StatefulWidget {
 }
 
 class _BottomnavigationState extends State<Bottomnavigation> {
-  final screens = [Home(), MyCars(), Buycar(), Profile()];
+  final screens = [Home(),
+   MyCars(),
+    Buycar(),
+    Profile()];
   int currentIndex = 0;
 
   @override

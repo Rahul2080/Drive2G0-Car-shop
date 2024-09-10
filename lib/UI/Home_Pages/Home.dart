@@ -391,7 +391,7 @@ List<String>places=[];
                                                                 position]
                                                             .ownerProfilePhoto
                                                             .toString(),
-                                                    carplace:places, place:place ,
+                                                    carplace:places, place:place, ownernumber: nearrentvehicles[position].ownerPhoneNumber.toString() ,
                                                   ),),);
                                     },
                                     child: Container(
@@ -705,7 +705,7 @@ List<String>places=[];
                                                             allrentvechicle[
                                                                     index]
                                                                 .ownerProfilePhoto
-                                                                .toString(), carplace:places, place: place ,
+                                                                .toString(), carplace:places, place: place, ownernumber: allrentvechicle[index].ownerPhoneNumber.toString() ,
                                                       )));
                                         },
                                         child: Container(

@@ -1,10 +1,11 @@
+import 'package:drive2go/Bloc/MyOrderBuyVehicles_Bloc/my_order_buy_vehicles_bloc.dart';
 import 'package:drive2go/Bloc/MyRentVehicles_Bloc/my_rent_vehicles_bloc.dart';
-import 'package:drive2go/UI/Home_Pages/car_Rent_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
+import '../Repository/ModelClass/MyOrderBuyVehiclesModel.dart';
 import '../Repository/ModelClass/MyRentVehiclesModel.dart';
 
 class MyCars extends StatefulWidget {
@@ -16,11 +17,11 @@ class MyCars extends StatefulWidget {
 
 class _MyCarsState extends State<MyCars> {
   late List<MyRentVehiclesModel> myrentvehicles;
-
+late List<MyOrderBuyVehiclesModel>myorderbuyvehicles;
   @override
   void initState() {
     BlocProvider.of<MyRentVehiclesBloc>(context).add(FeatchMyRentVehicles());
-
+    BlocProvider.of<MyOrderBuyVehiclesBloc>(context).add(FeatchMyOrderBuyVehicles());
     super.initState();
   }
 
@@ -42,14 +43,6 @@ class _MyCarsState extends State<MyCars> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        leading: GestureDetector(
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-            child: Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-            )),
         backgroundColor: Colors.black,
       ),
       body: DefaultTabController(
@@ -110,147 +103,126 @@ class _MyCarsState extends State<MyCars> {
                               return Padding(
                                 padding: EdgeInsets.only(
                                     left: 10.w, top: 10.h, right: 10.w),
-                                child: GestureDetector(onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (_) => CarRentDetails(
-                                          carimage: myrentvehicles[position].vehicle!.photos!,
-                                          carname: myrentvehicles[position].vehicle!.brand.toString(),
-                                          rating: myrentvehicles[position].vehicle!.rating.toString(),
-                                          greartype: myrentvehicles[position].vehicle!.gearType.toString(),
-                                          tanktype:myrentvehicles[position].vehicle!.fuelType.toString() ,
-                                          seats: myrentvehicles[position].vehicle!.noOfSeats.toString(),
-                                          door: myrentvehicles[position].vehicle!.noOfDoors.toString(),
-                                          carowner: myrentvehicles[position].vehicle!.ownerName.toString(),
-                                          ownerplace: myrentvehicles[position].vehicle!.ownerPlace.toString(),
-                                          carprice: myrentvehicles[position].vehicle!.rentPrice.toString(),
-                                          carcolor:myrentvehicles[position].vehicle!.vehicleColor.toString(),
-                                          availability: myrentvehicles[position].vehicle!.available!,
-                                          vehicleid: myrentvehicles[position].vehicle!.id.toString(),
-                                          ownerprofileimg: myrentvehicles[position].vehicle!.ownerProfilePhoto.toString(),
-                                          carplace: [],
-                                          place: 'place')));
-                                },
-                                  child: Container(
-                                    width: 391.w,
-                                    height: 129.h,
-                                    decoration: ShapeDecoration(
-                                      gradient: LinearGradient(
-                                        begin: Alignment(8, -0.54),
-                                        end: Alignment(-0.84, 0.54),
-                                        colors: [
-                                          Colors.white,
-                                          Colors.white.withOpacity(0)
-                                        ],
-                                      ),
-                                      shape: RoundedRectangleBorder(
-                                        side: BorderSide(width: 1.w,
-                                            color: Color(0xFF58606A)),
-                                        borderRadius: BorderRadius.circular(
-                                            10.r),
-                                      ),
+                                child: Container(
+                                  width: 391.w,
+                                  height: 129.h,
+                                  decoration: ShapeDecoration(
+                                    gradient: LinearGradient(
+                                      begin: Alignment(8, -0.54),
+                                      end: Alignment(-0.84, 0.54),
+                                      colors: [
+                                        Colors.white,
+                                        Colors.white.withOpacity(0)
+                                      ],
                                     ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment
-                                          .start,
-                                      children: [
-                                        SizedBox(width: 5.w,),
-                                        Container(
-                                          width: 134.w,
-                                          height: 121.h,
-                                          decoration: ShapeDecoration(
-                                            color: Colors.white,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius
-                                                    .circular(6.r)),
-                                          ),
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(
-                                                6.r),
-                                            child: Image.network(
-                                              myrentvehicles[position].vehicle!
-                                                  .photos![0],
-                                              fit: BoxFit.cover,
-                                            ),
+                                    shape: RoundedRectangleBorder(
+                                      side: BorderSide(width: 1.w,
+                                          color: Color(0xFF58606A)),
+                                      borderRadius: BorderRadius.circular(
+                                          10.r),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment
+                                        .start,
+                                    children: [
+                                      SizedBox(width: 5.w,),
+                                      Container(
+                                        width: 134.w,
+                                        height: 121.h,
+                                        decoration: ShapeDecoration(
+                                          color: Colors.white,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius
+                                                  .circular(6.r)),
+                                        ),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                              6.r),
+                                          child: Image.network(
+                                            myrentvehicles[position].vehicle!
+                                                .photos![0],
+                                            fit: BoxFit.cover,
                                           ),
                                         ),
-                                        SizedBox(width: 16.w),
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment
-                                              .start,
-                                          children: [
-                                            SizedBox(height: 10.h),
-                                            Text(
-                                              myrentvehicles[position].vehicle!
-                                                  .brand.toString(),
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                color: Color(0xFFF7F5F2),
-                                                fontSize: 16.sp,
-                                                fontFamily: 'sf pro display',
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                            SizedBox(height: 2.h),
-                                            Text(
-                                              myrentvehicles[position].vehicle!
-                                                  .ownerName.toString(),
-                                              style: TextStyle(
-                                                color: Color(0xFFF7F5F2),
-                                                fontSize: 15.sp,
-                                                fontFamily: 'sf pro display',
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            ),
-                                            SizedBox(height: 2.h),
-                                            Text(
-                                              pickeddate,
-                                              style: TextStyle(
-                                                color: Color(0xFFF7F5F2),
-                                                fontSize: 12.sp,
-                                                fontFamily: 'sf pro display',
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            ),
-                                            Text(
-                                              Returndate,
-                                              style: TextStyle(
-                                                color: Color(0xFFF7F5F2),
-                                                fontSize: 12.sp,
-                                                fontFamily: 'sf pro display',
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            ),
-                                            SizedBox(height: 8.h),
-                                            Text(
-                                              "${myrentvehicles[position]
-                                                  .vehicle!.mileage
-                                                  .toString()} Milage",
-                                              style: TextStyle(
-                                                color: Color(0xFFF7F5F2),
-                                                fontSize: 12.sp,
-                                                fontFamily: 'sf pro display',
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                              top: 90.h, left: 60.w),
-                                          child: Text(
-                                            ' \₹ ${myrentvehicles[position]
-                                                .vehicle!.rentPrice
-                                                .toString()}/Day',
+                                      ),
+                                      SizedBox(width: 16.w),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment
+                                            .start,
+                                        children: [
+                                          SizedBox(height: 10.h),
+                                          Text(
+                                            myrentvehicles[position].vehicle!
+                                                .brand.toString(),
+                                            textAlign: TextAlign.center,
                                             style: TextStyle(
-                                              color: Color(0xFFFFD66D),
+                                              color: Color(0xFFF7F5F2),
                                               fontSize: 16.sp,
+                                              fontFamily: 'sf pro display',
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          SizedBox(height: 2.h),
+                                          Text(
+                                            myrentvehicles[position].vehicle!
+                                                .ownerName.toString(),
+                                            style: TextStyle(
+                                              color: Color(0xFFF7F5F2),
+                                              fontSize: 15.sp,
                                               fontFamily: 'sf pro display',
                                               fontWeight: FontWeight.w400,
                                             ),
                                           ),
-                                        )
-                                      ],
-                                    ),
+                                          SizedBox(height: 2.h),
+                                          Text(
+                                            pickeddate,
+                                            style: TextStyle(
+                                              color: Color(0xFFF7F5F2),
+                                              fontSize: 12.sp,
+                                              fontFamily: 'sf pro display',
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                          Text(
+                                            Returndate,
+                                            style: TextStyle(
+                                              color: Color(0xFFF7F5F2),
+                                              fontSize: 12.sp,
+                                              fontFamily: 'sf pro display',
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                          SizedBox(height: 8.h),
+                                          Text(
+                                            "${myrentvehicles[position]
+                                                .vehicle!.mileage
+                                                .toString()} Milage",
+                                            style: TextStyle(
+                                              color: Color(0xFFF7F5F2),
+                                              fontSize: 12.sp,
+                                              fontFamily: 'sf pro display',
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            top: 90.h, left: 60.w),
+                                        child: Text(
+                                          ' \₹ ${myrentvehicles[position]
+                                              .vehicle!.rentPrice
+                                              .toString()}/Day',
+                                          style: TextStyle(
+                                            color: Color(0xFFFFD66D),
+                                            fontSize: 16.sp,
+                                            fontFamily: 'sf pro display',
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      )
+                                    ],
                                   ),
                                 ),
                               );
@@ -261,7 +233,7 @@ class _MyCarsState extends State<MyCars> {
                           );
                         } else {
                           return SizedBox();
-                        };
+                        }
                       }
                   ),
                 ),
@@ -269,14 +241,24 @@ class _MyCarsState extends State<MyCars> {
                   width: double.infinity,
                   height: double.infinity,
                   color: Colors.black,
-                  child: ListView.separated(
-                    itemCount: 5,
+                  child: BlocBuilder<MyOrderBuyVehiclesBloc, MyOrderBuyVehiclesState>(
+  builder: (context, state) {
+    if(state is MyOrderBuyVehiclesBlocLoading){ return Center(child: CircularProgressIndicator(),);}
+    if(state is MyOrderBuyVehiclesBlocError){ return Center( child: Text("Error",style: TextStyle(color: Colors.white),),);}
+    if(state is MyOrderBuyVehiclesBlocLoaded){
+     myorderbuyvehicles=BlocProvider.of< MyOrderBuyVehiclesBloc>(context).myorderbuyvehicles;
+
+    return ListView.separated(
+                    itemCount: myorderbuyvehicles.length,
 
                     itemBuilder: (context, position) {
+                      String pickeddate = dateConvert(
+                        myorderbuyvehicles[position].purchaseDate
+                            .toString(),);
                       return Padding(
                         padding: EdgeInsets.only(
                             left: 10.w, top: 10.h, right: 10.w),
-                        child: Container(
+                        child:  myorderbuyvehicles[position].vehicle==null?SizedBox():Container(
                           width: 391.w,
                           height: 129.h,
                           decoration: ShapeDecoration(
@@ -307,8 +289,8 @@ class _MyCarsState extends State<MyCars> {
                                 ),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(6.r),
-                                  child: Image.asset(
-                                    "assets/car.png",
+                                  child: Image.network(
+                                   myorderbuyvehicles[position].vehicle!.photos![0],
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -319,7 +301,7 @@ class _MyCarsState extends State<MyCars> {
                                 children: [
                                   SizedBox(height: 10.h),
                                   Text(
-                                    'Car name',
+                                    myorderbuyvehicles[position].vehicle!.brand.toString(),
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       color: Color(0xFFF7F5F2),
@@ -330,7 +312,7 @@ class _MyCarsState extends State<MyCars> {
                                   ),
                                   SizedBox(height: 8.h),
                                   Text(
-                                    'James Robert',
+                                    myorderbuyvehicles[position].vehicle!.ownerName.toString(),
                                     style: TextStyle(
                                       color: Color(0xFFF7F5F2),
                                       fontSize: 15.sp,
@@ -340,7 +322,7 @@ class _MyCarsState extends State<MyCars> {
                                   ),
                                   SizedBox(height: 8.h),
                                   Text(
-                                    '2022',
+                                  pickeddate,
                                     style: TextStyle(
                                       color: Color(0xFFF7F5F2),
                                       fontSize: 12.sp,
@@ -350,7 +332,7 @@ class _MyCarsState extends State<MyCars> {
                                   ),
                                   SizedBox(height: 8.h),
                                   Text(
-                                    '1000 km',
+                                  "  ${myorderbuyvehicles[position].vehicle!.mileage.toString()} \Milage",
                                     style: TextStyle(
                                       color: Color(0xFFF7F5F2),
                                       fontSize: 12.sp,
@@ -363,7 +345,7 @@ class _MyCarsState extends State<MyCars> {
                               Padding(
                                 padding: EdgeInsets.only(left: 50.w, top: 90.h),
                                 child: Text(
-                                  '\$5000 / day',
+                                 " ${myorderbuyvehicles[position].vehicle!.rentPrice.toString()}",
                                   style: TextStyle(
                                     color: Color(0xFFFFD66D),
                                     fontSize: 16.sp,
@@ -380,7 +362,9 @@ class _MyCarsState extends State<MyCars> {
                     separatorBuilder: (context, position) {
                       return SizedBox(height: 5.h,);
                     },
-                  ),
+                  );
+  } else {return SizedBox();}}
+),
                 ),
               ]),
             ),

@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../Repository/ModelClass/NearByRentVehiclesModel.dart';
 import 'Purchase_RentalCar.dart';
@@ -28,6 +29,7 @@ class CarRentDetails extends StatefulWidget {
   final String vehicleid;
   final String ownerprofileimg;
   final String place;
+  final String ownernumber;
 
 
   const CarRentDetails(
@@ -45,7 +47,7 @@ class CarRentDetails extends StatefulWidget {
       required this.carcolor,
       required this.availability,
       required this.vehicleid,
-      required this.ownerprofileimg, required this.carplace, required this.place,
+      required this.ownerprofileimg, required this.carplace, required this.place, required this.ownernumber,
 
       });
 
@@ -114,7 +116,20 @@ class _CarRentDetailsState extends State<CarRentDetails> {
     }
   }
 
-
+//Url Launcher
+  void launchURL(Uri uri, bool inApp) async {
+    try {
+      if (await canLaunchUrl(uri)) {
+        if (inApp) {
+          await launchUrl(uri, mode: LaunchMode.inAppWebView);
+        } else {
+          await launchUrl(uri, mode: LaunchMode.externalApplication);
+        }
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
 
 
@@ -632,15 +647,19 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                             ),
                           ),
                           SizedBox(width: 90.w),
-                          Icon(
-                            Icons.messenger_outline,
-                            color: Colors.white,
-                          ),
-                          SizedBox(width: 25.w),
-                          Icon(
-                            Icons.wifi_calling_3_outlined,
-                            color: Colors.white,
-                          )
+                      InkWell(onTap: () => launchURL(Uri.parse('https://wa.me/${widget.ownernumber}') ,false),
+                        child: Image.asset(
+                          'assets/whatsapp.png',
+                          width: 30.w,
+                          height: 30.h,
+                        ),
+                      ),
+                      SizedBox(width: 20.w),
+                      InkWell(onTap:() => launchURL(Uri.parse('tel:${widget.ownernumber}'), false),
+                        child: Icon(
+                          Icons.wifi_calling_3_outlined,
+                          color: Colors.white,
+                        ),),
                         ],
                       ),
                     ),
@@ -761,7 +780,7 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                                                                   nearrentvehicles[
                                                                           position]
                                                                       .ownerProfilePhoto
-                                                                      .toString(), carplace: widget.carplace, place: widget.place,
+                                                                      .toString(), carplace: widget.carplace, place: widget.place, ownernumber: nearrentvehicles[position].ownerPhoneNumber.toString(),
                                                             )));
                                           },
                                           child: Container(

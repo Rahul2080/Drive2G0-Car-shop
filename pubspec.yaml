@@ -49,6 +49,7 @@ dependencies:
   flutter_bloc:
   shared_preferences: ^2.3.2
   lottie: ^3.1.2
+  url_launcher: ^6.3.0
 
 
 

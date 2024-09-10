@@ -63,17 +63,7 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar>
   }
 
   void handlePaymentSuccessResponse(PaymentSuccessResponse response) {
-    BlocProvider.of<OrderRentVehiclesBloc>(context).add(
-        FeatchOrderRentVehicles(
-            vehicleid: widget.vehicleid,
-            pickeddate: pickupdatecontroller.text,
-            returneddate: returneddatecontroller.text,
-            pickuplocationcontroller:
-            pickuplocationcontroller.text,
-            returnlocationcontroller:
-            returnlocationcontroller.text,
-            amount: totalDays! *
-                double.parse(widget.price)));
+
     /*
     * Payment Success Response contains three values:
     * 1. Order ID

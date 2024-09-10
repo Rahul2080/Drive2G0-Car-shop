@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../ModelClass/AllRentVehiclesModel.dart';
 import '../ModelClass/BuyAllVehiclesModel.dart';
 import '../ModelClass/BuyNearVehiclesModel.dart';
+import '../ModelClass/MyOrderBuyVehiclesModel.dart';
 import '../ModelClass/OrderBuyVehiclesModel.dart';
 import '../ModelClass/MyRentVehiclesModel.dart';
 import '../ModelClass/OrderRentVehicleModel.dart';
@@ -196,6 +197,20 @@ class UserApi {
     await apiClient.invokeAPI(trendingpath, 'GET', jsonEncode(body));
 
     return SearchBuyVehiclesModel.listFromJson(jsonDecode(response.body));
+  }
+  // My ordered Buy Vehicles
+  Future<List<MyOrderBuyVehiclesModel>> getMyOrderBuyVehicles() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userId = prefs.getString('userId').toString();
+    String trendingpath = 'http://45.159.221.50:8868/api/get-buy-orders/$userId';
+
+
+    var body = {};
+    print("welcome" + body.toString());
+    Response response =
+    await apiClient.invokeAPI(trendingpath, 'GET', jsonEncode(body));
+
+    return MyOrderBuyVehiclesModel.listFromJson(jsonDecode(response.body));
   }
 
 }
