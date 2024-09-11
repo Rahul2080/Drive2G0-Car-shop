@@ -1,3 +1,4 @@
+import 'package:drive2go/UI/Profile_pages/Help_Chat_Page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -220,25 +221,27 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(left: 20.w, top: 20.h),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.help_outline,
-                    color: Colors.white,
-                  ),
-                  SizedBox(width: 20.w),
-                  Text(
-                    'Help',
-                    style: TextStyle(
+            InkWell(onTap: (){ Navigator.of(context).push(MaterialPageRoute(builder: (_)=> HelpChatPage()));},
+              child: Padding(
+                padding: EdgeInsets.only(left: 20.w, top: 20.h),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.help_outline,
                       color: Colors.white,
-                      fontSize: 15.sp,
-                      fontFamily: 'sf pro display',
-                      fontWeight: FontWeight.w400,
                     ),
-                  ),
-                ],
+                    SizedBox(width: 20.w),
+                    Text(
+                      'Help',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15.sp,
+                        fontFamily: 'sf pro display',
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             Padding(
