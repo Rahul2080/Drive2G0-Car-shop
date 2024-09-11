@@ -27,7 +27,7 @@ class _BuycarState extends State<Buycar> {
   Position? _currentPosition;
   LatLng _initialPosition = LatLng(37.42796133580664, -122.085749655962);
   List<String> places = [];
-
+List<bool> latestmodel=[];
   Future<void> _getCurrentLocation() async {
     try {
       Position position = await Geolocator.getCurrentPosition(
@@ -121,6 +121,10 @@ class _BuycarState extends State<Buycar> {
           if (state is BuyAllVehiclesBlocLoaded) {
             buyallvehicle =
                 BlocProvider.of<BuyAllVehiclesBloc>(context).buyallvehicles;
+            for(int i=0;i<buyallvehicle.length;i++){
+              latestmodel.add(buyallvehicle[i].latestModel??false);
+            }
+
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -493,7 +497,7 @@ class _BuycarState extends State<Buycar> {
                     }),
                   ),
                 ),
-                buyallvehicle.length == 0
+                latestmodel.length == 0
                     ? SizedBox()
                     : Padding(
                         padding: EdgeInsets.only(left: 10.w, top: 15.h),
@@ -539,6 +543,7 @@ class _BuycarState extends State<Buycar> {
                       itemCount: buyallvehicle.length,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, position) {
+
                         return buyallvehicle[position].latestModel == true
                             ? FutureBuilder(
                                 future: _getVechileAddress(
@@ -722,17 +727,17 @@ class _BuycarState extends State<Buycar> {
                                       ),
                                     );
                                   } else {
-                                    return SizedBox();
+                                    return Container(color: Colors.blue,);
                                   }
                                 })
-                            : SizedBox();
+                            : Container(color: Colors.red,);
                       },
                       separatorBuilder: (context, position) {
                         return buyallvehicle[position].latestModel == true
                             ? SizedBox(
                                 width: 10.w,
                               )
-                            : SizedBox();
+                            : Container(color: Colors.yellow,);
                       },
                     ),
                   ),
