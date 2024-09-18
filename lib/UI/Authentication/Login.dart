@@ -5,8 +5,9 @@ import 'package:drive2go/UI/BottomNavigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:google_sign_in/google_sign_in.dart';
 import '../../Bloc/Siginup_Bloc/signup_bloc.dart';
 import 'Signup.dart';
 
@@ -22,10 +23,9 @@ class _LoginState extends State<Login> {
   TextEditingController passwordcontroller = TextEditingController();
   bool passwordvisible = true;
   var formkey = GlobalKey<FormState>();
-late LoginModel data;
-@override
+  late LoginModel data;
 
-
+  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,7 +73,7 @@ late LoginModel data;
                     decoration: InputDecoration(
                       hintText: "Email",
                       hintStyle:
-                          TextStyle(color: Color(0xFFA7B0BB), fontSize: 20.sp),
+                      TextStyle(color: Color(0xFFA7B0BB), fontSize: 20.sp),
                       filled: true,
                       fillColor: Colors.white.withOpacity(0.18000000715255737),
                       focusColor: Colors.white.withOpacity(0.18000000715255737),
@@ -83,7 +83,8 @@ late LoginModel data;
                     ),
                     validator: (emailvalue) {
                       if (emailvalue!.isEmpty ||
-                          !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          !RegExp(
+                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                               .hasMatch(emailvalue)) {
                         return 'Enter a valid email!';
                       }
@@ -105,7 +106,7 @@ late LoginModel data;
                     decoration: InputDecoration(
                       hintText: "Password",
                       hintStyle:
-                          TextStyle(color: Color(0xFFA7B0BB), fontSize: 20.sp),
+                      TextStyle(color: Color(0xFFA7B0BB), fontSize: 20.sp),
                       filled: true,
                       fillColor: Colors.white.withOpacity(0.18000000715255737),
                       focusColor: Colors.white.withOpacity(0.18000000715255737),
@@ -115,13 +116,13 @@ late LoginModel data;
                       suffixIcon: IconButton(
                         icon: passwordvisible == false
                             ? Icon(
-                                Icons.visibility,
-                                color: Color(0xFFA7B0BB),
-                              )
+                          Icons.visibility,
+                          color: Color(0xFFA7B0BB),
+                        )
                             : Icon(
-                                Icons.visibility_off_outlined,
-                                color: Color(0xFFA7B0BB),
-                              ),
+                          Icons.visibility_off_outlined,
+                          color: Color(0xFFA7B0BB),
+                        ),
                         onPressed: () {
                           setState(() {
                             passwordvisible = !passwordvisible;
@@ -174,17 +175,18 @@ late LoginModel data;
                         Navigator.of(context).pop();
 
 
-
                         print('error');
                       }
                       if (state is LoginBlocLoaded) {
-                        data=BlocProvider.of<LoginBloc>(context).loginModel;
+                        data = BlocProvider
+                            .of<LoginBloc>(context)
+                            .loginModel;
                         checkLogin(data.id.toString());
                         Navigator.of(context).pop();
                         Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
                                 builder: (_) => Bottomnavigation()),
-                            (route) => (false));
+                                (route) => (false));
                       }
                     },
                     child: GestureDetector(
@@ -291,6 +293,7 @@ late LoginModel data;
       ),
     );
   }
+
   void checkLogin(String userId) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('userId', userId);

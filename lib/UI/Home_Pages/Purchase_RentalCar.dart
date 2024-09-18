@@ -63,7 +63,15 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar>
   }
 
   void handlePaymentSuccessResponse(PaymentSuccessResponse response) {
-
+    BlocProvider.of<OrderRentVehiclesBloc>(context).add(
+        FeatchOrderRentVehicles(
+            vehicleid: widget.vehicleid,
+            pickeddate: pickupdatecontroller.text,
+            returneddate: returneddatecontroller.text,
+            pickuplocationcontroller: pickuplocationcontroller.text,
+            returnlocationcontroller: returnlocationcontroller.text,
+            amount: totalDays! *
+                double.parse(widget.price)));
     /*
     * Payment Success Response contains three values:
     * 1. Order ID
@@ -755,7 +763,7 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar>
                             Razorpay razorpay = Razorpay();
                             var options = {
                               'key': 'rzp_test_gKANZdsNdLqaQs',
-                              'amount': 100,
+                              'amount':totalDays! * double.parse(widget.price)*100,
                               'name': 'Acme Corp.',
                               'description': 'Fine T-Shirt',
                               'retry': {'enabled': true, 'max_count': 1},
@@ -785,10 +793,6 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar>
                                     returnlocationcontroller: returnlocationcontroller.text,
                                     amount: totalDays! *
                                         double.parse(widget.price)));
-
-
-
-
                           }
                         },
                         child: Container(

@@ -125,20 +125,19 @@ class _CarbuyDetailsState extends State<CarbuyDetails>
     }
   }
   //Url Launcher
-
   void launchURL(Uri uri, bool inApp) async {
     try {
       if (await canLaunchUrl(uri)) {
-        if (inApp) {
-          await launchUrl(uri, mode: LaunchMode.inAppWebView);
-        } else {
-          await launchUrl(uri, mode: LaunchMode.externalApplication);
-        }
+        await launchUrl(uri, mode: inApp ? LaunchMode.inAppWebView : LaunchMode.externalApplication);
+      } else {
+        print('Could not launch $uri');
       }
     } catch (e) {
-      print(e.toString());
+      print('Error: $e');
     }
   }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -641,13 +640,15 @@ class _CarbuyDetailsState extends State<CarbuyDetails>
                             ),
                           ),
                           SizedBox(width: 70.w),
-                          InkWell(onTap: () => launchURL(Uri.parse('https://wa.me/${widget.ownernumber}') ,false),
+                          InkWell(//6238814407
+                            onTap: () => launchURL(Uri.parse('https://wa.me/+91 ${widget.ownernumber}'), false),
                             child: Image.asset(
                               'assets/whatsapp.png',
-                              width: 30.w,
-                              height: 30.h,
+                              width: 30,
+                              height: 30,
                             ),
                           ),
+
                           SizedBox(width: 20.w),
                           InkWell(onTap:() => launchURL(Uri.parse('tel:${widget.ownernumber}'), false),
                             child: Icon(
