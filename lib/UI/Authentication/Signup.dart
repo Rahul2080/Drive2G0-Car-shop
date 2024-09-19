@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../BottomNavigation.dart';
 import 'Login.dart';
 
 class Signup extends StatefulWidget {
@@ -240,6 +239,35 @@ class _SignupState extends State<Signup> {
                       ),
                     ),
                   ),
+                ),SizedBox(height: 20.h),
+                Container(
+                  width: 350.w,
+                  height: 73.h,
+                  decoration: ShapeDecoration(
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.r),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                          width: 60.w,
+                          height: 40.h,
+                          child: Image.asset("assets/google.png")),
+                      Text(
+                        'Sign In With Google',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16.sp,
+                          fontFamily: 'sf pro display',
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: 0.16.w,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
                 SizedBox(height: 30.h),
                 Row(
@@ -279,4 +307,6 @@ class _SignupState extends State<Signup> {
       ),
     );
   }
+
+
 }
