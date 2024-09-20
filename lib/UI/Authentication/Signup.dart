@@ -1,7 +1,10 @@
 import 'package:drive2go/Bloc/Siginup_Bloc/signup_bloc.dart';
+import 'package:drive2go/UI/Authentication/PhoneNumber_Feild.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import 'Login.dart';
 
@@ -17,6 +20,8 @@ class _SignupState extends State<Signup> {
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController phonenumbercontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+  FirebaseAuth auth = FirebaseAuth.instance;
   bool passwordvisible = true;
   var formkey = GlobalKey<FormState>();
   @override
@@ -240,33 +245,35 @@ class _SignupState extends State<Signup> {
                     ),
                   ),
                 ),SizedBox(height: 20.h),
-                Container(
-                  width: 350.w,
-                  height: 73.h,
-                  decoration: ShapeDecoration(
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.r),
+                InkWell(onTap:signInwithGoogle ,
+                  child: Container(
+                    width: 350.w,
+                    height: 73.h,
+                    decoration: ShapeDecoration(
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.r),
+                      ),
                     ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                          width: 60.w,
-                          height: 40.h,
-                          child: Image.asset("assets/google.png")),
-                      Text(
-                        'Sign In With Google',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16.sp,
-                          fontFamily: 'sf pro display',
-                          fontWeight: FontWeight.w400,
-                          letterSpacing: 0.16.w,
-                        ),
-                      )
-                    ],
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                            width: 60.w,
+                            height: 40.h,
+                            child: Image.asset("assets/google.png")),
+                        Text(
+                          'Sign Up With Google',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16.sp,
+                            fontFamily: 'sf pro display',
+                            fontWeight: FontWeight.w400,
+                            letterSpacing: 0.16.w,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(height: 30.h),
@@ -307,6 +314,32 @@ class _SignupState extends State<Signup> {
       ),
     );
   }
+  Future<String?> signInwithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleSignInAccount =
+      await googleSignIn.signIn();
+      final GoogleSignInAuthentication googleSignInAuthentication =
+      await googleSignInAccount!.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+      // Getting users credential
+      UserCredential result = await auth.signInWithCredential(credential);
+      User? user = result.user;
+      //
+      // BlocProvider.of<SignupBloc>(context).add(FeatchUser(
+      //     email: user?.email??"",
+      //     password: user?.uid??"", name: user?.displayName??"", phonenumber: ""));
+Navigator.of(context).push(MaterialPageRoute(builder: (_)=>PhonenumberFeild(username: user!.displayName.toString(), useremail:user!.email.toString(), password:user!.uid,)));
+      print("hellologin"+user!.email.toString()+ "username"+user!.displayName.toString()+user!.phoneNumber.toString()+user!.uid);
+      // if result not null we simply call the MaterialpageRoute,
+      // for go to the HomePage screen
 
+
+    }catch (e) {
+
+    }
+  }
 
 }

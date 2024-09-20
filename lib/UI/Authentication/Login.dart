@@ -243,7 +243,7 @@ class _LoginState extends State<Login> {
                         SizedBox(
                             width: 60.w,
                             height: 40.h,
-                            child: Image.asset("assets/google.png")),
+                            child: Image.asset("assets/google.png"),),
                         Text(
                           'Sign In With Google',
                           style: TextStyle(

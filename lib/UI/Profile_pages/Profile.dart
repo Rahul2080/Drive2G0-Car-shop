@@ -1,5 +1,6 @@
 import 'package:drive2go/UI/Profile_pages/EditProfile.dart';
 import 'package:drive2go/UI/Profile_pages/Help_Chat_Page.dart';
+import 'package:drive2go/UI/Profile_pages/TermsAndConditions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -348,31 +349,41 @@ class _ProfileState extends State<Profile> {
               padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 10.h),
               child: Divider(),
             ),
-            Padding(
-              padding: EdgeInsets.only(left: 20.w, top: 20.h),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.shield_outlined,
-                    color: Colors.white,
+            InkWell(onTap: ()=> Navigator.of(context).push(MaterialPageRoute(builder: (_)=> Termsandconditions())),
+              child: SizedBox(height: 80.h,width: double.infinity.w,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 20.w, top: 20.h),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.shield_outlined,
+                            color: Colors.white,
+                          ),
+                          SizedBox(width: 20.w),
+                          Text(
+                            'Terms and Conditions',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15.sp,
+                              fontFamily: 'sf pro display',
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 4.w, right: 20.w, ),
+                        child: Divider(),
+                      ),
+                    ],
                   ),
-                  SizedBox(width: 20.w),
-                  Text(
-                    'Terms and Conditions',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15.sp,
-                      fontFamily: 'sf pro display',
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ],
+              
+                ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 10.h),
-              child: Divider(),
-            ),
+
             SizedBox(height: 30.h),
             GestureDetector(
               onTap: () async{
