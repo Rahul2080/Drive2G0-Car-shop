@@ -221,68 +221,70 @@ class _BuycarState extends State<Buycar> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 20.h),
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: 150.w,
-                        height: 40.h,
-                        child: Text(
-                          'Nearby ',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Color(0xFFF7F5F2),
-                            fontSize: 22.sp,
-                            fontFamily: 'sf pro display',
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 180.w),
-                      SizedBox(
-                        width: 90.w,
-                        height: 40.h,
-                        child: Text(
-                          'View all',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Color(0xFFF7F5F2),
-                            fontSize: 15.sp,
-                            fontFamily: 'sf pro display',
-                            fontWeight: FontWeight.w300,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 10.w, right: 10.w),
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 223.h,
-                    child:
-                        BlocBuilder<BuyNearVehiclesBloc, BuyNearVehiclesState>(
-                            builder: (context, state) {
-                      if (state is BuyNearVehiclesBlocLoading) {
-                        return Center(child: CircularProgressIndicator());
-                      }
+                BlocBuilder<BuyNearVehiclesBloc, BuyNearVehiclesState>(
+  builder: (context, state) {
+    if (state is BuyNearVehiclesBlocLoading) {
+    return Center(child: CircularProgressIndicator());
+    }
 
-                      if (state is BuyNearVehiclesBlocError) {
-                        return Center(
-                          child: Text(
-                            "Error",
-                            style: TextStyle(color: Colors.white),
+    if (state is BuyNearVehiclesBlocError) {
+    return Center(
+    child: Text(
+    "Error",
+    style: TextStyle(color: Colors.white),
+    ),
+    );
+    }
+    if (state is BuyNearVehiclesBlocLoaded) {
+    buynearvehicle =
+    BlocProvider.of<BuyNearVehiclesBloc>(context)
+        .buynearvehicles;
+    return  buynearvehicle.length==0? SizedBox(): Column(crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: 10.w,top: 20.h),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 150.w,
+                            height: 40.h,
+                            child: Text(
+                              'Nearby ',
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                color: Color(0xFFF7F5F2),
+                                fontSize: 22.sp,
+                                fontFamily: 'sf pro display',
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                           ),
-                        );
-                      }
-                      if (state is BuyNearVehiclesBlocLoaded) {
-                        buynearvehicle =
-                            BlocProvider.of<BuyNearVehiclesBloc>(context)
-                                .buynearvehicles;
+                          SizedBox(width: 180.w),
+                          SizedBox(
+                            width: 90.w,
+                            height: 40.h,
+                            child: Text(
+                              'View all',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Color(0xFFF7F5F2),
+                                fontSize: 15.sp,
+                                fontFamily: 'sf pro display',
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
 
-                        return ListView.separated(
+                    Padding(
+                      padding: EdgeInsets.only(left: 10.w, right: 10.w),
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 223.h,
+                        child:
+                        ListView.separated(
                           scrollDirection: Axis.horizontal,
                           itemCount: buynearvehicle.length,
                           itemBuilder: (context, position) {
@@ -313,64 +315,64 @@ class _BuycarState extends State<Buycar> {
                                       onTap: () {
                                         Navigator.of(context)
                                             .push(MaterialPageRoute(
-                                                builder: (_) => CarbuyDetails(
-                                                      carimage: buynearvehicle[
-                                                              position]
-                                                          .photos!
-                                                          .toList(),
-                                                      carname: buynearvehicle[
-                                                              position]
-                                                          .brand
-                                                          .toString(),
-                                                      ratting: buynearvehicle[
-                                                              position]
-                                                          .rating
-                                                          .toString(),
-                                                      tanktype: buynearvehicle[
-                                                              position]
-                                                          .fuelType
-                                                          .toString(),
-                                                      geartype: buynearvehicle[
-                                                              position]
-                                                          .gearType
-                                                          .toString(),
-                                                      seat: buynearvehicle[
-                                                              position]
-                                                          .noOfSeats
-                                                          .toString(),
-                                                      door: buynearvehicle[
-                                                              position]
-                                                          .noOfDoors
-                                                          .toString(),
-                                                      price: buynearvehicle[
-                                                              position]
-                                                          .rentPrice
-                                                          .toString(),
-                                                      Ownerimge: buynearvehicle[
-                                                              position]
-                                                          .ownerProfilePhoto
-                                                          .toString(),
-                                                      Ownername: buynearvehicle[
-                                                              position]
-                                                          .ownerName
-                                                          .toString(),
-                                                      Ownerplace:
-                                                          buynearvehicle[
-                                                                  position]
-                                                              .ownerPlace
-                                                              .toString(),
-                                                      id: buynearvehicle[
-                                                              position]
-                                                          .id
-                                                          .toString(),
-                                                      carplace: place,
-                                                      places: places,
-                                                      ownernumber:
-                                                          buynearvehicle[
-                                                                  position]
-                                                              .ownerPhoneNumber
-                                                              .toString(),
-                                                    )));
+                                            builder: (_) => CarbuyDetails(
+                                              carimage: buynearvehicle[
+                                              position]
+                                                  .photos!
+                                                  .toList(),
+                                              carname: buynearvehicle[
+                                              position]
+                                                  .brand
+                                                  .toString(),
+                                              ratting: buynearvehicle[
+                                              position]
+                                                  .rating
+                                                  .toString(),
+                                              tanktype: buynearvehicle[
+                                              position]
+                                                  .fuelType
+                                                  .toString(),
+                                              geartype: buynearvehicle[
+                                              position]
+                                                  .gearType
+                                                  .toString(),
+                                              seat: buynearvehicle[
+                                              position]
+                                                  .noOfSeats
+                                                  .toString(),
+                                              door: buynearvehicle[
+                                              position]
+                                                  .noOfDoors
+                                                  .toString(),
+                                              price: buynearvehicle[
+                                              position]
+                                                  .rentPrice
+                                                  .toString(),
+                                              Ownerimge: buynearvehicle[
+                                              position]
+                                                  .ownerProfilePhoto
+                                                  .toString(),
+                                              Ownername: buynearvehicle[
+                                              position]
+                                                  .ownerName
+                                                  .toString(),
+                                              Ownerplace:
+                                              buynearvehicle[
+                                              position]
+                                                  .ownerPlace
+                                                  .toString(),
+                                              id: buynearvehicle[
+                                              position]
+                                                  .id
+                                                  .toString(),
+                                              carplace: place,
+                                              places: places,
+                                              ownernumber:
+                                              buynearvehicle[
+                                              position]
+                                                  .ownerPhoneNumber
+                                                  .toString(),
+                                            )));
                                       },
                                       child: Container(
                                         width: 185.w,
@@ -389,12 +391,12 @@ class _BuycarState extends State<Buycar> {
                                                 width: 1.w,
                                                 color: Color(0xFF58606A)),
                                             borderRadius:
-                                                BorderRadius.circular(10.r),
+                                            BorderRadius.circular(10.r),
                                           ),
                                         ),
                                         child: Column(
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                           children: [
                                             Padding(
                                               padding: const EdgeInsets.all(1),
@@ -410,11 +412,11 @@ class _BuycarState extends State<Buycar> {
                                                   ),
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius:
-                                                        BorderRadius.only(
+                                                    BorderRadius.only(
                                                       topLeft:
-                                                          Radius.circular(8.r),
+                                                      Radius.circular(8.r),
                                                       topRight:
-                                                          Radius.circular(8.r),
+                                                      Radius.circular(8.r),
                                                     ),
                                                   ),
                                                 ),
@@ -423,7 +425,7 @@ class _BuycarState extends State<Buycar> {
                                             SizedBox(height: 15.h),
                                             Padding(
                                               padding:
-                                                  EdgeInsets.only(left: 10.w),
+                                              EdgeInsets.only(left: 10.w),
                                               child: Text(
                                                 buynearvehicle[position]
                                                     .brand
@@ -439,7 +441,7 @@ class _BuycarState extends State<Buycar> {
                                             ),
                                             Padding(
                                               padding:
-                                                  EdgeInsets.only(left: 5.w),
+                                              EdgeInsets.only(left: 5.w),
                                               child: Row(
                                                 children: [
                                                   Icon(
@@ -452,20 +454,20 @@ class _BuycarState extends State<Buycar> {
                                                     child: Text(
                                                       place!,
                                                       textAlign:
-                                                          TextAlign.center,
+                                                      TextAlign.center,
                                                       style: TextStyle(
                                                         color:
-                                                            Color(0xFFF7F5F2),
+                                                        Color(0xFFF7F5F2),
                                                         fontSize: 14.sp,
                                                         fontFamily:
-                                                            'sf pro display',
+                                                        'sf pro display',
                                                         fontWeight:
-                                                            FontWeight.w300,
+                                                        FontWeight.w300,
                                                         letterSpacing: 0.50.w,
                                                       ),
                                                       maxLines: 1,
                                                       overflow:
-                                                          TextOverflow.ellipsis,
+                                                      TextOverflow.ellipsis,
                                                     ),
                                                   ),
                                                   SizedBox(width: 10.w),
@@ -476,9 +478,9 @@ class _BuycarState extends State<Buycar> {
                                                       color: Color(0xFFFFD66D),
                                                       fontSize: 13.sp,
                                                       fontFamily:
-                                                          'SF Pro Display',
+                                                      'SF Pro Display',
                                                       fontWeight:
-                                                          FontWeight.w500,
+                                                      FontWeight.w500,
                                                       letterSpacing: 0.50.w,
                                                     ),
                                                   )
@@ -499,13 +501,14 @@ class _BuycarState extends State<Buycar> {
                               width: 10.w,
                             );
                           },
-                        );
-                      } else {
-                        return SizedBox();
-                      }
-                    }),
-                  ),
-                ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+  }else {return SizedBox();}}
+),
+               
                 latest == 0
                     ? SizedBox()
                     : Padding(

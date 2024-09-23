@@ -48,7 +48,8 @@ class CarbuyDetails extends StatefulWidget {
       required this.carplace,
       required this.places,
       required this.price,
-      required this.id, required this.ownernumber});
+      required this.id,
+      required this.ownernumber});
 
   @override
   State<CarbuyDetails> createState() => _CarbuyDetailsState();
@@ -124,11 +125,15 @@ class _CarbuyDetailsState extends State<CarbuyDetails>
       print(e);
     }
   }
+
   //Url Launcher
   void launchURL(Uri uri, bool inApp) async {
     try {
       if (await canLaunchUrl(uri)) {
-        await launchUrl(uri, mode: inApp ? LaunchMode.inAppWebView : LaunchMode.externalApplication);
+        await launchUrl(uri,
+            mode: inApp
+                ? LaunchMode.inAppWebView
+                : LaunchMode.externalApplication);
       } else {
         print('Could not launch $uri');
       }
@@ -136,7 +141,6 @@ class _CarbuyDetailsState extends State<CarbuyDetails>
       print('Error: $e');
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -217,44 +221,18 @@ class _CarbuyDetailsState extends State<CarbuyDetails>
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 20.w, top: 20.h),
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: 200.w,
-                        height: 40.h,
-                        child: Text(
-                          widget.carname,
-                          style: TextStyle(
-                            color: Color(0xFFF7F5F2),
-                            fontSize: 20.sp,
-                            fontFamily: 'sf pro display',
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
+                  child: SizedBox(
+                    width: 200.w,
+                    height: 40.h,
+                    child: Text(
+                      widget.carname,
+                      style: TextStyle(
+                        color: Color(0xFFF7F5F2),
+                        fontSize: 20.sp,
+                        fontFamily: 'sf pro display',
+                        fontWeight: FontWeight.w500,
                       ),
-                      SizedBox(width: 140.w),
-                      SizedBox(
-                        width: 50.w,
-                        height: 40.h,
-                        child: IconButton(
-                          icon: isfavarites == true
-                              ? Icon(
-                                  Icons.favorite,
-                                  size: 30.sp,
-                                  color: Colors.red,
-                                )
-                              : Icon(
-                                  Icons.favorite_border,
-                                  size: 30.sp,
-                                ),
-                          onPressed: () {
-                            setState(() {
-                              isfavarites = !isfavarites;
-                            });
-                          },
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
                 Padding(
@@ -640,17 +618,22 @@ class _CarbuyDetailsState extends State<CarbuyDetails>
                             ),
                           ),
                           SizedBox(width: 70.w),
-                          InkWell(//6238814407
-                            onTap: () => launchURL(Uri.parse('https://wa.me/+91 ${widget.ownernumber}'), false),
+                          InkWell(
+                            //6238814407
+                            onTap: () => launchURL(
+                                Uri.parse(
+                                    'https://wa.me/+91 ${widget.ownernumber}'),
+                                false),
                             child: Image.asset(
                               'assets/whatsapp.png',
                               width: 30,
                               height: 30,
                             ),
                           ),
-
                           SizedBox(width: 20.w),
-                          InkWell(onTap:() => launchURL(Uri.parse('tel:${widget.ownernumber}'), false),
+                          InkWell(
+                            onTap: () => launchURL(
+                                Uri.parse('tel:${widget.ownernumber}'), false),
                             child: Icon(
                               Icons.wifi_calling_3_outlined,
                               color: Colors.white,
@@ -661,213 +644,273 @@ class _CarbuyDetailsState extends State<CarbuyDetails>
                     ),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(left: 20.w, top: 10.h),
-                  child: Text(
-                    'Recommended for you',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 22.sp,
-                      fontFamily: 'sf pro display',
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 10.h),
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 223.h,
-                    child:
-                        BlocBuilder<BuyNearVehiclesBloc, BuyNearVehiclesState>(
-                            builder: (context, state) {
-                      if (state is BuyNearVehiclesBlocLoading) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                      if (state is BuyNearVehiclesBlocError) {
-                        return Center(
-                          child: Text(
-                            "Error",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        );
-                      }
-                      if (state is BuyNearVehiclesBlocLoaded) {
-                        buynearvehicle =
-                            BlocProvider.of<BuyNearVehiclesBloc>(context)
-                                .buynearvehicles;
-                        return ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: buynearvehicle.length,
-                          itemBuilder: (context, position) {
-                            return widget.id ==
-                                    buynearvehicle[position].id.toString()
-                                ? SizedBox()
-                                : GestureDetector(
-                                    onTap: () {
-                                      Navigator.of(context).push(MaterialPageRoute(
-                                          builder: (_) => CarbuyDetails(
-                                              carimage: buynearvehicle[position]
-                                                  .photos!,
-                                              carname: buynearvehicle[position]
-                                                  .brand
-                                                  .toString(),
-                                              ratting: buynearvehicle[position]
-                                                  .rating
-                                                  .toString(),
-                                              tanktype: buynearvehicle[position]
-                                                  .fuelType
-                                                  .toString(),
-                                              geartype: buynearvehicle[position]
-                                                  .gearType
-                                                  .toString(),
-                                              seat: buynearvehicle[position]
-                                                  .noOfSeats
-                                                  .toString(),
-                                              door: buynearvehicle[position]
-                                                  .noOfDoors
-                                                  .toString(),
-                                              Ownerimge: buynearvehicle[position]
-                                                  .ownerProfilePhoto
-                                                  .toString(),
-                                              Ownername: buynearvehicle[position]
-                                                  .ownerName
-                                                  .toString(),
-                                              Ownerplace:
-                                                  buynearvehicle[position]
-                                                      .ownerPlace
-                                                      .toString(),
-                                              carplace: widget.carplace,
-                                              places: widget.places,
-                                              price: buynearvehicle[position]
-                                                  .rentPrice
-                                                  .toString(),
-                                              id: widget.id, ownernumber: buynearvehicle[position].ownerPhoneNumber.toString(),)));
-                                    },
-                                    child: Container(
-                                      width: 185.w,
-                                      height: 223.h,
-                                      decoration: ShapeDecoration(
-                                        gradient: LinearGradient(
-                                          begin: Alignment(8, -0.54),
-                                          end: Alignment(-0.84, 0.54),
-                                          colors: [
-                                            Colors.white,
-                                            Colors.white.withOpacity(0)
-                                          ],
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                          side: BorderSide(
-                                              width: 1.w,
-                                              color: Color(0xFF58606A)),
-                                          borderRadius:
-                                              BorderRadius.circular(10.r),
-                                        ),
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(1),
-                                            child: Container(
-                                              width: 187.w,
-                                              height: 146.h,
-                                              decoration: ShapeDecoration(
-                                                image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      buynearvehicle[position]
-                                                          .photos![0]),
-                                                  fit: BoxFit.fill,
-                                                ),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                    topLeft:
-                                                        Radius.circular(8.r),
-                                                    topRight:
-                                                        Radius.circular(8.r),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(height: 15.h),
-                                          Padding(
-                                            padding:
-                                                EdgeInsets.only(left: 10.w),
-                                            child: Text(
+                BlocBuilder<BuyNearVehiclesBloc, BuyNearVehiclesState>(
+                    builder: (context, state) {
+                  if (state is BuyNearVehiclesBlocLoading) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  if (state is BuyNearVehiclesBlocError) {
+                    return Center(
+                      child: Text(
+                        "Error",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    );
+                  }
+                  if (state is BuyNearVehiclesBlocLoaded) {
+                    buynearvehicle =
+                        BlocProvider.of<BuyNearVehiclesBloc>(context)
+                            .buynearvehicles;
+                    return buynearvehicle.length == 0
+                        ? SizedBox()
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: 20.w, top: 10.h),
+                                child: Text(
+                                  'Recommended for you',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 22.sp,
+                                    fontFamily: 'sf pro display',
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    left: 20.w, right: 20.w, top: 10.h),
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  height: 223.h,
+                                  child: ListView.separated(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: buynearvehicle.length,
+                                    itemBuilder: (context, position) {
+                                      return widget.id ==
                                               buynearvehicle[position]
-                                                  .brand
-                                                  .toString(),
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                color: Color(0xFFF7F5F2),
-                                                fontSize: 16.sp,
-                                                fontFamily: 'sf pro display',
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(left: 5.w),
-                                            child: Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.location_on_outlined,
-                                                  color: Color(0xFFF7F5F2),
-                                                  size: 20.sp,
+                                                  .id
+                                                  .toString()
+                                          ? SizedBox()
+                                          : GestureDetector(
+                                              onTap: () {
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder:
+                                                            (_) =>
+                                                                CarbuyDetails(
+                                                                  carimage: buynearvehicle[
+                                                                          position]
+                                                                      .photos!,
+                                                                  carname: buynearvehicle[
+                                                                          position]
+                                                                      .brand
+                                                                      .toString(),
+                                                                  ratting: buynearvehicle[
+                                                                          position]
+                                                                      .rating
+                                                                      .toString(),
+                                                                  tanktype: buynearvehicle[
+                                                                          position]
+                                                                      .fuelType
+                                                                      .toString(),
+                                                                  geartype: buynearvehicle[
+                                                                          position]
+                                                                      .gearType
+                                                                      .toString(),
+                                                                  seat: buynearvehicle[
+                                                                          position]
+                                                                      .noOfSeats
+                                                                      .toString(),
+                                                                  door: buynearvehicle[
+                                                                          position]
+                                                                      .noOfDoors
+                                                                      .toString(),
+                                                                  Ownerimge: buynearvehicle[
+                                                                          position]
+                                                                      .ownerProfilePhoto
+                                                                      .toString(),
+                                                                  Ownername: buynearvehicle[
+                                                                          position]
+                                                                      .ownerName
+                                                                      .toString(),
+                                                                  Ownerplace: buynearvehicle[
+                                                                          position]
+                                                                      .ownerPlace
+                                                                      .toString(),
+                                                                  carplace: widget
+                                                                      .carplace,
+                                                                  places: widget
+                                                                      .places,
+                                                                  price: buynearvehicle[
+                                                                          position]
+                                                                      .rentPrice
+                                                                      .toString(),
+                                                                  id: widget.id,
+                                                                  ownernumber: buynearvehicle[
+                                                                          position]
+                                                                      .ownerPhoneNumber
+                                                                      .toString(),
+                                                                )));
+                                              },
+                                              child: Container(
+                                                width: 185.w,
+                                                height: 223.h,
+                                                decoration: ShapeDecoration(
+                                                  gradient: LinearGradient(
+                                                    begin: Alignment(8, -0.54),
+                                                    end: Alignment(-0.84, 0.54),
+                                                    colors: [
+                                                      Colors.white,
+                                                      Colors.white
+                                                          .withOpacity(0)
+                                                    ],
+                                                  ),
+                                                  shape: RoundedRectangleBorder(
+                                                    side: BorderSide(
+                                                        width: 1.w,
+                                                        color:
+                                                            Color(0xFF58606A)),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10.r),
+                                                  ),
                                                 ),
-                                                SizedBox(
-                                                  width: 80.w,
-                                                  child: Text(
-                                                    widget.places[position],
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                      color: Color(0xFFF7F5F2),
-                                                      fontSize: 14.sp,
-                                                      fontFamily:
-                                                          'sf pro display',
-                                                      fontWeight:
-                                                          FontWeight.w300,
-                                                      letterSpacing: 0.50.w,
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              1),
+                                                      child: Container(
+                                                        width: 187.w,
+                                                        height: 146.h,
+                                                        decoration:
+                                                            ShapeDecoration(
+                                                          image:
+                                                              DecorationImage(
+                                                            image: NetworkImage(
+                                                                buynearvehicle[
+                                                                        position]
+                                                                    .photos![0]),
+                                                            fit: BoxFit.fill,
+                                                          ),
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .only(
+                                                              topLeft: Radius
+                                                                  .circular(
+                                                                      8.r),
+                                                              topRight: Radius
+                                                                  .circular(
+                                                                      8.r),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
                                                     ),
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
+                                                    SizedBox(height: 15.h),
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 10.w),
+                                                      child: Text(
+                                                        buynearvehicle[position]
+                                                            .brand
+                                                            .toString(),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                          color:
+                                                              Color(0xFFF7F5F2),
+                                                          fontSize: 16.sp,
+                                                          fontFamily:
+                                                              'sf pro display',
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 5.w),
+                                                      child: Row(
+                                                        children: [
+                                                          Icon(
+                                                            Icons
+                                                                .location_on_outlined,
+                                                            color: Color(
+                                                                0xFFF7F5F2),
+                                                            size: 20.sp,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 80.w,
+                                                            child: Text(
+                                                              widget.places[
+                                                                  position],
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: TextStyle(
+                                                                color: Color(
+                                                                    0xFFF7F5F2),
+                                                                fontSize: 14.sp,
+                                                                fontFamily:
+                                                                    'sf pro display',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w300,
+                                                                letterSpacing:
+                                                                    0.50.w,
+                                                              ),
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            "  \₹ ${buynearvehicle[position].rentPrice.toString()}",
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: TextStyle(
+                                                              color: Color(
+                                                                  0xFFFFD66D),
+                                                              fontSize: 13.sp,
+                                                              fontFamily:
+                                                                  'SF Pro Display',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              letterSpacing:
+                                                                  0.50.w,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                                Text(
-                                                  "  \₹ ${buynearvehicle[position].rentPrice.toString()}",
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    color: Color(0xFFFFD66D),
-                                                    fontSize: 13.sp,
-                                                    fontFamily:
-                                                        'SF Pro Display',
-                                                    fontWeight: FontWeight.w500,
-                                                    letterSpacing: 0.50.w,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                          },
-                          separatorBuilder: (context, position) {
-                            return SizedBox(
-                              width: 10.w,
-                            );
-                          },
-                        );
-                      } else {
-                        return SizedBox();
-                      }
-                    }),
-                  ),
-                ),
+                                              ),
+                                            );
+                                    },
+                                    separatorBuilder: (context, position) {
+                                      return SizedBox(
+                                        width: 10.w,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                  } else {
+                    return SizedBox();
+                  }
+                }),
                 SizedBox(height: 90.h),
               ],
             ),
@@ -924,23 +967,27 @@ class _CarbuyDetailsState extends State<CarbuyDetails>
                                       children: [
                                         Padding(
                                           padding: EdgeInsets.only(
-                                              left: 30.w, top: 20.h,right: 20.w),
-                                          child:  TextFormField(
-                                            controller: namecontroller,textInputAction: TextInputAction.next,
+                                              left: 30.w,
+                                              top: 20.h,
+                                              right: 20.w),
+                                          child: TextFormField(
+                                            controller: namecontroller,
+                                            textInputAction:
+                                                TextInputAction.next,
                                             cursorColor: Colors.white,
                                             style:
-                                            TextStyle(color: Colors.white),
+                                                TextStyle(color: Colors.white),
                                             decoration: InputDecoration(
                                               enabledBorder: OutlineInputBorder(
                                                   borderSide: BorderSide(
-                                                    width: 1,
-                                                    color: Color(0xFF627487),
-                                                  )),
+                                                width: 1,
+                                                color: Color(0xFF627487),
+                                              )),
                                               focusedBorder: OutlineInputBorder(
                                                   borderSide: BorderSide(
-                                                    width: 1.w,
-                                                    color: Color(0xFF627487),
-                                                  )),
+                                                width: 1.w,
+                                                color: Color(0xFF627487),
+                                              )),
                                               hintText: " Enter Your Name",
                                               hintStyle: TextStyle(
                                                   color: Color(0xFFA7B0BB),
@@ -949,13 +996,13 @@ class _CarbuyDetailsState extends State<CarbuyDetails>
                                               fillColor: Colors.black,
                                               focusColor: Colors.white
                                                   .withOpacity(
-                                                  0.18000000715255737),
+                                                      0.18000000715255737),
                                               border: OutlineInputBorder(
                                                   borderRadius:
-                                                  BorderRadius.circular(
-                                                      10.r),
+                                                      BorderRadius.circular(
+                                                          10.r),
                                                   borderSide:
-                                                  BorderSide(width: 1.w)),
+                                                      BorderSide(width: 1.w)),
                                             ),
                                             validator: (name) {
                                               if (name!.isEmpty) {
@@ -971,22 +1018,24 @@ class _CarbuyDetailsState extends State<CarbuyDetails>
                                               left: 30.w,
                                               top: 20.h,
                                               right: 20.w),
-                                          child:  TextFormField(
-                                            controller: emailcontroller,textInputAction: TextInputAction.next,
+                                          child: TextFormField(
+                                            controller: emailcontroller,
+                                            textInputAction:
+                                                TextInputAction.next,
                                             cursorColor: Colors.white,
                                             style:
-                                            TextStyle(color: Colors.white),
+                                                TextStyle(color: Colors.white),
                                             decoration: InputDecoration(
                                               enabledBorder: OutlineInputBorder(
                                                   borderSide: BorderSide(
-                                                    width: 1,
-                                                    color: Color(0xFF627487),
-                                                  )),
+                                                width: 1,
+                                                color: Color(0xFF627487),
+                                              )),
                                               focusedBorder: OutlineInputBorder(
                                                   borderSide: BorderSide(
-                                                    width: 1.w,
-                                                    color: Color(0xFF627487),
-                                                  )),
+                                                width: 1.w,
+                                                color: Color(0xFF627487),
+                                              )),
                                               hintText: "Enter Your Email..",
                                               hintStyle: TextStyle(
                                                   color: Color(0xFFA7B0BB),
@@ -995,43 +1044,47 @@ class _CarbuyDetailsState extends State<CarbuyDetails>
                                               fillColor: Colors.black,
                                               focusColor: Colors.white
                                                   .withOpacity(
-                                                  0.18000000715255737),
+                                                      0.18000000715255737),
                                               border: OutlineInputBorder(
                                                   borderRadius:
-                                                  BorderRadius.circular(
-                                                      10.r),
+                                                      BorderRadius.circular(
+                                                          10.r),
                                                   borderSide:
-                                                  BorderSide(width: 1.w)),
+                                                      BorderSide(width: 1.w)),
                                             ),
-                                              validator: (emailvalue) {
-                                                if (emailvalue!.isEmpty ||
-                                                    !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                                        .hasMatch(emailvalue)) {
-                                                  return 'Enter a valid email!';
-                                                }
-                                                return null;
-                                              },
+                                            validator: (emailvalue) {
+                                              if (emailvalue!.isEmpty ||
+                                                  !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                                      .hasMatch(emailvalue)) {
+                                                return 'Enter a valid email!';
+                                              }
+                                              return null;
+                                            },
                                           ),
                                         ),
                                         Padding(
                                           padding: EdgeInsets.only(
-                                              left: 30.w, top: 20.h,right: 20.h),
-                                          child:  TextFormField(
-                                            controller: addresscontroller,textInputAction: TextInputAction.next,
+                                              left: 30.w,
+                                              top: 20.h,
+                                              right: 20.h),
+                                          child: TextFormField(
+                                            controller: addresscontroller,
+                                            textInputAction:
+                                                TextInputAction.next,
                                             cursorColor: Colors.white,
                                             style:
-                                            TextStyle(color: Colors.white),
+                                                TextStyle(color: Colors.white),
                                             decoration: InputDecoration(
                                               enabledBorder: OutlineInputBorder(
                                                   borderSide: BorderSide(
-                                                    width: 1,
-                                                    color: Color(0xFF627487),
-                                                  )),
+                                                width: 1,
+                                                color: Color(0xFF627487),
+                                              )),
                                               focusedBorder: OutlineInputBorder(
                                                   borderSide: BorderSide(
-                                                    width: 1.w,
-                                                    color: Color(0xFF627487),
-                                                  )),
+                                                width: 1.w,
+                                                color: Color(0xFF627487),
+                                              )),
                                               hintText: " Enter Your Address",
                                               hintStyle: TextStyle(
                                                   color: Color(0xFFA7B0BB),
@@ -1040,13 +1093,13 @@ class _CarbuyDetailsState extends State<CarbuyDetails>
                                               fillColor: Colors.black,
                                               focusColor: Colors.white
                                                   .withOpacity(
-                                                  0.18000000715255737),
+                                                      0.18000000715255737),
                                               border: OutlineInputBorder(
                                                   borderRadius:
-                                                  BorderRadius.circular(
-                                                      10.r),
+                                                      BorderRadius.circular(
+                                                          10.r),
                                                   borderSide:
-                                                  BorderSide(width: 1.w)),
+                                                      BorderSide(width: 1.w)),
                                             ),
                                             validator: (address) {
                                               if (address!.isEmpty) {
@@ -1171,7 +1224,7 @@ class _CarbuyDetailsState extends State<CarbuyDetails>
                                               final isValid = formkey
                                                   .currentState
                                                   ?.validate();
-                                              if (isValid! ) {
+                                              if (isValid!) {
                                                 BlocProvider.of<OrderBuyBloc>(
                                                         context)
                                                     .add(FeatchOrderBuyVehicles(

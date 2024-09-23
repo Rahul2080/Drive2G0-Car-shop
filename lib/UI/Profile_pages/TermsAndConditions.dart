@@ -34,14 +34,185 @@ class _TermsandconditionsState extends State<Termsandconditions> {
               );
             }
             if (snapshot.hasData) {
-              return SingleChildScrollView(
-                child: Text(
-                snapshot.data!.docs[0]['Terms'].toString(),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15.sp,
-                    fontFamily: 'sf pro display',
-                    fontWeight: FontWeight.w500,
+              return Padding(
+                padding:  EdgeInsets.only(left: 20.w),
+                child: SingleChildScrollView(scrollDirection: Axis.vertical,
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 90.h),
+                      Text(
+                        snapshot.data!.docs[0]['Terms'].toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.sp,
+                          fontFamily: 'sf pro display',
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(height: 10.h),
+                      Text(
+                        snapshot.data!.docs[0]['Termstext'].toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15.sp,
+                          fontFamily: 'sf pro display',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(height: 30.h),Text(
+                        snapshot.data!.docs[0]['Services'].toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.sp,
+                          fontFamily: 'sf pro display',
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(height: 10.h),Text(
+                        snapshot.data!.docs[0]['Servicestext'].toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15.sp,
+                          fontFamily: 'sf pro display',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(height: 30.h),Text(
+                        snapshot.data!.docs[0]['Rentals'].toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.sp,
+                          fontFamily: 'sf pro display',
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(height: 10.h),Text(
+                        snapshot.data!.docs[0]['Rentalstext'].toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15.sp,
+                          fontFamily: 'sf pro display',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(height: 30.h),
+                      Text(
+                        snapshot.data!.docs[0]['Purchases'].toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.sp,
+                          fontFamily: 'sf pro display',
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(height: 10.h),
+                      Text(
+                        snapshot.data!.docs[0]['Purchasestext'].toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15.sp,
+                          fontFamily: 'sf pro display',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(height: 30.h),Text(
+                        snapshot.data!.docs[0]['Eligibility'].toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.sp,
+                          fontFamily: 'sf pro display',
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(height: 10.h),Text(
+                        snapshot.data!.docs[0]['Eligibilitytext'].toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15.sp,
+                          fontFamily: 'sf pro display',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(height: 30.h),
+                      Text(
+                        snapshot.data!.docs[0]['Cancellation'].toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.sp,
+                          fontFamily: 'sf pro display',
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(height: 10.h),
+                      Text(
+                        snapshot.data!.docs[0]['Cancellationtext'].toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15.sp,
+                          fontFamily: 'sf pro display',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(height: 30.h),
+                      Text(
+                        snapshot.data!.docs[0]['Payment'].toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.sp,
+                          fontFamily: 'sf pro display',
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(height: 10.h),
+                      Text(
+                        snapshot.data!.docs[0]['Paymenttext'].toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15.sp,
+                          fontFamily: 'sf pro display',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(height: 30.h), Text(
+                        snapshot.data!.docs[0]['Third-Party'].toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.sp,
+                          fontFamily: 'sf pro display',
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(height: 10.h),
+                      Text(
+                        snapshot.data!.docs[0]['Third-Partytext'].toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15.sp,
+                          fontFamily: 'sf pro display',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(height: 30.h), Text(
+                        snapshot.data!.docs[0]['Contact'].toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.sp,
+                          fontFamily: 'sf pro display',
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(height: 10.h),
+                      Text(
+                        snapshot.data!.docs[0]['Contacttext'].toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15.sp,
+                          fontFamily: 'sf pro display',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(height: 30.h),
+                    ],
                   ),
                 ),
               );

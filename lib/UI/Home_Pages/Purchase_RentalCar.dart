@@ -222,10 +222,10 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar>
               color: Colors.white,
             )),
       ),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Column(
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
@@ -645,193 +645,193 @@ class _PurchaseRentalcarState extends State<PurchaseRentalcar>
                 ),
               ],
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 740.h),
-            child: Container(
-              width: 450.w,
-              height: 99.h,
-              decoration: ShapeDecoration(
-                color: Colors.white.withOpacity(0.7344567788),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(16.r),
-                    topRight: Radius.circular(16.r),
+            Padding(
+              padding: EdgeInsets.only(top: 780.h),
+              child: Container(
+                width: 450.w,
+                height: 99.h,
+                decoration: ShapeDecoration(
+                  color: Colors.white.withOpacity(0.7344567788),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(16.r),
+                      topRight: Radius.circular(16.r),
+                    ),
                   ),
                 ),
-              ),
-              child: Padding(
-                padding: EdgeInsets.only(left: 20.w),
-                child: Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 15.h),
-                        Text(
-                          'RENTAL PRICE FOR ',
-                          style: TextStyle(
-                            color: Color(0xFF1F354D),
-                            fontSize: 15.sp,
-                            fontFamily: 'sf pro display',
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        SizedBox(height: 5.h),
-                        Text(
-                          totalDays != null
-                              ? "${totalDays.toString()}\Days : ${totalDays! * double.parse(widget.price)}"
-                              : 'Days',
-                          style: TextStyle(
-                            color: Color(0xFFF7F5F2),
-                            fontSize: 16.sp,
-                            fontFamily: 'sf pro display',
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(width: 30.w),
-                    BlocListener<OrderRentVehiclesBloc, OrderRentVehiclesState>(
-                      listener: (context, state) {
-                        if (state is OrderRentVehiclesBlocLoading) {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            },
-                          );
-                        }
-                        if (state is OrderRentVehiclesBlocError) {
-                          Navigator.of(context).pop();
-                          print('error');
-                        }
-                        if (state is OrderRentVehiclesBlocLoaded) {
-                          Navigator.of(context).pop();
-                          showDialog(
-                            context: context,
-                            builder: (ctx) => AlertDialog(
-                              content: Lottie.asset(
-                                'assets/done.json',
-                                repeat: false,
-                                reverse: false,
-                                onLoaded: (complete) {
-                                  animationController
-                                    ..duration = complete.duration
-                                    ..forward();
-
-                                  animationController
-                                      .addStatusListener((status) {
-                                    if (status == AnimationStatus.completed) {
-                                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (_)=> Bottomnavigation()),(route) =>(false));
-                                    }
-                                  });
-                                },
-                              ),
+                child: Padding(
+                  padding: EdgeInsets.only(left: 20.w),
+                  child: Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 15.h),
+                          Text(
+                            'RENTAL PRICE FOR ',
+                            style: TextStyle(
+                              color: Color(0xFF1F354D),
+                              fontSize: 15.sp,
+                              fontFamily: 'sf pro display',
+                              fontWeight: FontWeight.w500,
                             ),
-                          );
-                        }
-                      },
-                      child: GestureDetector(
-                        onTap: () {
-                          if (_selectedIndex == -1 ||
-                              pickupdatecontroller.text.isEmpty ||
-                              returneddatecontroller.text.isEmpty ||
-                              pickuplocationcontroller.text.isEmpty ||
-                              returnlocationcontroller.text.isEmpty) {
+                          ),
+                          SizedBox(height: 5.h),
+                          Text(
+                            totalDays != null
+                                ? "${totalDays.toString()}\Days : ${totalDays! * double.parse(widget.price)}"
+                                : 'Days',
+                            style: TextStyle(
+                              color: Color(0xFFF7F5F2),
+                              fontSize: 16.sp,
+                              fontFamily: 'sf pro display',
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(width: 30.w),
+                      BlocListener<OrderRentVehiclesBloc, OrderRentVehiclesState>(
+                        listener: (context, state) {
+                          if (state is OrderRentVehiclesBlocLoading) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              },
+                            );
+                          }
+                          if (state is OrderRentVehiclesBlocError) {
+                            Navigator.of(context).pop();
+                            print('error');
+                          }
+                          if (state is OrderRentVehiclesBlocLoaded) {
+                            Navigator.of(context).pop();
                             showDialog(
                               context: context,
                               builder: (ctx) => AlertDialog(
-                                title: Text(
-                                  "Fill completely",
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                    color: Colors.black,
-                                    fontFamily: 'sf pro display',
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                                content: Lottie.asset(
+                                  'assets/done.json',
+                                  repeat: false,
+                                  reverse: false,
+                                  onLoaded: (complete) {
+                                    animationController
+                                      ..duration = complete.duration
+                                      ..forward();
+
+                                    animationController
+                                        .addStatusListener((status) {
+                                      if (status == AnimationStatus.completed) {
+                                        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (_)=> Bottomnavigation()),(route) =>(false));
+                                      }
+                                    });
+                                  },
                                 ),
                               ),
                             );
-                          } else if (_selectedIndex == 1 ||
-                              pickupdatecontroller.text.isEmpty ||
-                              returneddatecontroller.text.isEmpty ||
-                              pickuplocationcontroller.text.isEmpty ||
-                              returnlocationcontroller.text.isEmpty) {
-                            Razorpay razorpay = Razorpay();
-                            var options = {
-                              'key': 'rzp_test_gKANZdsNdLqaQs',
-                              'amount':totalDays! * double.parse(widget.price)*100,
-                              'name': 'Acme Corp.',
-                              'description': 'Fine T-Shirt',
-                              'retry': {'enabled': true, 'max_count': 1},
-                              'send_sms_hash': true,
-                              'prefill': {
-                                'contact': '8888888888',
-                                'email': 'test@razorpay.com'
-                              },
-                              'external': {
-                                'wallets': ['paytm']
-                              }
-                            };
-                            razorpay.on(Razorpay.EVENT_PAYMENT_ERROR,
-                                handlePaymentErrorResponse);
-                            razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
-                                handlePaymentSuccessResponse);
-                            razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET,
-                                handleExternalWalletSelected);
-                            razorpay.open(options);
-                          } else {
-                            BlocProvider.of<OrderRentVehiclesBloc>(context).add(
-                                FeatchOrderRentVehicles(
-                                    vehicleid: widget.vehicleid,
-                                    pickeddate: pickupdatecontroller.text,
-                                    returneddate: returneddatecontroller.text,
-                                    pickuplocationcontroller: pickuplocationcontroller.text,
-                                    returnlocationcontroller: returnlocationcontroller.text,
-                                    amount: totalDays! *
-                                        double.parse(widget.price)));
                           }
                         },
-                        child: Container(
-                          width: 190.w,
-                          height: 50.h,
-                          decoration: ShapeDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                Color(0xFFFFF0C9),
-                                Color(0xFFFFCE50),
-                                Color(0xFFD39906),
-                              ],
+                        child: GestureDetector(
+                          onTap: () {
+                            if (_selectedIndex == -1 ||
+                                pickupdatecontroller.text.isEmpty ||
+                                returneddatecontroller.text.isEmpty ||
+                                pickuplocationcontroller.text.isEmpty ||
+                                returnlocationcontroller.text.isEmpty) {
+                              showDialog(
+                                context: context,
+                                builder: (ctx) => AlertDialog(
+                                  title: Text(
+                                    "Fill completely",
+                                    style: TextStyle(
+                                      fontSize: 16.sp,
+                                      color: Colors.black,
+                                      fontFamily: 'sf pro display',
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            } else if (_selectedIndex == 1 ||
+                                pickupdatecontroller.text.isEmpty ||
+                                returneddatecontroller.text.isEmpty ||
+                                pickuplocationcontroller.text.isEmpty ||
+                                returnlocationcontroller.text.isEmpty) {
+                              Razorpay razorpay = Razorpay();
+                              var options = {
+                                'key': 'rzp_test_gKANZdsNdLqaQs',
+                                'amount':totalDays! * double.parse(widget.price)*100,
+                                'name': 'Acme Corp.',
+                                'description': 'Fine T-Shirt',
+                                'retry': {'enabled': true, 'max_count': 1},
+                                'send_sms_hash': true,
+                                'prefill': {
+                                  'contact': '8888888888',
+                                  'email': 'test@razorpay.com'
+                                },
+                                'external': {
+                                  'wallets': ['paytm']
+                                }
+                              };
+                              razorpay.on(Razorpay.EVENT_PAYMENT_ERROR,
+                                  handlePaymentErrorResponse);
+                              razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
+                                  handlePaymentSuccessResponse);
+                              razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET,
+                                  handleExternalWalletSelected);
+                              razorpay.open(options);
+                            } else {
+                              BlocProvider.of<OrderRentVehiclesBloc>(context).add(
+                                  FeatchOrderRentVehicles(
+                                      vehicleid: widget.vehicleid,
+                                      pickeddate: pickupdatecontroller.text,
+                                      returneddate: returneddatecontroller.text,
+                                      pickuplocationcontroller: pickuplocationcontroller.text,
+                                      returnlocationcontroller: returnlocationcontroller.text,
+                                      amount: totalDays! *
+                                          double.parse(widget.price)));
+                            }
+                          },
+                          child: Container(
+                            width: 190.w,
+                            height: 50.h,
+                            decoration: ShapeDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Color(0xFFFFF0C9),
+                                  Color(0xFFFFCE50),
+                                  Color(0xFFD39906),
+                                ],
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.r),
+                              ),
                             ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.r),
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Rent Now',
-                              style: TextStyle(
-                                color: Color(0xFFF7F5F2),
-                                fontSize: 20.sp,
-                                fontFamily: 'sf pro display',
-                                fontWeight: FontWeight.w600,
+                            child: Center(
+                              child: Text(
+                                'Rent Now',
+                                style: TextStyle(
+                                  color: Color(0xFFF7F5F2),
+                                  fontSize: 20.sp,
+                                  fontFamily: 'sf pro display',
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
