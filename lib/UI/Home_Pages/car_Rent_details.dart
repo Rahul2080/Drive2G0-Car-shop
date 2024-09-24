@@ -213,43 +213,18 @@ class _CarRentDetailsState extends State<CarRentDetails> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 20.w, top: 20.h),
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: 200.w,
-                        height: 40.h,
-                        child: Text(
-                          widget.carname,
-                          style: TextStyle(
-                            color: Color(0xFFF7F5F2),
-                            fontSize: 20.sp,
-                            fontFamily: 'sf pro display',
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
+                  child: SizedBox(
+                    width: 200.w,
+                    height: 40.h,
+                    child: Text(
+                      widget.carname,
+                      style: TextStyle(
+                        color: Color(0xFFF7F5F2),
+                        fontSize: 20.sp,
+                        fontFamily: 'sf pro display',
+                        fontWeight: FontWeight.w500,
                       ),
-                      SizedBox(width: 140.w),
-                      SizedBox(
-                          width: 50.w,
-                          height: 40.h,
-                          child: IconButton(
-                            icon: isfavarites == true
-                                ? Icon(
-                                    Icons.favorite,
-                                    size: 30.sp,
-                                    color: Colors.red,
-                                  )
-                                : Icon(
-                                    Icons.favorite_border,
-                                    size: 30.sp,
-                                  ),
-                            onPressed: () {
-                              setState(() {
-                                isfavarites = !isfavarites;
-                              });
-                            },
-                          )),
-                    ],
+                    ),
                   ),
                 ),
                 Padding(

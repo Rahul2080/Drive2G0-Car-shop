@@ -9,7 +9,9 @@ class PhonenumberFeild extends StatefulWidget {
   final String username;
   final String useremail;
   final String password;
-  const PhonenumberFeild({super.key, required this.username, required this.useremail, required this.password});
+
+  const PhonenumberFeild(
+      {super.key, required this.username, required this.useremail, required this.password});
 
   @override
   State<PhonenumberFeild> createState() => _PhonenumberFeildState();
@@ -90,10 +92,11 @@ class _PhonenumberFeildState extends State<PhonenumberFeild> {
                 }
               },
               child: GestureDetector(onTap: () {
-                BlocProvider.of<SignupBloc>(context).add(FeatchUser(name:widget.username,
-                    email: widget.useremail,
-                    phonenumber: phonenumbercontroller.text,
-                    password: widget.password));
+                BlocProvider.of<SignupBloc>(context).add(
+                    FeatchUser(name: widget.username,
+                        email: widget.useremail,
+                        phonenumber: phonenumbercontroller.text,
+                        password: widget.password));
               },
                 child: Container(
                   width: 350.w,

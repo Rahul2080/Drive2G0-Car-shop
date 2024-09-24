@@ -13,6 +13,7 @@ import '../ModelClass/MyOrderBuyVehiclesModel.dart';
 import '../ModelClass/OrderBuyVehiclesModel.dart';
 import '../ModelClass/MyRentVehiclesModel.dart';
 import '../ModelClass/OrderRentVehicleModel.dart';
+import '../ModelClass/ProfileModel.dart';
 import '../ModelClass/SearchBuyVehiclesModel.dart';
 import '../ModelClass/SearchRentVehiclesModel.dart';
 import '../ModelClass/UserModel.dart';
@@ -212,5 +213,24 @@ class UserApi {
 
     return MyOrderBuyVehiclesModel.listFromJson(jsonDecode(response.body));
   }
+
+  // Profile
+  Future<ProfileModel> getMyProfile() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userId = prefs.getString('userId').toString();
+    String trendingpath = 'http://45.159.221.50:8868/api/update-profile/$userId';
+
+
+    var body = {
+
+
+    };
+    print("welcome" + body.toString());
+    Response response =
+    await apiClient.invokeAPI(trendingpath, 'PUT', jsonEncode(body));
+
+    return ProfileModel.fromJson(jsonDecode(response.body));
+  }
+
 
 }
