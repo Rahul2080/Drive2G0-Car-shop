@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:core';
 
 import 'package:drive2go/Repository/ModelClass/LoginModel.dart';
 import 'package:drive2go/Repository/ModelClass/NearByRentVehiclesModel.dart';
@@ -9,6 +10,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../ModelClass/AllRentVehiclesModel.dart';
 import '../ModelClass/BuyAllVehiclesModel.dart';
 import '../ModelClass/BuyNearVehiclesModel.dart';
+import '../ModelClass/EditProfileModel.dart';
+import '../ModelClass/FeedbackModel.dart';
 import '../ModelClass/MyOrderBuyVehiclesModel.dart';
 import '../ModelClass/OrderBuyVehiclesModel.dart';
 import '../ModelClass/MyRentVehiclesModel.dart';
@@ -16,6 +19,8 @@ import '../ModelClass/OrderRentVehicleModel.dart';
 import '../ModelClass/ProfileModel.dart';
 import '../ModelClass/SearchBuyVehiclesModel.dart';
 import '../ModelClass/SearchRentVehiclesModel.dart';
+import '../ModelClass/SendMessageModel.dart';
+import '../ModelClass/ShowSendMessageModel.dart';
 import '../ModelClass/UserModel.dart';
 import 'Api_client.dart';
 
@@ -215,22 +220,103 @@ class UserApi {
   }
 
   // Profile
-  Future<ProfileModel> getMyProfile() async {
+  Future<EditProfileModel> getMyEditProfile(String name,String email ,String oldpassword,String newpassword,String profileurl  ) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String userId = prefs.getString('userId').toString();
+
     String trendingpath = 'http://45.159.221.50:8868/api/update-profile/$userId';
 
-
     var body = {
-
-
-    };
+      "fullName": name,
+      "email":email,
+      "oldPassword":oldpassword,
+      "newPassword":newpassword,
+      "profilePhoto":profileurl,
+    }
+    ;
     print("welcome" + body.toString());
     Response response =
     await apiClient.invokeAPI(trendingpath, 'PUT', jsonEncode(body));
 
+    return EditProfileModel.fromJson(jsonDecode(response.body));
+  }
+
+
+
+//Profile
+
+
+  Future<ProfileModel> getMyProfile( ) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userId = prefs.getString('userId').toString();
+
+    String trendingpath = 'http://45.159.221.50:8868/api/user/$userId';
+
+    var body = {};
+    print("welcome" + body.toString());
+    Response response =
+    await apiClient.invokeAPI(trendingpath, 'GET', jsonEncode(body));
+
     return ProfileModel.fromJson(jsonDecode(response.body));
   }
+
+
+
+//Feedback
+  Future<FeedbackModel> getMyFeedback(String comments ) async {
+
+    String trendingpath = 'http://45.159.221.50:8868/api/feedback';
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userId = prefs.getString('userId').toString();
+
+    var body = {
+      "user": userId,
+      "comments":comments ,
+    };
+    print("welcome" + body.toString());
+    Response response =
+    await apiClient.invokeAPI(trendingpath, 'POST', jsonEncode(body));
+
+    return FeedbackModel.fromJson(jsonDecode(response.body));
+  }
+
+  //SendMessage
+
+  Future<SendMessageModel> getMySendMessage(String Description ) async {
+
+    String trendingpath = 'http://45.159.221.50:8868/api/help-center';
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userId = prefs.getString('userId').toString();
+
+    var body = {
+      "user": userId,
+      "queryDescription": Description
+    }
+    ;
+    print("welcome" + body.toString());
+    Response response =
+    await apiClient.invokeAPI(trendingpath, 'POST', jsonEncode(body));
+
+    return SendMessageModel.fromJson(jsonDecode(response.body));
+  }
+
+// Show Send Meassage
+
+  Future <List<ShowSendMessageModel>> getShowSendMessage() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userId = prefs.getString('userId').toString();
+    String trendingpath = 'http://45.159.221.50:8868/api/help-center/user/$userId';
+
+
+    var body = {};
+    print("welcome" + userId.toString());
+    Response response =
+    await apiClient.invokeAPI(trendingpath, 'GET', jsonEncode(body));
+
+    return ShowSendMessageModel.listFromJson(jsonDecode(response.body));
+  }
+
+
 
 
 }

@@ -1,7 +1,5 @@
-class ProfileModel {
-  ProfileModel({
-      this.resetPasswordToken, 
-      this.resetPasswordExpires, 
+class EditProfileModel {
+  EditProfileModel({
       this.id, 
       this.fullName, 
       this.email, 
@@ -10,9 +8,7 @@ class ProfileModel {
       this.profilePhoto, 
       this.profilePhotoUrl,});
 
-  ProfileModel.fromJson(dynamic json) {
-    resetPasswordToken = json['resetPasswordToken'];
-    resetPasswordExpires = json['resetPasswordExpires'];
+  EditProfileModel.fromJson(dynamic json) {
     id = json['_id'];
     fullName = json['fullName'];
     email = json['email'];
@@ -21,8 +17,6 @@ class ProfileModel {
     profilePhoto = json['profilePhoto'];
     profilePhotoUrl = json['profilePhotoUrl'];
   }
-  dynamic resetPasswordToken;
-  dynamic resetPasswordExpires;
   String? id;
   String? fullName;
   String? email;
@@ -33,8 +27,6 @@ class ProfileModel {
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['resetPasswordToken'] = resetPasswordToken;
-    map['resetPasswordExpires'] = resetPasswordExpires;
     map['_id'] = id;
     map['fullName'] = fullName;
     map['email'] = email;

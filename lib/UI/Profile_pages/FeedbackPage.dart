@@ -1,6 +1,11 @@
+import 'package:drive2go/Bloc/Feedback_Bloc/feedback_bloc.dart';
+import 'package:drive2go/Repository/ModelClass/FeedbackModel.dart';
 import 'package:drive2go/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../ToastMessage.dart';
 
 class FeedbackPage extends StatefulWidget {
   const FeedbackPage({super.key});
@@ -11,12 +16,13 @@ class FeedbackPage extends StatefulWidget {
 
 class _FeedbackPageState extends State<FeedbackPage> {
   TextEditingController feedbackcontroller = TextEditingController();
-
+  late FeedbackModel feedback;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Column(mainAxisAlignment: MainAxisAlignment.center,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
             child: Padding(
@@ -40,13 +46,61 @@ class _FeedbackPageState extends State<FeedbackPage> {
               ),
             ),
           ),
-          Container(
-            width: 100.w,
-            height: 50.h,
-            decoration: ShapeDecoration(color: Colors.blue,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10))),
-          )
+          SizedBox(height: 50.h),
+          BlocListener<FeedbackBloc, FeedbackState>(
+            listener: (context, state) {
+              if (state is FeedbackBlocLoading) {
+                print("siginloading");
+
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
+                );
+              }
+              if (state is FeedbackBlocError) {
+                Navigator.of(context).pop();
+
+                print('error');
+              }
+              if (state is FeedbackBlocLoaded) {
+                Navigator.of(context).pop();
+                feedback = BlocProvider.of<FeedbackBloc>(context).feedbackModel;
+                feedbackcontroller.clear();
+                ToastMessage().toastmessage(message: " Feedback Uploded Succesfully ");
+              }
+            },
+            child: InkWell(
+              onTap: () {
+
+                BlocProvider.of<FeedbackBloc>(context)
+                    .add(FeatchFeedback(comment: feedbackcontroller.text));
+
+              },
+              child: Container(
+                width: 200.w,
+                height: 60.h,
+                decoration: ShapeDecoration(
+                    color: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10))),
+                child: Center(
+                  child: Text(
+                    'Submit',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 25.sp,
+                      fontFamily: 'sf pro display',
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
