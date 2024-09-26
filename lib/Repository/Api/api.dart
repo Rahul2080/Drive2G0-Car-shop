@@ -1,10 +1,13 @@
 import 'dart:convert';
 import 'dart:core';
+import 'dart:io';
 
 import 'package:drive2go/Repository/ModelClass/LoginModel.dart';
 import 'package:drive2go/Repository/ModelClass/NearByRentVehiclesModel.dart';
 import 'package:drive2go/main.dart';
 import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../ModelClass/AllRentVehiclesModel.dart';
@@ -44,10 +47,14 @@ class UserApi {
     return UserModel.fromJson(jsonDecode(response.body));
   }
 //Login
-  Future<LoginModel> getLogin(String email, String password) async {
+  Future<LoginModel> getLogin(String email, String password , String fcmToken) async {
     String trendingpath = 'http://45.159.221.50:8868/api/signin';
 
-    var body = {"email": email, "password": password};
+    var body = {
+      "email": email,
+      "password": password,
+      "fcmToken": fcmToken
+    };
     print("welcome" + body.toString());
     Response response =
         await apiClient.invokeAPI(trendingpath, 'POST', jsonEncode(body));
@@ -219,8 +226,33 @@ class UserApi {
     return MyOrderBuyVehiclesModel.listFromJson(jsonDecode(response.body));
   }
 
-  // Profile
-  Future<EditProfileModel> getMyEditProfile(String name,String email ,String oldpassword,String newpassword,String profileurl  ) async {
+  //Edit  Profile
+
+  // Future<EditProfileModel> getMyEditProfile(String name,String email ,String oldpassword,String newpassword,String profileurl  ) async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String userId = prefs.getString('userId').toString();
+  //
+  //   String trendingpath = 'http://45.159.221.50:8868/api/update-profile/$userId';
+  //
+  //   var body = {
+  //     "fullName": name,
+  //     // "email":email,
+  //     // "oldPassword":oldpassword,
+  //     // "newPassword":newpassword,
+  //     // "profilePhoto":profileurl,
+  //   }
+  //   ;
+  //   print("hi hello" + body.toString());
+  //   Response response =
+  //   await apiClient.invokeAPI(trendingpath, 'PUT', jsonEncode(body));
+  //
+  //   return EditProfileModel.fromJson(jsonDecode(response.body));
+  // }
+  //
+
+
+
+  Future<EditProfileModel> getMyEditProfile(String name,String oldpassword,String newpassword) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String userId = prefs.getString('userId').toString();
 
@@ -228,22 +260,54 @@ class UserApi {
 
     var body = {
       "fullName": name,
-      "email":email,
       "oldPassword":oldpassword,
       "newPassword":newpassword,
-      "profilePhoto":profileurl,
     }
     ;
     print("welcome" + body.toString());
-    Response response =
-    await apiClient.invokeAPI(trendingpath, 'PUT', jsonEncode(body));
-
+      Response response =
+      await apiClient.invokeAPI(trendingpath, 'PUT', jsonEncode(body));
     return EditProfileModel.fromJson(jsonDecode(response.body));
   }
 
 
 
-//Profile
+  Future<EditProfileModel> getMyEditProfilePhoto(String name, String email, String oldPassword, String newPassword, File profileUrl) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userId = prefs.getString('userId').toString();
+
+    String updateProfileUrl = 'http://45.159.221.50:8868/api/update-profile/$userId';
+
+    // Using multipart request for uploading image
+    var request = http.MultipartRequest('PUT', Uri.parse(updateProfileUrl));
+
+    // Adding other fields to the request
+    request.fields['fullName'] = name;
+    request.fields['email'] = email;
+    request.fields['oldPassword'] = oldPassword;
+    request.fields['newPassword'] = newPassword;
+
+    // Adding the profile picture as a multipart file
+    if (profileUrl != null) {
+      request.files.add(await http.MultipartFile.fromPath('profilePhoto', profileUrl.path));
+    }
+
+    // Sending the request
+    var streamedResponse = await request.send();
+    var response = await http.Response.fromStream(streamedResponse);
+
+    if (response.statusCode == 200) {
+      // Parsing the response body to EditProfileModel
+      return EditProfileModel.fromJson(jsonDecode(response.body));
+    } else {
+      // Handle errors accordingly
+      throw Exception('Failed to update profile: ${response.body}');
+    }
+  }
+
+
+
+// Profile
 
 
   Future<ProfileModel> getMyProfile( ) async {

@@ -15,7 +15,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<FeatchLogin>((event, emit)async {
       emit(LoginBlocLoading());
       try{
-        loginModel =await userApi.getLogin(event.email, event.password);
+        loginModel =await userApi.getLogin(event.email, event.password,event.fcmToken);
         emit(LoginBlocLoaded());
       }
           catch(e){

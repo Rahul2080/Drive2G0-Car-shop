@@ -2,12 +2,14 @@ import 'package:drive2go/Bloc/Login_Bloc/login_bloc.dart';
 import 'package:drive2go/Repository/ModelClass/LoginModel.dart';
 import 'package:drive2go/UI/BottomNavigation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../ToastMessage.dart';
+import '../../main.dart';
 import 'Signup.dart';
 
 class Login extends StatefulWidget {
@@ -20,12 +22,13 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
+  final firebasemessageing=FirebaseMessaging.instance;
   bool passwordvisible = true;
   var formkey = GlobalKey<FormState>();
   late LoginModel data;
   final GoogleSignIn googleSignIn = GoogleSignIn();
   FirebaseAuth auth = FirebaseAuth.instance;
-  @override
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -197,10 +200,13 @@ class _LoginState extends State<Login> {
                       if (isValid!) {
                         BlocProvider.of<LoginBloc>(context).add(FeatchLogin(
                             email: emailcontroller.text,
-                            password: passwordcontroller.text));
+                            password: passwordcontroller.text, fcmToken:fcm) );
+
+
                       }
-                      ;
+
                       formkey.currentState?.save();
+
                     },
                     child: Container(
                       width: 350.w,
@@ -318,8 +324,7 @@ class _LoginState extends State<Login> {
 
       BlocProvider.of<LoginBloc>(context).add(FeatchLogin(
           email: user?.email??"",
-          password: user?.uid??""));
-
+          password: user?.uid??"", fcmToken:fcm ));
 
 print("hellologin"+user!.email.toString());
           // if result not null we simply call the MaterialpageRoute,
@@ -330,4 +335,5 @@ print("hellologin"+user!.email.toString());
 
     }
   }
+
 }

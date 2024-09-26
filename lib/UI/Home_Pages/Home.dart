@@ -11,6 +11,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../Repository/ModelClass/AllRentVehiclesModel.dart';
 import '../../Repository/ModelClass/NearByRentVehiclesModel.dart';
 import '../../main.dart';
+import 'NotificatinMessages.dart';
 import 'Rent_Car_Search.dart';
 import 'car_Rent_details.dart';
 
@@ -165,7 +166,8 @@ class _HomeState extends State<Home> {
                     SizedBox(width: 138.w),
                     InkWell(
                       onTap: () {
-                        Navigatorkey.currentState?.pushNamed("/notification_screen",);
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(builder: (_) => NotificatinMessages()));
                       },
                       child: Container(
                         width: 45.w,

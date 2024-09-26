@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:drive2go/Repository/Api/api.dart';
 import 'package:drive2go/Repository/ModelClass/EditProfileModel.dart';
@@ -15,10 +17,17 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
     on<FeatchEditProfile>((event, emit) async {
       emit(EditProfileBlocLoading());
       try {
-        editProfileModel = await userApi.getMyEditProfile(event.name, event.email,
-            event.oldpassword, event.newpassword, event.profileurl);
+        if(event.forProfile==true){
+        editProfileModel = await userApi.getMyEditProfilePhoto(event.name??"", event.email??"",
+            event.oldpassword??"", event.newpassword??"", event.profileurl!);
+        }
+        else{
+          editProfileModel = await userApi.getMyEditProfile(event.name??"",
+              event.oldpassword??"", event.newpassword??"");
+        }
         emit(EditProfileBlocLoaded() );
       } catch (e) {
+        print( 'photo error '+e.toString());
         emit(EditProfileBlocError());
       }
     });

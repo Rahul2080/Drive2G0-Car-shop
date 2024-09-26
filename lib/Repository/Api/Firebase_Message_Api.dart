@@ -8,9 +8,9 @@ final firebasemessageing=FirebaseMessaging.instance;
 
 Future<void> Notifications() async{
  await firebasemessageing.requestPermission();
- final fcmToken=await firebasemessageing.getToken();
+  fcm=(await firebasemessageing.getToken())!;
 
- print('Token : $fcmToken ');
+ print('Token : $fcm ');
  Pushnotification();
 }
 void handlemessage( RemoteMessage? message){

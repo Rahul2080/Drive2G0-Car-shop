@@ -5,6 +5,7 @@ sealed class LoginEvent {}
 class FeatchLogin extends LoginEvent{
   final String email;
   final String password;
-  FeatchLogin ( {required this.email,required this.password,});
+  final String fcmToken;
+  FeatchLogin ( {required this.email,required this.password,required this.fcmToken});
 
 }

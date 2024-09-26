@@ -122,7 +122,7 @@ class _ProfileState extends State<Profile> {
 
           if (state is ProfileBlocLoaded) {
             profile = BlocProvider.of<ProfileBloc>(context).profileModel;
-
+print('profileimage '+ profile.profilePhotoUrl.toString());
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -143,11 +143,11 @@ class _ProfileState extends State<Profile> {
                           ),
                           child: ClipRRect(
                               borderRadius: BorderRadius.circular(7.r),
-                              child: Image.network(
-                                "http://45.159.221.50:8868/uploads/profile-photos/1727260417236-327604778-ecommerce screenshot.png",
+                              child: Image.network( profile.profilePhotoUrl.toString(),
                                 fit: BoxFit.cover,
                               )),
                         ),
+
                         SizedBox(width: 20.w),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -199,7 +199,7 @@ class _ProfileState extends State<Profile> {
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) => Editprofile(
-                              image: '',
+                              image: profile.profilePhotoUrl.toString(),
                               name:   profile.fullName.toString(),
                               email:    profile.email.toString(),
                             )));

@@ -30,6 +30,7 @@ import 'firebase_options.dart';
 TextEditingController pickuplocationcontroller = TextEditingController();
 TextEditingController returnlocationcontroller = TextEditingController();
 final Navigatorkey= GlobalKey< NavigatorState>();
+late String fcm;
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -105,7 +106,7 @@ class MyApp extends StatelessWidget {
               ),
               home: Splash(),
               navigatorKey: Navigatorkey,
-              routes:{ '/notification_screen': (context)=> NotificationPage()} ,
+              // routes:{ '/notification_screen': (context)=> NotificationPage()} ,
             ),
           );
         });

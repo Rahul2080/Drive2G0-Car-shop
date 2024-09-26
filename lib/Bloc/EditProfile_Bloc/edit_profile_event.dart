@@ -4,17 +4,19 @@ part of 'edit_profile_bloc.dart';
 sealed class EditProfileEvent {}
 
 class FeatchEditProfile extends EditProfileEvent {
-  final String name;
-  final String email;
-  final String oldpassword;
-  final String newpassword;
-  final String profileurl;
+  final String? name;
+  final String? email;
+  final String ?oldpassword;
+  final String? newpassword;
+  final File?  profileurl;
+  final bool forProfile;
 
   FeatchEditProfile({
-    required this.name,
-    required this.email,
-    required this.oldpassword,
-    required this.newpassword,
-    required this.profileurl,
+     this.name,
+     this.email,
+     this.oldpassword,
+     this.newpassword,
+     this.profileurl,
+    required this.forProfile
   });
 }
