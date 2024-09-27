@@ -8,7 +8,7 @@ part 'all_rent_vehicles_event.dart';
 part 'all_rent_vehicles_state.dart';
 
 class AllRentVehiclesBloc extends Bloc<AllRentVehiclesEvent, AllRentVehiclesState> {
-late  List<AllRentVehiclesModel> allrentvehicles;
+late List<AllRentVehiclesModel>  allrentvehicles;
 UserApi userApi = UserApi();
   AllRentVehiclesBloc() : super(AllRentVehiclesInitial()) {
     on<AllRentVehiclesEvent>((event, emit) async{

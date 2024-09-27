@@ -118,7 +118,9 @@ class _HelpChatPageState extends State<HelpChatPage> {
           return ListView.builder(
             itemCount: showMessage.length,
             itemBuilder: (BuildContext context, int index) {
-              return Column(
+
+              return
+                showMessage[index].queryDescription==0? SizedBox():Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   SizedBox(

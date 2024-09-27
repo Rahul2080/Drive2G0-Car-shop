@@ -18,7 +18,7 @@ import '../BottomNavigation.dart';
 
 class CarbuyDetails extends StatefulWidget {
   final List<String> carimage;
-  final List<String> places;
+  final List<String> recomcarplaces;
   final String carname;
   final String ratting;
   final String price;
@@ -46,7 +46,7 @@ class CarbuyDetails extends StatefulWidget {
       required this.Ownername,
       required this.Ownerplace,
       required this.carplace,
-      required this.places,
+      required this.recomcarplaces,
       required this.price,
       required this.id,
       required this.ownernumber});
@@ -156,9 +156,10 @@ class _CarbuyDetailsState extends State<CarbuyDetails>
             color: Colors.white,
           ),
         ),
-        title: Center(
+        title:  Padding(
+          padding: EdgeInsets.only(left: 90.w),
           child: Text(
-            widget.carname,
+            'Drive2Go',
             style: TextStyle(
               color: Color(0xFFF7F5F2),
               fontSize: 24.sp,
@@ -741,8 +742,8 @@ class _CarbuyDetailsState extends State<CarbuyDetails>
                                                                       .toString(),
                                                                   carplace: widget
                                                                       .carplace,
-                                                                  places: widget
-                                                                      .places,
+                                                                  recomcarplaces: widget
+                                                                      .recomcarplaces,
                                                                   price: buynearvehicle[
                                                                           position]
                                                                       .rentPrice
@@ -850,7 +851,7 @@ class _CarbuyDetailsState extends State<CarbuyDetails>
                                                           SizedBox(
                                                             width: 80.w,
                                                             child: Text(
-                                                              widget.places[
+                                                              widget.recomcarplaces[
                                                                   position],
                                                               textAlign:
                                                                   TextAlign

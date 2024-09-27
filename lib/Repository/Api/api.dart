@@ -15,7 +15,9 @@ import '../ModelClass/BuyAllVehiclesModel.dart';
 import '../ModelClass/BuyNearVehiclesModel.dart';
 import '../ModelClass/EditProfileModel.dart';
 import '../ModelClass/FeedbackModel.dart';
+import '../ModelClass/GetAllRentVehiclesByIDModel.dart';
 import '../ModelClass/MyOrderBuyVehiclesModel.dart';
+import '../ModelClass/NotificationByUserIDModel.dart';
 import '../ModelClass/OrderBuyVehiclesModel.dart';
 import '../ModelClass/MyRentVehiclesModel.dart';
 import '../ModelClass/OrderRentVehicleModel.dart';
@@ -81,10 +83,27 @@ class UserApi {
     var body = {};
     print("welcome" + body.toString());
     Response response =
-        await apiClient.invokeAPI(trendingpath, 'GET', jsonEncode(body));
+    await apiClient.invokeAPI(trendingpath, 'GET', jsonEncode(body));
 
     return AllRentVehiclesModel.listFromJson(jsonDecode(response.body));
   }
+  //Get All Rent Vehicles By Id
+  Future<GetAllRentVehiclesByIdModel> getGetAllRentVehiclesById(String vehicleId ) async {
+    String trendingpath = 'http://45.159.221.50:8868/api/get-vehicle/$vehicleId';
+
+    var body = {
+
+    };
+    print("welcome" + body.toString());
+    Response response =
+    await apiClient.invokeAPI(trendingpath, 'GET', jsonEncode(body));
+
+    return GetAllRentVehiclesByIdModel.fromJson(jsonDecode(response.body));
+  }
+
+
+
+
 //OrderRentVehicles
   Future<OrderRentVehicleModel> getOrderRentVehicles(
     String vehicleid,
@@ -226,32 +245,9 @@ class UserApi {
     return MyOrderBuyVehiclesModel.listFromJson(jsonDecode(response.body));
   }
 
-  //Edit  Profile
-
-  // Future<EditProfileModel> getMyEditProfile(String name,String email ,String oldpassword,String newpassword,String profileurl  ) async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   String userId = prefs.getString('userId').toString();
-  //
-  //   String trendingpath = 'http://45.159.221.50:8868/api/update-profile/$userId';
-  //
-  //   var body = {
-  //     "fullName": name,
-  //     // "email":email,
-  //     // "oldPassword":oldpassword,
-  //     // "newPassword":newpassword,
-  //     // "profilePhoto":profileurl,
-  //   }
-  //   ;
-  //   print("hi hello" + body.toString());
-  //   Response response =
-  //   await apiClient.invokeAPI(trendingpath, 'PUT', jsonEncode(body));
-  //
-  //   return EditProfileModel.fromJson(jsonDecode(response.body));
-  // }
-  //
 
 
-
+//Edit Profile for name and password
   Future<EditProfileModel> getMyEditProfile(String name,String oldpassword,String newpassword) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String userId = prefs.getString('userId').toString();
@@ -271,6 +267,7 @@ class UserApi {
   }
 
 
+// Edit profile for profile photo
 
   Future<EditProfileModel> getMyEditProfilePhoto(String name, String email, String oldPassword, String newPassword, File profileUrl) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -380,7 +377,20 @@ class UserApi {
     return ShowSendMessageModel.listFromJson(jsonDecode(response.body));
   }
 
+  // Notification By User Id
+  Future <List<NotificationByUserIdModel>> getNotificationByUserId() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userId = prefs.getString('userId').toString();
+    String trendingpath = 'http://45.159.221.50:8868/api/notifications/user/$userId';
 
+
+    var body = {};
+    print("welcome" + userId.toString());
+    Response response =
+    await apiClient.invokeAPI(trendingpath, 'GET', jsonEncode(body));
+
+    return NotificationByUserIdModel.listFromJson(jsonDecode(response.body));
+  }
 
 
 }

@@ -3,10 +3,12 @@ import 'package:drive2go/Bloc/BuyAllVehicles_Bloc/buy_all_vehicles_bloc.dart';
 import 'package:drive2go/Bloc/BuyNearVehicles_Bloc/buy_near_vehicles_bloc.dart';
 import 'package:drive2go/Bloc/EditProfile_Bloc/edit_profile_bloc.dart';
 import 'package:drive2go/Bloc/Feedback_Bloc/feedback_bloc.dart';
+import 'package:drive2go/Bloc/GetAllRentVehiclesById_Bloc/get_all_rent_vehicles_by_id_bloc.dart';
 import 'package:drive2go/Bloc/Login_Bloc/login_bloc.dart';
 import 'package:drive2go/Bloc/MyOrderBuyVehicles_Bloc/my_order_buy_vehicles_bloc.dart';
 import 'package:drive2go/Bloc/MyRentVehicles_Bloc/my_rent_vehicles_bloc.dart';
 import 'package:drive2go/Bloc/NearByRentVehicles_Bloc/near_by_rent_vehicles_bloc.dart';
+import 'package:drive2go/Bloc/NotificationByUserId_BLoc/notification_by_user_id_bloc.dart';
 import 'package:drive2go/Bloc/OrderBuyVehicles_Bloc/order_buy_bloc.dart';
 import 'package:drive2go/Bloc/OrderRentVehicles_Bloc/order_rent_vehicles_bloc.dart';
 import 'package:drive2go/Bloc/Profile_Bloc/profile_bloc.dart';
@@ -16,7 +18,7 @@ import 'package:drive2go/Bloc/SendMessage_Bloc/send_message_bloc.dart';
 import 'package:drive2go/Bloc/ShowSendMessage_Bloc/show_send_message_bloc.dart';
 import 'package:drive2go/Bloc/Siginup_Bloc/signup_bloc.dart';
 import 'package:drive2go/UI/Authentication/Splash.dart';
-import 'package:drive2go/UI/Home_Pages/Notification_Page.dart';
+import 'package:drive2go/UI/Home_Pages/NotificationViewMarked.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -95,6 +97,12 @@ class MyApp extends StatelessWidget {
               ),
               BlocProvider(
                 create: (context) => ProfileBloc(),
+              ),
+              BlocProvider(
+                create: (context) => GetAllRentVehiclesByIdBloc(),
+              ),
+              BlocProvider(
+                create: (context) => NotificationByUserIdBloc(),
               ),
             ],
             child: MaterialApp(

@@ -173,7 +173,7 @@ class _BuyCarSearchState extends State<BuyCarSearch> {
                                                     Ownername: searchbuyvechiles[index].ownerName.toString(),
                                                     Ownerplace: searchbuyvechiles[index].ownerPlace.toString(),
                                                     carplace: place,
-                                                    places: places,
+                                                    recomcarplaces: places,
                                                     price: searchbuyvechiles[index].rentPrice.toString(),
                                                     id: searchbuyvechiles[index].id
                                                 .toString(), ownernumber:searchbuyvechiles[index].ownerPhoneNumber.toString(),)));

@@ -147,7 +147,7 @@ class _BuycarState extends State<Buycar> {
                               builder: (_) => BuyCarSearch()));
                         },
                         child: Container(
-                          width: 292.w,
+                          width: 340.w,
                           height: 48.h,
                           decoration: ShapeDecoration(
                             gradient: LinearGradient(
@@ -189,7 +189,7 @@ class _BuycarState extends State<Buycar> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 10.w),
+                      SizedBox(width: 15.w),
                       InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
@@ -207,16 +207,6 @@ class _BuycarState extends State<Buycar> {
                             color: Colors.white,
                           ),
                         ),
-                      ),
-                      SizedBox(width: 10.w),
-                      Container(
-                        width: 45.w,
-                        height: 45.h,
-                        decoration: ShapeDecoration(
-                          color: Color(0xFFF7F5F2),
-                          shape: OvalBorder(),
-                        ),
-                        child: Icon(Icons.notifications_none_outlined),
                       ),
                     ],
                   ),
@@ -366,7 +356,7 @@ class _BuycarState extends State<Buycar> {
                                                   .id
                                                   .toString(),
                                               carplace: place,
-                                              places: places,
+                                              recomcarplaces: places,
                                               ownernumber:
                                               buynearvehicle[
                                               position]
@@ -620,7 +610,7 @@ class _BuycarState extends State<Buycar> {
                                                       price: buyallvehicle[position].rentPrice.toString(),
                                                       id: buyallvehicle[position].id.toString(),
                                                       carplace: place,
-                                                      places: places,
+                                                      recomcarplaces: places,
                                                       ownernumber: buyallvehicle[position].ownerPhoneNumber.toString())));
                                             },
                                             child: Container(
@@ -891,7 +881,7 @@ class _BuycarState extends State<Buycar> {
                                                           .ownerPlace
                                                           .toString(),
                                                       carplace: place,
-                                                      places: places,
+                                                      recomcarplaces: places,
                                                       price: buyallvehicle[position].rentPrice.toString(),
                                                       id: buyallvehicle[position].id.toString(),
                                                       ownernumber: buyallvehicle[position].ownerPhoneNumber.toString())));
@@ -1156,7 +1146,7 @@ class _BuycarState extends State<Buycar> {
                                                       .ownerPlace
                                                       .toString(),
                                                   carplace: place,
-                                                  places: places,
+                                                  recomcarplaces: places,
                                                   price: buyallvehicle[index]
                                                       .rentPrice
                                                       .toString(),

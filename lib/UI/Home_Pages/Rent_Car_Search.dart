@@ -17,7 +17,7 @@ class RentCarSearch extends StatefulWidget {
 class _RentCarSearchState extends State<RentCarSearch> {
   TextEditingController rentCarSearchcontroller = TextEditingController();
   late List<SearchRentVehiclesModel> searchrentvehicles;
-  List<String>places=[];
+  List<String>carplaces=[];
 
   Future<List<Placemark>> _getVechileAddress(String lat, String long) async {
     try {
@@ -150,75 +150,10 @@ class _RentCarSearchState extends State<RentCarSearch> {
                                         child: Text("Error fetching location"));
                                         } else if (snapshot.hasData) {
                                         String? place = snapshot.data![0].locality;
-                                        places.add(place??"");
+                                        carplaces.add(place??"");
                                         return GestureDetector(onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (_) => CarRentDetails(
-                                        carimage:
-                                        searchrentvehicles[
-                                        index]
-                                            .photos!,
-                                        carname:
-                                        searchrentvehicles[
-                                        index]
-                                            .brand
-                                            .toString(),
-                                        rating: searchrentvehicles[
-                                        index]
-                                            .rating
-                                            .toString(),
-                                        greartype:
-                                        searchrentvehicles[
-                                        index]
-                                            .gearType
-                                            .toString(),
-                                        tanktype:
-                                        searchrentvehicles[
-                                        index]
-                                            .fuelType
-                                            .toString(),
-                                        seats: searchrentvehicles[
-                                        index]
-                                            .noOfSeats
-                                            .toString(),
-                                        door: searchrentvehicles[
-                                        index]
-                                            .noOfDoors
-                                            .toString(),
-                                        carowner:
-                                        searchrentvehicles[
-                                        index]
-                                            .ownerName
-                                            .toString(),
-                                        ownerplace:
-                                        searchrentvehicles[
-                                        index]
-                                            .ownerPlace
-                                            .toString(),
-                                        carprice:
-                                        searchrentvehicles[
-                                        index]
-                                            .rentPrice
-                                            .toString(),
-                                        carcolor:
-                                        searchrentvehicles[
-                                        index]
-                                            .vehicleColor
-                                            .toString(),
-                                        availability:
-                                        searchrentvehicles[
-                                        index]
-                                            .available!,
-                                        vehicleid:
-                                        searchrentvehicles[
-                                        index]
-                                            .id
-                                            .toString(),
-                                        ownerprofileimg:
-                                        searchrentvehicles[
-                                        index]
-                                            .ownerProfilePhoto
-                                            .toString(), carplace:places , place: place, ownernumber:searchrentvehicles[index].ownerPhoneNumber.toString(),)));
+                                    builder: (_) => CarRentDetails(vehicleid:searchrentvehicles[index].id.toString() , carplace:place!, recomcarplace:carplaces,)));
                               },
                                 child: Container(
                                   decoration: ShapeDecoration(

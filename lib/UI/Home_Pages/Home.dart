@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drive2go/Bloc/AllRentVehicles_Bloc/all_rent_vehicles_bloc.dart';
 import 'package:drive2go/Bloc/NearByRentVehicles_Bloc/near_by_rent_vehicles_bloc.dart';
-import 'package:drive2go/UI/Home_Pages/Notification_Page.dart';
+import 'package:drive2go/Bloc/NotificationByUserId_BLoc/notification_by_user_id_bloc.dart';
+import 'package:drive2go/UI/Home_Pages/NotificationViewMarked.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,6 +12,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../Repository/ModelClass/AllRentVehiclesModel.dart';
 import '../../Repository/ModelClass/NearByRentVehiclesModel.dart';
+import '../../Repository/ModelClass/NotificationByUserIDModel.dart';
 import '../../main.dart';
 import 'NotificatinMessages.dart';
 import 'Rent_Car_Search.dart';
@@ -27,13 +30,15 @@ class _HomeState extends State<Home> {
   Position? _currentPosition;
   LatLng _initialPosition = LatLng(37.42796133580664, -122.085749655962);
   String? _currentAddress;
-
+  late int  notificationcount;
   @override
   void initState() {
+    notificationcount=0;
     _requestPermission();
     _getCurrentLocation();
     BlocProvider.of<AllRentVehiclesBloc>(context).add(FeatchAllRentVehicles());
-
+    BlocProvider.of<NotificationByUserIdBloc>(context)
+        .add(FeatchNotificationByUserId());
     super.initState();
   }
 
@@ -114,7 +119,9 @@ class _HomeState extends State<Home> {
 
   late List<NearByRentVehiclesModel> nearrentvehicles;
   late List<AllRentVehiclesModel> allrentvechicle;
-  List<String> places = [];
+  late List<NotificationByUserIdModel> notificationbyuserid;
+  List<String> carplaces = [];
+
 
   @override
   Widget build(BuildContext context) {
@@ -163,22 +170,59 @@ class _HomeState extends State<Home> {
                         ],
                       ),
                     ),
-                    SizedBox(width: 138.w),
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context)
-                            .push(MaterialPageRoute(builder: (_) => NotificatinMessages()));
-                      },
-                      child: Container(
-                        width: 45.w,
-                        height: 45.h,
-                        decoration: ShapeDecoration(
-                          color: Color(0xFFF7F5F2),
-                          shape: OvalBorder(),
-                        ),
-                        child: Icon(Icons.notifications_none_outlined),
-                      ),
-                    ),
+                    SizedBox(width: 128.w),
+                    BlocBuilder<NotificationByUserIdBloc,
+                        NotificationByUserIdState>(builder: (context, state) {
+                      if (state is NotificationByUserIdBLocLoading) {
+                        notificationcount=0;
+                        print("loading");
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      if (state is NotificationByUserIdBLocError) {
+                        print("error");
+                        return Center(
+                          child: Text(
+                            "Error",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        );
+                      }
+                      if (state is NotificationByUserIdBLocLoaded) {
+                        notificationbyuserid =
+                            BlocProvider.of<NotificationByUserIdBloc>(context)
+                                .notificationbyuserid;
+                        for(int i=0;i<notificationbyuserid.length;i++){
+                          if (notificationbyuserid[i].isRead==false){
+
+                            notificationcount=notificationcount+1 ;
+                          }
+
+                        }
+                        return IconButton(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => NotificatinMessages(recomcarplace:carplaces, carplace: '',)));
+                          },
+                          icon: Badge.count(
+                            largeSize: 23.sp,
+                            count: notificationcount,
+                            child: Container(
+                              width: 45.w,
+                              height: 45.h,
+                              decoration: ShapeDecoration(
+                                color: Color(0xFFF7F5F2),
+                                shape: OvalBorder(),
+                              ),
+                              child: Icon(Icons.notifications_none_outlined),
+                            ),
+                          ),
+                        );
+                      } else {
+                        return SizedBox();
+                      }
+                    }),
                   ],
                 ),
               ),
@@ -250,6 +294,7 @@ class _HomeState extends State<Home> {
               BlocBuilder<NearByRentVehiclesBloc, NearByRentVehiclesState>(
                   builder: (context, state) {
                 if (state is NearByRentVehiclesBlocLoading) {
+
                   print("loading");
                   return Center(
                     child: CircularProgressIndicator(),
@@ -332,6 +377,7 @@ class _HomeState extends State<Home> {
                                         builder: (context, snapshot) {
                                           if (snapshot.connectionState ==
                                               ConnectionState.waiting) {
+                                            notificationcount=0;
                                             return Center(
                                                 child:
                                                     CircularProgressIndicator());
@@ -342,7 +388,7 @@ class _HomeState extends State<Home> {
                                           } else if (snapshot.hasData) {
                                             String? place =
                                                 snapshot.data![0].locality;
-                                            places.add(place ?? "");
+                                            carplaces.add(place ?? "");
 
                                             return GestureDetector(
                                               onTap: () {
@@ -350,78 +396,13 @@ class _HomeState extends State<Home> {
                                                   MaterialPageRoute(
                                                     builder: (_) =>
                                                         CarRentDetails(
-                                                      carimage:
-                                                          nearrentvehicles[
-                                                                  position]
-                                                              .photos!
-                                                              .toList(),
-                                                      carname: nearrentvehicles[
-                                                              position]
-                                                          .brand
-                                                          .toString(),
-                                                      rating: nearrentvehicles[
-                                                              position]
-                                                          .rating
-                                                          .toString(),
-                                                      greartype:
-                                                          nearrentvehicles[
-                                                                  position]
-                                                              .gearType
-                                                              .toString(),
-                                                      tanktype:
-                                                          nearrentvehicles[
-                                                                  position]
-                                                              .fuelType
-                                                              .toString(),
-                                                      seats: nearrentvehicles[
-                                                              position]
-                                                          .noOfSeats
-                                                          .toString(),
-                                                      door: nearrentvehicles[
-                                                              position]
-                                                          .noOfDoors
-                                                          .toString(),
-                                                      carowner:
-                                                          nearrentvehicles[
-                                                                  position]
-                                                              .ownerName
-                                                              .toString(),
-                                                      ownerplace:
-                                                          nearrentvehicles[
-                                                                  position]
-                                                              .ownerPlace
-                                                              .toString(),
-                                                      carprice:
-                                                          nearrentvehicles[
-                                                                  position]
-                                                              .rentPrice
-                                                              .toString(),
-                                                      carcolor:
-                                                          nearrentvehicles[
-                                                                  position]
-                                                              .vehicleColor
-                                                              .toString(),
-                                                      availability:
-                                                          nearrentvehicles[
-                                                                  position]
-                                                              .available!,
                                                       vehicleid:
                                                           nearrentvehicles[
                                                                   position]
                                                               .id
                                                               .toString(),
-                                                      ownerprofileimg:
-                                                          nearrentvehicles[
-                                                                  position]
-                                                              .ownerProfilePhoto
-                                                              .toString(),
-                                                      carplace: places,
-                                                      place: place,
-                                                      ownernumber:
-                                                          nearrentvehicles[
-                                                                  position]
-                                                              .ownerPhoneNumber
-                                                              .toString(),
+                                                      carplace: place!,
+                                                      recomcarplace: carplaces,
                                                     ),
                                                   ),
                                                 );
@@ -711,78 +692,13 @@ class _HomeState extends State<Home> {
                                               MaterialPageRoute(
                                                   builder: (_) =>
                                                       CarRentDetails(
-                                                        carimage:
-                                                            allrentvechicle[
-                                                                    index]
-                                                                .photos!,
-                                                        carname:
-                                                            allrentvechicle[
-                                                                    index]
-                                                                .brand
-                                                                .toString(),
-                                                        rating: allrentvechicle[
-                                                                index]
-                                                            .rating
-                                                            .toString(),
-                                                        greartype:
-                                                            allrentvechicle[
-                                                                    index]
-                                                                .gearType
-                                                                .toString(),
-                                                        tanktype:
-                                                            allrentvechicle[
-                                                                    index]
-                                                                .fuelType
-                                                                .toString(),
-                                                        seats: allrentvechicle[
-                                                                index]
-                                                            .noOfSeats
-                                                            .toString(),
-                                                        door: allrentvechicle[
-                                                                index]
-                                                            .noOfDoors
-                                                            .toString(),
-                                                        carowner:
-                                                            allrentvechicle[
-                                                                    index]
-                                                                .ownerName
-                                                                .toString(),
-                                                        ownerplace:
-                                                            allrentvechicle[
-                                                                    index]
-                                                                .ownerPlace
-                                                                .toString(),
-                                                        carprice:
-                                                            allrentvechicle[
-                                                                    index]
-                                                                .rentPrice
-                                                                .toString(),
-                                                        carcolor:
-                                                            allrentvechicle[
-                                                                    index]
-                                                                .vehicleColor
-                                                                .toString(),
-                                                        availability:
-                                                            allrentvechicle[
-                                                                    index]
-                                                                .available!,
                                                         vehicleid:
                                                             allrentvechicle[
                                                                     index]
                                                                 .id
                                                                 .toString(),
-                                                        ownerprofileimg:
-                                                            allrentvechicle[
-                                                                    index]
-                                                                .ownerProfilePhoto
-                                                                .toString(),
-                                                        carplace: places,
-                                                        place: place,
-                                                        ownernumber:
-                                                            allrentvechicle[
-                                                                    index]
-                                                                .ownerPhoneNumber
-                                                                .toString(),
+                                                        carplace: place!,
+                                                        recomcarplace: carplaces,
                                                       )));
                                         },
                                         child: Container(
