@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
 import '../../Repository/Api/api.dart';
-import '../../Repository/ModelClass/NearByRentVehiclesModel.dart';
+import '../../Repository/ModelClass/RentVehiclesModels/NearByRentVehiclesModel.dart';
 import '../../ToastMessage.dart';
 
 part 'near_by_rent_vehicles_event.dart';

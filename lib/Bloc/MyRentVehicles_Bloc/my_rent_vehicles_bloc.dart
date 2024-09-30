@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:drive2go/Repository/Api/api.dart';
 import 'package:meta/meta.dart';
 
-import '../../Repository/ModelClass/MyRentVehiclesModel.dart';
+import '../../Repository/ModelClass/RentVehiclesModels/MyRentVehiclesModel.dart';
 
 part 'my_rent_vehicles_event.dart';
 part 'my_rent_vehicles_state.dart';

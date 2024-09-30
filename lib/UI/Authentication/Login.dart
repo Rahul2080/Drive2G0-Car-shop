@@ -1,5 +1,5 @@
 import 'package:drive2go/Bloc/Login_Bloc/login_bloc.dart';
-import 'package:drive2go/Repository/ModelClass/LoginModel.dart';
+import 'package:drive2go/Repository/ModelClass/AuthenticationModels/LoginModel.dart';
 import 'package:drive2go/UI/BottomNavigation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';

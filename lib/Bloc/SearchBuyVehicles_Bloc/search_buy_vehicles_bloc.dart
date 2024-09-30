@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:drive2go/Repository/Api/api.dart';
 import 'package:meta/meta.dart';
 
-import '../../Repository/ModelClass/SearchBuyVehiclesModel.dart';
+import '../../Repository/ModelClass/BuyvehiclesModels/SearchBuyVehiclesModel.dart';
 
 part 'search_buy_vehicles_event.dart';
 part 'search_buy_vehicles_state.dart';

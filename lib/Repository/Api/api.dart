@@ -2,31 +2,32 @@ import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
 
-import 'package:drive2go/Repository/ModelClass/LoginModel.dart';
-import 'package:drive2go/Repository/ModelClass/NearByRentVehiclesModel.dart';
+import 'package:drive2go/Repository/ModelClass/AuthenticationModels/LoginModel.dart';
+import 'package:drive2go/Repository/ModelClass/RentVehiclesModels/NearByRentVehiclesModel.dart';
 import 'package:drive2go/main.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../ModelClass/AllRentVehiclesModel.dart';
-import '../ModelClass/BuyAllVehiclesModel.dart';
-import '../ModelClass/BuyNearVehiclesModel.dart';
+import '../ModelClass/RentVehiclesModels/AllRentVehiclesModel.dart';
+import '../ModelClass/BuyvehiclesModels/BuyAllVehiclesModel.dart';
+import '../ModelClass/BuyvehiclesModels/BuyNearVehiclesModel.dart';
 import '../ModelClass/EditProfileModel.dart';
 import '../ModelClass/FeedbackModel.dart';
-import '../ModelClass/GetAllRentVehiclesByIDModel.dart';
-import '../ModelClass/MyOrderBuyVehiclesModel.dart';
+import '../ModelClass/RentVehiclesModels/GetAllRentVehiclesByIDModel.dart';
+import '../ModelClass/BuyvehiclesModels/MyOrderBuyVehiclesModel.dart';
+import '../ModelClass/NotificationMarkReadModel.dart';
 import '../ModelClass/NotificationByUserIDModel.dart';
-import '../ModelClass/OrderBuyVehiclesModel.dart';
-import '../ModelClass/MyRentVehiclesModel.dart';
-import '../ModelClass/OrderRentVehicleModel.dart';
+import '../ModelClass/BuyvehiclesModels/OrderBuyVehiclesModel.dart';
+import '../ModelClass/RentVehiclesModels/MyRentVehiclesModel.dart';
+import '../ModelClass/RentVehiclesModels/OrderRentVehicleModel.dart';
 import '../ModelClass/ProfileModel.dart';
-import '../ModelClass/SearchBuyVehiclesModel.dart';
-import '../ModelClass/SearchRentVehiclesModel.dart';
+import '../ModelClass/BuyvehiclesModels/SearchBuyVehiclesModel.dart';
+import '../ModelClass/RentVehiclesModels/SearchRentVehiclesModel.dart';
 import '../ModelClass/SendMessageModel.dart';
 import '../ModelClass/ShowSendMessageModel.dart';
-import '../ModelClass/UserModel.dart';
+import '../ModelClass/AuthenticationModels/UserModel.dart';
 import 'Api_client.dart';
 
 class UserApi {
@@ -392,5 +393,15 @@ class UserApi {
     return NotificationByUserIdModel.listFromJson(jsonDecode(response.body));
   }
 
+  Future<NotificationMarkReadModel> getMyReadMessage(String id ) async {
 
+    String trendingpath = 'http://45.159.221.50:8868/api/notifications/$id/read';
+
+    var body = {};
+    print("welcome" + body.toString());
+    Response response =
+    await apiClient.invokeAPI(trendingpath, 'PUT', jsonEncode(body));
+
+    return NotificationMarkReadModel.fromJson(jsonDecode(response.body));
+  }
 }

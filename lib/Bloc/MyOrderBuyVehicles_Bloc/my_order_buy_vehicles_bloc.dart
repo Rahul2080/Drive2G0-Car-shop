@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:drive2go/Repository/Api/api.dart';
 import 'package:meta/meta.dart';
-import '../../Repository/ModelClass/MyOrderBuyVehiclesModel.dart';
+import '../../Repository/ModelClass/BuyvehiclesModels/MyOrderBuyVehiclesModel.dart';
 part 'my_order_buy_vehicles_event.dart';
 part 'my_order_buy_vehicles_state.dart';
 

@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
 import '../../Repository/Api/api.dart';
-import '../../Repository/ModelClass/AllRentVehiclesModel.dart';
+import '../../Repository/ModelClass/RentVehiclesModels/AllRentVehiclesModel.dart';
 
 part 'all_rent_vehicles_event.dart';
 part 'all_rent_vehicles_state.dart';

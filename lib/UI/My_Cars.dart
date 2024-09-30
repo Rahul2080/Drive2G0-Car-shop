@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
-import '../Repository/ModelClass/MyOrderBuyVehiclesModel.dart';
-import '../Repository/ModelClass/MyRentVehiclesModel.dart';
+import '../Repository/ModelClass/BuyvehiclesModels/MyOrderBuyVehiclesModel.dart';
+import '../Repository/ModelClass/RentVehiclesModels/MyRentVehiclesModel.dart';
 
 class MyCars extends StatefulWidget {
   const MyCars({super.key});

@@ -25,6 +25,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'Bloc/NotificationReadMessage_Bloc/notificatio_mark_read_bloc.dart';
 import 'Repository/Api/Firebase_Message_Api.dart';
 import 'firebase_options.dart';
 
@@ -103,6 +104,9 @@ class MyApp extends StatelessWidget {
               ),
               BlocProvider(
                 create: (context) => NotificationByUserIdBloc(),
+              ),
+              BlocProvider(
+                create: (context) => NotificationMarkReadBloc(),
               ),
             ],
             child: MaterialApp(

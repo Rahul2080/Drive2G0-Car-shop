@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:drive2go/Bloc/BuyNearVehicles_Bloc/buy_near_vehicles_bloc.dart';
 import 'package:drive2go/Bloc/OrderBuyVehicles_Bloc/order_buy_bloc.dart';
-import 'package:drive2go/Repository/ModelClass/OrderBuyVehiclesModel.dart';
+import 'package:drive2go/Repository/ModelClass/BuyvehiclesModels/OrderBuyVehiclesModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -13,7 +13,7 @@ import 'package:lottie/lottie.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../Repository/ModelClass/BuyNearVehiclesModel.dart';
+import '../../Repository/ModelClass/BuyvehiclesModels/BuyNearVehiclesModel.dart';
 import '../BottomNavigation.dart';
 
 class CarbuyDetails extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:drive2go/Bloc/BuyAllVehicles_Bloc/buy_all_vehicles_bloc.dart';
 import 'package:drive2go/Bloc/BuyNearVehicles_Bloc/buy_near_vehicles_bloc.dart';
-import 'package:drive2go/Repository/ModelClass/BuyAllVehiclesModel.dart';
+import 'package:drive2go/Repository/ModelClass/BuyvehiclesModels/BuyAllVehiclesModel.dart';
 import 'package:drive2go/UI/Filter_Buy_Vehicles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import '../../Repository/ModelClass/BuyNearVehiclesModel.dart';
+import '../../Repository/ModelClass/BuyvehiclesModels/BuyNearVehiclesModel.dart';
 import 'Buy_Car_Search.dart';
 import 'CarBuy_Details.dart';
 

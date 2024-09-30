@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:drive2go/Repository/ModelClass/OrderRentVehicleModel.dart';
+import 'package:drive2go/Repository/ModelClass/RentVehiclesModels/OrderRentVehicleModel.dart';
 import 'package:meta/meta.dart';
 
 import '../../Repository/Api/api.dart';

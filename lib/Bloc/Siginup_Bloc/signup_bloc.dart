@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:drive2go/Repository/Api/api.dart';
-import 'package:drive2go/Repository/ModelClass/UserModel.dart';
+import 'package:drive2go/Repository/ModelClass/AuthenticationModels/UserModel.dart';
 import 'package:meta/meta.dart';
 
 import '../../ToastMessage.dart';
