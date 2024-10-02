@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:drive2go/Repository/Api/api.dart';
 import 'package:meta/meta.dart';
 
-import '../../Repository/ModelClass/NotificationMarkReadModel.dart';
+import '../../Repository/ModelClass/NotificationModels/NotificationMarkReadModel.dart';
 
 part 'notificatio_mark_read_event.dart';
 part 'notificatio_mark_read_state.dart';

@@ -1,5 +1,6 @@
 import 'package:drive2go/Bloc/Login_Bloc/login_bloc.dart';
 import 'package:drive2go/Repository/ModelClass/AuthenticationModels/LoginModel.dart';
+import 'package:drive2go/UI/Authentication/ForgotPassword.dart';
 import 'package:drive2go/UI/BottomNavigation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -107,6 +108,7 @@ class _LoginState extends State<Login> {
                     controller: emailcontroller,
                     cursorColor: Colors.white,
                     style: TextStyle(color: Colors.white),
+                    textInputAction: TextInputAction.next,
                     decoration: InputDecoration(
                       hintText: "Email",
                       hintStyle:
@@ -176,18 +178,20 @@ class _LoginState extends State<Login> {
                     },
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(left: 230.w, top: 10.h),
-                  child: Container(
-                    width: 160.w,
-                    height: 26.h,
-                    child: Text(
-                      'Forgot Password?',
-                      style: TextStyle(
-                        color: Color(0xFFDDE0E3),
-                        fontSize: 16.sp,
-                        fontFamily: 'sf pro display',
-                        fontWeight: FontWeight.w400,
+                GestureDetector(onTap: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Forgotpassword())); },
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 230.w, top: 10.h),
+                    child: Container(
+                      width: 160.w,
+                      height: 26.h,
+                      child: Text(
+                        'Forgot Password?',
+                        style: TextStyle(
+                          color: Color(0xFFDDE0E3),
+                          fontSize: 16.sp,
+                          fontFamily: 'sf pro display',
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                     ),
                   ),

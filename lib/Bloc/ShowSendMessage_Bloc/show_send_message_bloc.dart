@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:drive2go/Repository/Api/api.dart';
 import 'package:meta/meta.dart';
 
-import '../../Repository/ModelClass/ShowSendMessageModel.dart';
+import '../../Repository/ModelClass/ProfileModels/HelpChatModels/ShowSendMessageModel.dart';
 
 part 'show_send_message_event.dart';
 

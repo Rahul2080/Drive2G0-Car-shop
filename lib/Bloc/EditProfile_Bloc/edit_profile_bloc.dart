@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:drive2go/Repository/Api/api.dart';
-import 'package:drive2go/Repository/ModelClass/EditProfileModel.dart';
+import 'package:drive2go/Repository/ModelClass/ProfileModels/EditProfileModel.dart';
 import 'package:meta/meta.dart';
+
+import '../../ToastMessage.dart';
 
 part 'edit_profile_event.dart';
 
@@ -27,8 +29,9 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
         }
         emit(EditProfileBlocLoaded() );
       } catch (e) {
-        print( 'photo error '+e.toString());
-        emit(EditProfileBlocError());
+
+        emit(EditProfileBlocError()
+        );  ToastMessage().toastmessage(message:e.toString());
       }
     });
   }

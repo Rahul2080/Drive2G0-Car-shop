@@ -65,6 +65,7 @@ class _SignupState extends State<Signup> {
                   child: TextFormField(
                     controller: namecontroller,
                     cursorColor: Colors.white,
+                    textInputAction: TextInputAction.next,
                     style: TextStyle(color: Colors.white),
                     decoration: InputDecoration(
                       hintText: "Full Name",
@@ -90,6 +91,7 @@ class _SignupState extends State<Signup> {
                   padding: EdgeInsets.only(left: 30.w, right: 35.w, top: 10.h),
                   child: TextFormField(
                     controller: emailcontroller,
+                    textInputAction: TextInputAction.next,
                     cursorColor: Colors.white,
                     style: TextStyle(color: Colors.white),
                     decoration: InputDecoration(
@@ -119,6 +121,7 @@ class _SignupState extends State<Signup> {
                   padding: EdgeInsets.only(left: 30.w, right: 35.w, top: 10.h),
                   child: TextFormField(
                     controller: phonenumbercontroller,
+                    textInputAction: TextInputAction.next,
                     cursorColor: Colors.white,
                     style: TextStyle(color: Colors.white),
                     decoration: InputDecoration(

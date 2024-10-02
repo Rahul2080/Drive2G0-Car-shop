@@ -1,5 +1,5 @@
 import 'package:drive2go/Bloc/Profile_Bloc/profile_bloc.dart';
-import 'package:drive2go/Repository/ModelClass/ProfileModel.dart';
+import 'package:drive2go/Repository/ModelClass/ProfileModels/ProfileModel.dart';
 import 'package:drive2go/UI/Profile_pages/EditProfile.dart';
 import 'package:drive2go/UI/Profile_pages/FeedbackPage.dart';
 import 'package:drive2go/UI/Profile_pages/Help_Chat_Page.dart';

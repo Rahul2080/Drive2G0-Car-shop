@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
 
-import '../../Repository/ModelClass/BuyvehiclesModels/SearchBuyVehiclesModel.dart';
+import '../../Repository/ModelClass/SearchvehiclesModels/SearchBuyVehiclesModel.dart';
 
 class BuyCarSearch extends StatefulWidget {
   const BuyCarSearch({super.key});
@@ -298,7 +298,10 @@ class _BuyCarSearchState extends State<BuyCarSearch> {
                           },
                         ),
                       )
-                          : SizedBox();
+                          :Padding(
+                        padding:  EdgeInsets.only(top: 220.h),
+                        child: Center(child: Icon(Icons.search_outlined,size: 140.sp,color: Colors.grey[700],)),
+                      );
                     } else {
                       return SizedBox();
                     }

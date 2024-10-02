@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:drive2go/Repository/Api/api.dart';
-import 'package:drive2go/Repository/ModelClass/ProfileModel.dart';
+import 'package:drive2go/Repository/ModelClass/ProfileModels/ProfileModel.dart';
 import 'package:meta/meta.dart';
 
 part 'profile_event.dart';

@@ -1,6 +1,6 @@
 import 'package:drive2go/Bloc/NotificationByUserId_BLoc/notification_by_user_id_bloc.dart';
 import 'package:drive2go/Bloc/NotificationReadMessage_Bloc/notificatio_mark_read_bloc.dart';
-import 'package:drive2go/Repository/ModelClass/NotificationMarkReadModel.dart';
+import 'package:drive2go/Repository/ModelClass/NotificationModels/NotificationMarkReadModel.dart';
 import 'package:drive2go/UI/BottomNavigation.dart';
 import 'package:drive2go/UI/Car_Buy_Pages/CarBuy_Details.dart';
 import 'package:drive2go/main.dart';
@@ -9,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import '../../Repository/ModelClass/NotificationByUserIDModel.dart';
+import '../../Repository/ModelClass/NotificationModels/NotificationByUserIDModel.dart';
 import 'NotificationViewMarked.dart';
 import 'car_Rent_details.dart';
 
@@ -264,6 +264,7 @@ class _NotificatinMessagesState extends State<NotificatinMessages> {
                                     }
                                   },
                                   child: ListTile(
+                                    tileColor:notificationbyuserid[position].isRead==false?Colors.grey:Colors.black,
                                     leading: notificationbyuserid[position]
                                                     .rentVehicleId ==
                                                 null &&

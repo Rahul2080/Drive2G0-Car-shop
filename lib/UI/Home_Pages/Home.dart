@@ -12,7 +12,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../Repository/ModelClass/RentVehiclesModels/AllRentVehiclesModel.dart';
 import '../../Repository/ModelClass/RentVehiclesModels/NearByRentVehiclesModel.dart';
-import '../../Repository/ModelClass/NotificationByUserIDModel.dart';
+import '../../Repository/ModelClass/NotificationModels/NotificationByUserIDModel.dart';
 import '../../main.dart';
 import 'NotificatinMessages.dart';
 import 'Rent_Car_Search.dart';
@@ -139,23 +139,41 @@ class _HomeState extends State<Home> {
                 child: Row(
                   children: [
                     SizedBox(
-                      width: 219.w,
+                      width: 300.w,
                       height: 65.h,
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 10.w),
-                        child: Text(
-                          'location\n$_currentAddress ',
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                            color: Color(0xFFF7F5F2),
-                            fontSize: 20.sp,
-                            fontFamily: 'sf pro display',
-                            fontWeight: FontWeight.w600,
+
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(left: 10.w),
+                            child: Text(
+                              'location ',
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                color: Color(0xFFF7F5F2),
+                                fontSize: 20.sp,
+                                fontFamily: 'sf pro display',
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                           ),
-                        ),
+                          Text(
+                            '$_currentAddress ',
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              color: Color(0xFFF7F5F2),
+                              fontSize: 20.sp,
+                              fontFamily: 'sf pro display',
+                              fontWeight: FontWeight.w600,
+                            ),maxLines: 1,
+                            overflow:
+                            TextOverflow
+                                .ellipsis,
+                          ),
+                        ],
                       ),
                     ),
-                    SizedBox(width: 128.w),
+                    SizedBox(width: 45.w),
                     BlocBuilder<NotificationByUserIdBloc,
                         NotificationByUserIdState>(builder: (context, state) {
                       if (state is NotificationByUserIdBLocLoading) {
@@ -219,6 +237,7 @@ class _HomeState extends State<Home> {
                   ],
                 ),
               ),
+
               Padding(
                 padding: EdgeInsets.only(left: 10.w),
                 child: Row(
@@ -307,12 +326,12 @@ class _HomeState extends State<Home> {
                       nearrentvehicles =
                           BlocProvider.of<NearByRentVehiclesBloc>(context)
                               .nearbyrentvechicles;
-                      return Column(
+                      return nearrentvehicles.length != 0?  Column(
                         children: [
 
                           Padding(
                             padding: EdgeInsets.only(top: 20.h),
-                            child: nearrentvehicles.length == 0? Row(
+                            child: Row(
                               children: [
                                 SizedBox(
                                   width: 100.w,
@@ -344,7 +363,7 @@ class _HomeState extends State<Home> {
                                   ),
                                 ),
                               ],
-                            ):SizedBox()
+                            )
                           ),
                           Padding(
                             padding: EdgeInsets.only(left: 10.w, right: 10.w),
@@ -501,21 +520,26 @@ class _HomeState extends State<Home> {
                                                               0xFFF7F5F2),
                                                           size: 20.sp,
                                                         ),
-                                                        Text(
-                                                          place!,
-                                                          textAlign: TextAlign
-                                                              .center,
-                                                          style: TextStyle(
-                                                            color: Color(
-                                                                0xFFF7F5F2),
-                                                            fontSize: 14.sp,
-                                                            fontFamily:
-                                                            'sf pro display',
-                                                            fontWeight:
-                                                            FontWeight
-                                                                .w300,
-                                                            letterSpacing:
-                                                            0.50.w,
+                                                        SizedBox(width: 100.w,
+                                                          child: Text(
+                                                            place!,
+                                                            textAlign: TextAlign
+                                                                .start,
+                                                            style: TextStyle(
+                                                              color: Color(
+                                                                  0xFFF7F5F2),
+                                                              fontSize: 14.sp,
+                                                              fontFamily:
+                                                              'sf pro display',
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .w300,
+                                                              letterSpacing:
+                                                              0.50.w,
+                                                            ),maxLines: 1,
+                                                            overflow:
+                                                            TextOverflow
+                                                                .ellipsis,
                                                           ),
                                                         ),
                                                       ],
@@ -580,15 +604,16 @@ class _HomeState extends State<Home> {
                                       });
                                 },
                                 separatorBuilder: (context, position) {
-                                  return SizedBox(
+
+                                  return nearrentvehicles.isNotEmpty? SizedBox(
                                     width: 10.w,
-                                  );
+                                  ):SizedBox();
                                 },
                               ),
                             ),
                           ),
                         ],
-                      );
+                      ):SizedBox();
                     } else {
                       return SizedBox();
                     }
@@ -787,19 +812,24 @@ class _HomeState extends State<Home> {
                                                           color: Color(0xFFF7F5F2),
                                                           size: 20.sp,
                                                         ),
-                                                        Text(
-                                                          place!,
-                                                          textAlign:
-                                                          TextAlign.center,
-                                                          style: TextStyle(
-                                                            color:
-                                                            Color(0xFFF7F5F2),
-                                                            fontSize: 14.sp,
-                                                            fontFamily:
-                                                            'sf pro display',
-                                                            fontWeight:
-                                                            FontWeight.w300,
-                                                            letterSpacing: 0.50.w,
+                                                        SizedBox(width: 110.w,
+                                                          child: Text(
+                                                            place!,
+                                                            textAlign:
+                                                            TextAlign.start,
+                                                            style: TextStyle(
+                                                              color:
+                                                              Color(0xFFF7F5F2),
+                                                              fontSize: 14.sp,
+                                                              fontFamily:
+                                                              'sf pro display',
+                                                              fontWeight:
+                                                              FontWeight.w300,
+                                                              letterSpacing: 0.50.w,
+                                                            ),maxLines: 1,
+                                                            overflow:
+                                                            TextOverflow
+                                                                .ellipsis,
                                                           ),
                                                         ),
                                                       ],

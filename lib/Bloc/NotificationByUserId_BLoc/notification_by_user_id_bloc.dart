@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:drive2go/Repository/Api/api.dart';
 import 'package:meta/meta.dart';
 
-import '../../Repository/ModelClass/NotificationByUserIDModel.dart';
+import '../../Repository/ModelClass/NotificationModels/NotificationByUserIDModel.dart';
 
 part 'notification_by_user_id_event.dart';
 part 'notification_by_user_id_state.dart';

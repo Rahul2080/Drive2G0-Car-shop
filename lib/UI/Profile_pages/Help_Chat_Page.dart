@@ -1,14 +1,14 @@
 import 'package:drive2go/Bloc/SendMessage_Bloc/send_message_bloc.dart';
 import 'package:drive2go/Bloc/ShowSendMessage_Bloc/show_send_message_bloc.dart';
-import 'package:drive2go/Repository/ModelClass/SendMessageModel.dart';
-import 'package:drive2go/Repository/ModelClass/ShowSendMessageModel.dart';
+import 'package:drive2go/Repository/ModelClass/ProfileModels/HelpChatModels/SendMessageModel.dart';
+import 'package:drive2go/Repository/ModelClass/ProfileModels/HelpChatModels/ShowSendMessageModel.dart';
 import 'package:drive2go/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../Repository/ModelClass/ShowSendMessageModel.dart';
+import '../../Repository/ModelClass/ProfileModels/HelpChatModels/ShowSendMessageModel.dart';
 
 class HelpChatPage extends StatefulWidget {
   const HelpChatPage({super.key});

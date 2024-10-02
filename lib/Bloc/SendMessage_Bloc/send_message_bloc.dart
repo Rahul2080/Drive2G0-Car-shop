@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:drive2go/Repository/Api/api.dart';
 import 'package:meta/meta.dart';
 
-import '../../Repository/ModelClass/SendMessageModel.dart';
+import '../../Repository/ModelClass/ProfileModels/HelpChatModels/SendMessageModel.dart';
 
 part 'send_message_event.dart';
 part 'send_message_state.dart';

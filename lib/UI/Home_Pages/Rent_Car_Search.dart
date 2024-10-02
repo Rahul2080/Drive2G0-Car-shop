@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
 
-import '../../Repository/ModelClass/RentVehiclesModels/SearchRentVehiclesModel.dart';
+import '../../Repository/ModelClass/SearchvehiclesModels/SearchRentVehiclesModel.dart';
 
 class RentCarSearch extends StatefulWidget {
   const RentCarSearch({super.key});
@@ -286,7 +286,10 @@ class _RentCarSearchState extends State<RentCarSearch> {
                           }),
                         ),
                       )
-                    : SizedBox();
+                    :Padding(
+                      padding:  EdgeInsets.only(top: 220.h),
+                      child: Center(child: Icon(Icons.search_outlined,size: 140.sp,color: Colors.grey[700],)),
+                    );
               } else {
                 return SizedBox();
               }

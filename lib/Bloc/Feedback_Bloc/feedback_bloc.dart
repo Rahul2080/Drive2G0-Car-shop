@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:drive2go/Repository/ModelClass/FeedbackModel.dart';
+import 'package:drive2go/Repository/ModelClass/ProfileModels/FeedbackModel/FeedbackModel.dart';
 import 'package:meta/meta.dart';
 
 import '../../Repository/Api/api.dart';

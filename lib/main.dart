@@ -3,6 +3,7 @@ import 'package:drive2go/Bloc/BuyAllVehicles_Bloc/buy_all_vehicles_bloc.dart';
 import 'package:drive2go/Bloc/BuyNearVehicles_Bloc/buy_near_vehicles_bloc.dart';
 import 'package:drive2go/Bloc/EditProfile_Bloc/edit_profile_bloc.dart';
 import 'package:drive2go/Bloc/Feedback_Bloc/feedback_bloc.dart';
+import 'package:drive2go/Bloc/ForgotPassword_Bloc/forgot_password_bloc.dart';
 import 'package:drive2go/Bloc/GetAllRentVehiclesById_Bloc/get_all_rent_vehicles_by_id_bloc.dart';
 import 'package:drive2go/Bloc/Login_Bloc/login_bloc.dart';
 import 'package:drive2go/Bloc/MyOrderBuyVehicles_Bloc/my_order_buy_vehicles_bloc.dart';
@@ -107,6 +108,9 @@ class MyApp extends StatelessWidget {
               ),
               BlocProvider(
                 create: (context) => NotificationMarkReadBloc(),
+              ),
+              BlocProvider(
+                create: (context) => ForgotPasswordBloc(),
               ),
             ],
             child: MaterialApp(

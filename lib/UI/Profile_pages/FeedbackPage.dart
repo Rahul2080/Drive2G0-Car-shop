@@ -1,5 +1,5 @@
 import 'package:drive2go/Bloc/Feedback_Bloc/feedback_bloc.dart';
-import 'package:drive2go/Repository/ModelClass/FeedbackModel.dart';
+import 'package:drive2go/Repository/ModelClass/ProfileModels/FeedbackModel/FeedbackModel.dart';
 import 'package:drive2go/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

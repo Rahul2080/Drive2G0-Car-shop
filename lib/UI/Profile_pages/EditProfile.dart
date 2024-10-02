@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:drive2go/Bloc/EditProfile_Bloc/edit_profile_bloc.dart';
-import 'package:drive2go/Repository/ModelClass/EditProfileModel.dart';
+import 'package:drive2go/Repository/ModelClass/ProfileModels/EditProfileModel.dart';
 import 'package:drive2go/UI/Profile_pages/Profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

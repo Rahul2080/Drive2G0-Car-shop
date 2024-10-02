@@ -10,23 +10,24 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../ModelClass/AuthenticationModels/ForgotPasswordModel.dart';
 import '../ModelClass/RentVehiclesModels/AllRentVehiclesModel.dart';
 import '../ModelClass/BuyvehiclesModels/BuyAllVehiclesModel.dart';
 import '../ModelClass/BuyvehiclesModels/BuyNearVehiclesModel.dart';
-import '../ModelClass/EditProfileModel.dart';
-import '../ModelClass/FeedbackModel.dart';
+import '../ModelClass/ProfileModels/EditProfileModel.dart';
+import '../ModelClass/ProfileModels/FeedbackModel/FeedbackModel.dart';
 import '../ModelClass/RentVehiclesModels/GetAllRentVehiclesByIDModel.dart';
 import '../ModelClass/BuyvehiclesModels/MyOrderBuyVehiclesModel.dart';
-import '../ModelClass/NotificationMarkReadModel.dart';
-import '../ModelClass/NotificationByUserIDModel.dart';
+import '../ModelClass/NotificationModels/NotificationMarkReadModel.dart';
+import '../ModelClass/NotificationModels/NotificationByUserIDModel.dart';
 import '../ModelClass/BuyvehiclesModels/OrderBuyVehiclesModel.dart';
 import '../ModelClass/RentVehiclesModels/MyRentVehiclesModel.dart';
 import '../ModelClass/RentVehiclesModels/OrderRentVehicleModel.dart';
-import '../ModelClass/ProfileModel.dart';
-import '../ModelClass/BuyvehiclesModels/SearchBuyVehiclesModel.dart';
-import '../ModelClass/RentVehiclesModels/SearchRentVehiclesModel.dart';
-import '../ModelClass/SendMessageModel.dart';
-import '../ModelClass/ShowSendMessageModel.dart';
+import '../ModelClass/ProfileModels/ProfileModel.dart';
+import '../ModelClass/SearchvehiclesModels/SearchBuyVehiclesModel.dart';
+import '../ModelClass/SearchvehiclesModels/SearchRentVehiclesModel.dart';
+import '../ModelClass/ProfileModels/HelpChatModels/SendMessageModel.dart';
+import '../ModelClass/ProfileModels/HelpChatModels/ShowSendMessageModel.dart';
 import '../ModelClass/AuthenticationModels/UserModel.dart';
 import 'Api_client.dart';
 
@@ -404,4 +405,19 @@ class UserApi {
 
     return NotificationMarkReadModel.fromJson(jsonDecode(response.body));
   }
+
+
+  Future<ForgotPasswordModel> getForgotPasswod( String userId) async {
+
+    String trendingpath = 'http://45.159.221.50:8868/api/forgot-password';
+    var body = {
+      "email": userId
+    };
+    print("welcome" + body.toString());
+    Response response =
+    await apiClient.invokeAPI(trendingpath, 'POST', jsonEncode(body));
+
+    return ForgotPasswordModel.fromJson(jsonDecode(response.body));
+  }
+
 }

@@ -1,5 +1,7 @@
 import 'package:drive2go/UI/Authentication/IntroPage.dart';
+import 'package:drive2go/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../BottomNavigation.dart';
@@ -28,8 +30,10 @@ class _SplashState extends State<Splash> {
     });
 
 
-    return Scaffold(
-
+    return Scaffold(backgroundColor: Colors.black,
+body:Center(child: ClipRRect(
+    borderRadius: BorderRadius.circular(20.r),
+    child: Container(child: Image.asset('assets/notificationViewimage.png',fit: BoxFit.cover,))))
 
 
     );
