@@ -11,6 +11,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../ModelClass/AuthenticationModels/ForgotPasswordModel.dart';
+import '../ModelClass/AuthenticationModels/ResetPasswordModel.dart';
+import '../ModelClass/AuthenticationModels/UserbyUserIdPasswordModel.dart';
 import '../ModelClass/RentVehiclesModels/AllRentVehiclesModel.dart';
 import '../ModelClass/BuyvehiclesModels/BuyAllVehiclesModel.dart';
 import '../ModelClass/BuyvehiclesModels/BuyNearVehiclesModel.dart';
@@ -393,7 +395,7 @@ class UserApi {
 
     return NotificationByUserIdModel.listFromJson(jsonDecode(response.body));
   }
-
+//Notification is read
   Future<NotificationMarkReadModel> getMyReadMessage(String id ) async {
 
     String trendingpath = 'http://45.159.221.50:8868/api/notifications/$id/read';
@@ -406,7 +408,7 @@ class UserApi {
     return NotificationMarkReadModel.fromJson(jsonDecode(response.body));
   }
 
-
+// ForgotPassword
   Future<ForgotPasswordModel> getForgotPasswod( String userId) async {
 
     String trendingpath = 'http://45.159.221.50:8868/api/forgot-password';
@@ -419,5 +421,35 @@ class UserApi {
 
     return ForgotPasswordModel.fromJson(jsonDecode(response.body));
   }
+
+  // Userby Userid Forgot Password
+
+  Future<UserbyUserIdPasswordModel> getUserbyUseridForgotPasswod() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userId = prefs.getString('userId').toString();
+    String trendingpath = 'http://45.159.221.50:8868/api/user/$userId';
+    var body = {};
+    print("welcome" + body.toString());
+    Response response =
+    await apiClient.invokeAPI(trendingpath, 'GET', jsonEncode(body));
+
+    return UserbyUserIdPasswordModel.fromJson(jsonDecode(response.body));
+  }
+
+//Reset Password
+
+  Future<ResetPasswordModel> getResetPasswod( String token, String newpassword) async {
+
+    String trendingpath = 'http://45.159.221.50:8868/api/reset-password/$token';
+    var body = {
+      "newPassword": newpassword
+    };
+    print("welcome" + body.toString());
+    Response response =
+    await apiClient.invokeAPI(trendingpath, 'POST', jsonEncode(body));
+
+    return ResetPasswordModel.fromJson(jsonDecode(response.body));
+  }
+
 
 }

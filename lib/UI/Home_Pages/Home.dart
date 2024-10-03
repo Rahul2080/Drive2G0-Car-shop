@@ -326,9 +326,9 @@ class _HomeState extends State<Home> {
                       nearrentvehicles =
                           BlocProvider.of<NearByRentVehiclesBloc>(context)
                               .nearbyrentvechicles;
-                      return nearrentvehicles.length != 0?  Column(
+                      return  Column(
                         children: [
-
+                          nearrentvehicles.length != 0?
                           Padding(
                             padding: EdgeInsets.only(top: 20.h),
                             child: Row(
@@ -364,13 +364,15 @@ class _HomeState extends State<Home> {
                                 ),
                               ],
                             )
-                          ),
+                          ):SizedBox(),
+                          nearrentvehicles.length != 0?
                           Padding(
                             padding: EdgeInsets.only(left: 10.w, right: 10.w),
                             child: SizedBox(
                               width: double.infinity,
                               height: 233.h,
-                              child: ListView.separated(
+                              child:
+                              ListView.separated(
                                 scrollDirection: Axis.horizontal,
                                 itemCount: nearrentvehicles.length,
                                 itemBuilder: (context, position) {
@@ -605,15 +607,15 @@ class _HomeState extends State<Home> {
                                 },
                                 separatorBuilder: (context, position) {
 
-                                  return nearrentvehicles.isNotEmpty? SizedBox(
+                                  return nearrentvehicles.length==0?SizedBox(): SizedBox(
                                     width: 10.w,
-                                  ):SizedBox();
+                                  );
                                 },
                               ),
                             ),
-                          ),
+                          ):SizedBox(),
                         ],
-                      ):SizedBox();
+                      );
                     } else {
                       return SizedBox();
                     }

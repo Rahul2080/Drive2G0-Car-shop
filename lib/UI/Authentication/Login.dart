@@ -105,6 +105,7 @@ class _LoginState extends State<Login> {
                 Padding(
                   padding: EdgeInsets.only(left: 30.w, right: 35.w, top: 50.h),
                   child: TextFormField(
+
                     controller: emailcontroller,
                     cursorColor: Colors.white,
                     style: TextStyle(color: Colors.white),

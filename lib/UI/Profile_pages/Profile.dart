@@ -143,7 +143,8 @@ print('profileimage '+ profile.profilePhotoUrl.toString());
                           ),
                           child: ClipRRect(
                               borderRadius: BorderRadius.circular(7.r),
-                              child: Image.network( profile.profilePhotoUrl.toString(),
+                              child:profile.profilePhotoUrl==null?Icon(Icons.person_outline,size: 80.sp
+                                ,color: Colors.grey,): Image.network( profile.profilePhotoUrl.toString(),
                                 fit: BoxFit.cover,
                               )),
                         ),

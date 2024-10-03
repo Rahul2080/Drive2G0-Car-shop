@@ -18,6 +18,7 @@ import 'package:drive2go/Bloc/SearchRentVehicles_Bloc/search_rent_vehicles_bloc.
 import 'package:drive2go/Bloc/SendMessage_Bloc/send_message_bloc.dart';
 import 'package:drive2go/Bloc/ShowSendMessage_Bloc/show_send_message_bloc.dart';
 import 'package:drive2go/Bloc/Siginup_Bloc/signup_bloc.dart';
+import 'package:drive2go/Bloc/UserByUserIdForgotPassword_Bloc/userby_user_id_forgot_password_bloc.dart';
 import 'package:drive2go/UI/Authentication/Splash.dart';
 import 'package:drive2go/UI/Home_Pages/NotificationViewMarked.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -111,6 +112,9 @@ class MyApp extends StatelessWidget {
               ),
               BlocProvider(
                 create: (context) => ForgotPasswordBloc(),
+              ),
+              BlocProvider(
+                create: (context) => UserbyUserIdForgotPasswordBloc(),
               ),
             ],
             child: MaterialApp(
